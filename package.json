@@ -1,0 +1,11 @@
+{
+  "name": "bird_nerd_r",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
