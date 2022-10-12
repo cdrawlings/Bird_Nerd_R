@@ -1,0 +1,64 @@
+@import "./scss/utility.scss";
+@import "./scss/style.scss";
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+p {
+  display: block;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.container{
+  width: 100vw;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0;
+  margin-bottom: 0;
+}
+
+.form-control {
+  display: block;
+  height: auto;
+  padding: 3px 5px;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: $color-secondary;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 auto 15px;
+
+  // Disabled and read-only inputs
+  //
+  // HTML5 says that controls under a fieldset > legend:first-child won't be
+  // disabled if the fieldset is disabled. Due to implementation difficulty, we
+  // don't honor that edge case; we style them as disabled anyway.
+  &:disabled,
+  &[readonly] {
+    background-color: $color-light;
+    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+    opacity: 1;
+  }
+}

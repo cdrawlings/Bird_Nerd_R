@@ -1,0 +1,77 @@
+// Header
+header {
+  z-index: 5;
+}
+
+nav {
+  background-color: darken($color-secondary, 10%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 40px;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  color: $color-light;
+  justify-content: space-between;
+  align-self: center;
+  width: 90vw;
+  font-size: .9rem;
+  font-family: $font-stack;
+
+  a {
+    color: $color-light;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+
+    li{
+      margin-left: 10px;
+    }
+  }
+}
+
+
+//BUTONS
+.btn {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid lighten($color-primary, 20%);
+  border-radius: 5px;
+  font: $font-stack;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 1rem auto;
+}
+
+.btn-register {
+  border-color: $color-accent;
+  background-color: $color-primary;
+  color: $color-light;
+}
+
+
+// AUTH
+.logincard {
+  background-color: white;
+  width: 300px;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 50px auto;
+  border-radius: 5px;
+}
+
+.heading{
+  width: 80%;
+  margin: 0 auto 2rem;
+}
