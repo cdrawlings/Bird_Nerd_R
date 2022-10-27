@@ -19,13 +19,19 @@ function Header() {
         <header>
             <nav>
                 <div className="navbar">
-                    <Link to='/'>React Bird Nerd</Link>
+                    <Link to='/dashboard'>React Bird Nerd</Link>
                     <ul>
 
                         {user ? (
-                            <li>
-                                <button onClick={onLogout} > <FaSignOutAlt /> Logout</button>
-                            </li>
+                            <>
+                                <li>
+                                    <button onClick={onLogout} > <FaSignOutAlt /> Logout</button>
+                                </li>
+                                <li>
+                                    <Link to="/profile">Profile</Link>
+                                </li>
+                            </>
+
                         ) : (
                             <>
                                 <li>

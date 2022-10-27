@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/bird', require('./routes/birdRoutes'))
 
 app.use(errorHandler)
 

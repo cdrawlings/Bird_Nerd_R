@@ -62,6 +62,8 @@ const loginUser = asyncHandler(async (req, res) => {
             firstname: (await user).firstname,
             lastname: (await user).lastname,
             email: (await user).email,
+            createdAt: (await user).createdAt,
+            updatedAt: (await user).updatedAt,
             token: generateToken((await user)._id)
         })
     } else {
@@ -85,7 +87,6 @@ const  getUser = asyncHandler(async (req, res) => {
     */
 
     res.status(200).json(req.user)
-    // res.status(200).json(user)
 
 });
 

@@ -1,4 +1,4 @@
-// Header
+/***  Header  ***/
 header {
   z-index: 5;
 }
@@ -41,7 +41,8 @@ nav {
 }
 
 
-//BUTONS
+
+/***  BUTTONS  ***/
 .btn {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
   width: 200px;
@@ -61,7 +62,7 @@ nav {
 }
 
 
-// AUTH
+/***  AUTH  ***/
 .logincard {
   background-color: white;
   width: 300px;
@@ -75,3 +76,811 @@ nav {
   width: 80%;
   margin: 0 auto 2rem;
 }
+
+
+/*** GENERAL ***/
+.title{
+  font-family: $font-stack;
+  font-size: 3rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.3rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/***  ADD A BIRD  ***/
+#birdlist{
+  display: none;
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+#seenist{
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+.forminput{
+  width: 80%;
+  margin: 0 auto 1rem;
+}
+
+.main-add{
+  width: 60vw;
+  min-height: 100vh;
+  padding-bottom: 30px;
+  border: 1px solid $color-primary;
+  margin: 0 auto;
+  background-color: $color-primary;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.content{
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+.add-text{
+  margin: 0 10% 2rem;
+}
+
+.search-adds {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 0 0 1rem;
+}
+
+.full-list {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 0 0 10%;
+  font-weight: 600;
+  font-size: .8rem;
+
+}
+
+.reset {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 10% 0 0;
+  font-weight: 600;
+  font-size: .8rem;
+}
+
+.search-bar {
+  width: 80%;
+}
+
+.searchcontainer {
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  border-radius: 10px;
+}
+
+h3 {
+  color: #177e89ff;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.btn {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px 15px;
+  border-radius: 5px;
+  font: $font-stack;
+  font-weight: 600;
+}
+
+
+.btn-register{
+  width: 200px;
+  border-color: $color-accent;
+  background-color: $color-primary;
+  color: $color-light;
+  border: 1px solid lighten($color-primary, 20%);
+  font-size: 1.2rem;
+  margin: 1rem auto;
+}
+
+
+.btn-dash {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  background-color: $color-secondary;
+  color: $color-light;
+  margin: 4rem 0 1rem;
+  border: 1px solid lighten($color-secondary, 20%);
+  font-size: .9rem;
+  text-decoration: none;
+  text-align: center;
+}
+
+.add_session_btn {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px 15px;
+  margin: 1rem auto;
+  border-radius: 5px;
+  font: $font-stack;
+  font-weight: 600;
+  border: 1px solid $color-light;
+  text-align: center;
+}
+
+header {
+  position: relative;
+  z-index: 5;
+}
+
+nav {
+  background-color: darken($color-secondary, 10%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 40px;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  color: $color-light;
+  justify-content: space-between;
+  align-self: center;
+  width: 90vw;
+  font-size: .9rem;
+  font-family: $font-stack;
+
+  a {
+    color: $color-light;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+
+    li{
+      margin-left: 10px;
+    }
+  }
+}
+
+.header-title {
+  width: 80vw;
+  margin: 2vh auto 2vh;
+}
+
+.title{
+  font-family: $font-stack;
+  font-size: 3rem;
+  margin: 0 auto;
+}
+
+
+h1 {
+  font-size: 1.3rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+/*  Spinner  */
+
+.spinner-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #000 transparent #555 transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+/*  LOGIN REGISTER PAGES  */
+
+.logincontainer {
+  width: 100vw;
+  height: 110vh;
+  margin: -10vh 0 0;
+  background-size: cover;
+  border: 1px solid transparent;
+}
+
+.logincard{
+  background-color: white;
+  width: 300px;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 150px auto;
+  border-radius: 5px ;
+}
+
+.header-title{
+  width: 80%;
+  margin: 0 auto 2rem;
+}
+
+
+/***  DASHBOARD  ***/
+.main {
+  width: 90vw;
+  height: 100%;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  background-color: $color-primary;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dashboard {
+  width: 90%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 25% 25% auto;
+  grid-template-rows: auto;
+  column-gap: 10px;
+  row-gap: 10px;
+  grid-template-areas:
+    "current start chart"
+    "seen new chart"
+;
+}
+.current{
+  grid-area: current;
+}
+.start {
+  grid-area: start;
+}
+
+.seen-bird {
+  grid-area: seen;
+}
+
+.new-bird {
+  grid-area: new;
+}
+
+.dash-chart {
+  grid-area: chart;
+}
+
+.card-dash {
+  position: relative;
+  height: 250px;
+  padding: 10px;
+  background-color: $color-light;
+  border-radius: 5px;
+  border: 0;
+}
+.card-chart {
+  padding: 10px;
+  background-color: $color-light;
+  border-radius: 5px;
+  border: 0;
+}
+
+/***  ADD A BIRD  ***/
+.main-add{
+  width: 60vw;
+  min-height: 100vh;
+  padding-bottom: 30px;
+  border: 1px solid $color-primary;
+  margin: 0 auto;
+  background-color: $color-primary;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+.content{
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+.add-text{
+  margin: 0 10% 2rem;
+}
+
+
+/***  Weather  ***/
+.temp{
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: $font-stack;
+  margin: -3 0 0;
+}
+
+.condition {
+  text-transform: capitalize;
+}
+
+/***  SEARCH BIRD AND ADD  ***/
+
+#birdlist{
+  display: none;
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+#seenist{
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+
+.forminput{
+  width: 80%;
+  margin: 0 auto 1rem;
+}
+
+.searchcontainer {
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  border-radius: 10px;
+}
+
+.search-bar {
+  width: 80%;
+}
+
+.search-adds {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 0 0 1rem;
+}
+
+.full-list {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 0 0 10%;
+  font-weight: 600;
+  font-size: .8rem;
+
+}
+
+.reset {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 10% 0 0;
+  font-weight: 600;
+  font-size: .8rem;
+}
+
+.bird-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  width: 80%;
+  margin: 0 auto 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #999999;
+  font-weight: 400;
+  font-size: 1rem;
+}
+h3 {
+  color: #177e89ff;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.btn {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px 15px;
+  border-radius: 5px;
+  font: $font-stack;
+  font-weight: 600;
+}
+
+
+.btn-register{
+  width: 200px;
+  border-color: $color-accent;
+  background-color: $color-primary;
+  color: $color-light;
+  border: 1px solid lighten($color-primary, 20%);
+  font-size: 1.2rem;
+  margin: 1rem auto;
+}
+
+
+.btn-dash {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  background-color: $color-secondary;
+  color: $color-light;
+  margin: 4rem 0 1rem;
+  border: 1px solid lighten($color-secondary, 20%);
+  font-size: .9rem;
+  text-decoration: none;
+  text-align: center;
+}
+
+.add_session_btn {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px 15px;
+  margin: 1rem auto;
+  border-radius: 5px;
+  font: $font-stack;
+  font-weight: 600;
+  border: 1px solid $color-light;
+  text-align: center;
+}
+
+header {
+  position: relative;
+  z-index: 5;
+}
+
+nav {
+  background-color: darken($color-secondary, 10%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 40px;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  color: $color-light;
+  justify-content: space-between;
+  align-self: center;
+  width: 90vw;
+  font-size: .9rem;
+  font-family: $font-stack;
+
+  a {
+    color: $color-light;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+
+    li{
+      margin-left: 10px;
+    }
+  }
+}
+
+.header-title {
+  width: 80vw;
+  margin: 2vh auto 2vh;
+}
+
+.title{
+  font-family: $font-stack;
+  font-size: 3rem;
+  margin: 0 auto;
+}
+
+
+h1 {
+  font-size: 1.3rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+/*  Spinner  */
+
+.spinner-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #000 transparent #555 transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+/*  LOGIN REGISTER PAGES  */
+
+.logincontainer {
+  width: 100vw;
+  height: 110vh;
+  margin: -10vh 0 0;
+  background-size: cover;
+  border: 1px solid transparent;
+}
+
+.logincard{
+  background-color: white;
+  width: 300px;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 150px auto;
+  border-radius: 5px ;
+}
+
+.header-title{
+  width: 80%;
+  margin: 0 auto 2rem;
+}
+
+
+/***  DASHBOARD  ***/
+.main {
+  width: 90vw;
+  height: 100%;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  background-color: $color-primary;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dashboard {
+  width: 90%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 25% 25% auto;
+  grid-template-rows: auto;
+  column-gap: 10px;
+  row-gap: 10px;
+  grid-template-areas:
+    "current start chart"
+    "seen new chart"
+;
+}
+.current{
+  grid-area: current;
+}
+.start {
+  grid-area: start;
+}
+
+.seen-bird {
+  grid-area: seen;
+}
+
+.new-bird {
+  grid-area: new;
+}
+
+.dash-chart {
+  grid-area: chart;
+}
+
+.card-dash {
+  position: relative;
+  height: 250px;
+  padding: 10px;
+  background-color: $color-light;
+  border-radius: 5px;
+  border: 0;
+}
+.card-chart {
+  padding: 10px;
+  background-color: $color-light;
+  border-radius: 5px;
+  border: 0;
+}
+
+/***  ADD A BIRD  ***/
+.main-add{
+  width: 60vw;
+  min-height: 100vh;
+  padding-bottom: 30px;
+  border: 1px solid $color-primary;
+  margin: 0 auto;
+  background-color: $color-primary;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+.content{
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+.add-text{
+  margin: 0 10% 2rem;
+}
+
+
+/***  Weather  ***/
+.temp{
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: $font-stack;
+  margin: -3 0 0;
+}
+
+.condition {
+  text-transform: capitalize;
+}
+
+/***  SEARCH BIRD AND ADD  ***/
+#birdlist{
+  display: none;
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+#seenist{
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0;
+  background-color: $color-light;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+
+.forminput{
+  width: 80%;
+  margin: 0 auto 1rem;
+}
+
+.searchcontainer {
+  width: 80%;
+  height: 100%;
+  margin: 2rem auto 0;
+  border-radius: 10px;
+}
+
+.search-bar {
+  width: 80%;
+}
+
+.search-adds {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 0 0 1rem;
+}
+
+.full-list {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 0 0 10%;
+  font-weight: 600;
+  font-size: .8rem;
+
+}
+
+.reset {
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  margin: 0 10% 0 0;
+  font-weight: 600;
+  font-size: .8rem;
+}
+
+.bird-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  width: 80%;
+  margin: 0 auto 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #999999;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+
+.bird-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bird-code {
+  display: none;
+}
+
+.bird-box {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+  border-radius: 5px;
+  border: 1px solid #999999;
+  padding: 3px;
+  text-align: center;
+  margin: 0 0 0 10px;
+  cursor: pointer;
+}
+
+
