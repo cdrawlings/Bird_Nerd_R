@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {addLocation} from '../features/location/locationSlice'
-import {geteBirds} from '../features/birds/ebirdsSlice'
+import {geteBirds} from '../features/ebirds/ebirdsSlice'
 import Spinner from "../components/spinner";
 
 function Current() {
@@ -12,7 +12,7 @@ function Current() {
 
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const navigate = useNavigate();3
 
     useEffect(() => {
         getCoords();

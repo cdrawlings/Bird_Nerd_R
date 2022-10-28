@@ -17,7 +17,6 @@ const  getBirds = asyncHandler(async (req, res) => {
     const birds = await Bird.find({user: req.user.id})
 
     res.status(200).json(birds)
-
 });
 
 
@@ -48,6 +47,21 @@ const  getBird = asyncHandler(async (req, res) => {
 });
 
 
+// get Last bird entered for user
+// Route    GET api/bird/last
+const  getLast = asyncHandler(async (req, res) => {
+    //Get user with ID  in JWT
+    const user = await User.findById(req.user.id)
+
+    if(!user) {
+        res.status(401)
+        throw new Error("User not found")
+    }
+
+    const bird = await Bird.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
+
+    res.status(200).json(bird[0])
+});
 
 // Delete a single bird
 // Route    api/bird/:id
@@ -144,5 +158,6 @@ module.exports = {
     getBird,
     createBird,
     deleteBird,
-    updateBird
+    updateBird,
+    getLast
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = '/api/bird/'
+const API_URL = '/api/bird'
 
 //Register user
 const createBird = async (birdData, token) => {
@@ -23,7 +23,7 @@ const getAllBird = async (token) => {
         }
     }
 
-    const response = await axios.get(API_URL, config)
+    const response = await axios.get(API_URL + '/add-bird', config)
 
     return response.data
 }

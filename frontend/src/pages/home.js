@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import dayjs from 'dayjs';
 
 
 function Home() {
@@ -8,8 +9,9 @@ function Home() {
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
 
-    console.log('Birds in area:', ebirds)
-    console.log('User:', user)
+
+    const created = dayjs(user.createdAt).format('dddd, MMMM D, YYYY')
+    const updated = dayjs(user.updatedAt).format('dddd, MMMM D, YYYY')
 
 
     return (
@@ -22,15 +24,15 @@ function Home() {
                 <h2 id="location">Location: {location.city}</h2>
                 <div id="weather">Weather</div>
                 <div id="seen">Seen</div>
-                <div id="seen">Created account: {user.createdAt}</div>
-                <div id="seen">last Loggin: {user.updatedAt}</div>
+                <div id="seen">Created account: {created}</div>
+                <div id="seen">last Loggin: {updated}</div>
 
                 <div id="session">Start Session</div>
                 <div id="last_session">Last Session</div>
             </section>
             <section>
                 <h1 >Add a bird</h1>
-                <Link to="/add-bird">
+                <Link to="/find-bird">
                     <button>Add</button>
                 </Link>
             </section>

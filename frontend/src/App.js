@@ -8,7 +8,9 @@ import Registration from './pages/registration'
 import Bird from './pages/bird'
 import Profile from "./pages/profile";
 import Current from "./pages/current";
+import FindBird from "./pages/findBird"
 import AddBird from "./pages/addBird"
+
 
 import Header from './components/header'
 import PrivateRoute from "./components/PrivateRoute";
@@ -36,9 +38,13 @@ function App() {
           <Route path="/profile" element={<PrivateRoute />} >
             <Route path="/profile" element={<Profile />} />
           </Route>
+          <Route path="/find-bird" element={<PrivateRoute />} >
+            <Route path="/find-bird" element={<FindBird />} />
+          </Route>
           <Route path="/add-bird" element={<PrivateRoute />} >
             <Route path="/add-bird" element={<AddBird />} />
           </Route>
+
 
         </Routes>
       </div>
