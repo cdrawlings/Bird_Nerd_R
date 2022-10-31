@@ -15,26 +15,32 @@ function Home() {
 
     return (
         <>
-            <section>
-                <h3>Dashboard</h3>
-            </section>
-            <section>
-                <h1 id="user">User: {user.firstname} {user.lastname}</h1>
-                <h2 id="location">Location: {location.city}</h2>
-                <div id="weather">Weather</div>
-                <div id="seen">Seen</div>
-                <div id="seen">Created account: {created}</div>
-                <div id="seen">last Loggin: {updated}</div>
+            <div className="main">
 
-                <div id="session">Start Session</div>
-                <div id="last_session">Last Session</div>
-            </section>
-            <section>
-                <h1 >Add a bird</h1>
-                <Link to="/find-bird">
-                    <button>Add</button>
-                </Link>
-            </section>
+                <section className="content">
+                    <section>
+                        <h3>Dashboard</h3>
+                    </section>
+                    <section>
+                        <h1 id="user">User: {user.firstname} {user.lastname}</h1>
+                        <h2 id="location">Location: {location.city}</h2>
+                        <div id="weather">Weather</div>
+                        <div id="seen">Seen</div>
+                        <div id="seen">Created account: {created}</div>
+                        <div id="seen">last Loggin: {updated}</div>
+
+                        <div id="session">Start Session</div>
+                        <div id="last_session">Last Session</div>
+                    </section>
+                    <section>
+                        <h1>Add a bird</h1>
+                        <Link to="/find-bird">
+                            <button>Add</button>
+                        </Link>
+                    </section>
+                </section>
+            </div>
+
         </>
     );
 }

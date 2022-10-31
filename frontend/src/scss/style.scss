@@ -51,26 +51,28 @@ nav {
 /***  BUTTONS  ***/
 .btn {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
-  width: 200px;
   padding: 10px 15px;
-  border: 1px solid lighten($color-primary, 20%);
   border-radius: 5px;
   font: $font-stack;
   font-weight: 600;
   font-size: 1.2rem;
   margin: 1rem auto;
+  text-align: center;
 }
 
-.btn-register{
+.btn-register {
   width: 200px;
-  border-color: $color-accent;
+  border: 1px solid lighten($color-primary, 20%);
   background-color: $color-primary;
   color: $color-light;
-  border: 1px solid lighten($color-primary, 20%);
-  font-size: 1.2rem;
-  margin: 1rem auto;
 }
 
+.btn_session {
+  width: 200px;
+  border: 1px solid lighten($color-primary, 20%);
+  background-color: $color-accent;
+  color: $color-light;
+}
 
 
 /***  AUTH  ***/
@@ -266,9 +268,7 @@ h3 {
   justify-content: space-between;
 }
 
-
-
-
+/*** ADD SINGLE BIRD TO DB ***/
 .map_container {
   height: 300px;
   width: 100%;
@@ -276,5 +276,79 @@ h3 {
 }
 
 
+.seen_title {
+  font-family: $font-stack;
+  font-size: 1.5rem;
+  text-align: left;
+  color: #666;
+  margin: 0;
+}
+
+.seen_text {
+  display: inline-block;
+  font-family: $font-stack;
+  font-size: 1rem;
+  text-align: left;
+  color: #666;
+  margin: 0 0 .25rem;
+}
+
+.seen_bird {
+  font-size: 2.5rem;
+  color: $color-primary;
+  text-align: left;
+  margin: -.5rem 0;
+}
+
+.leafletContainer {
+  margin: 0 auto;
+}
+
+.counter_elements {
+  display: flex;
+  flex-direction: row;
+}
+
+.counter_block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 0 0 1rem;
+}
+
+.counter_text {
+  align-self: center;
+  font-family: $font-stack;
+}
+
+.seen_time {
+  font-size: 1rem;
+  color: black;
+  font-weight: 400;
+  font-family: $font-stack;
+}
+
+.seen_city {
+  font-size: 1rem;
+  color: black;
+  font-weight: 600;
+  margin: 0;
+  font-family: $font-stack;
+}
+
+.minus_button,
+.add_button {
+  font-size: 2rem;
+  color: #000000;
+  border: 0;
+  background-color: transparent;
+}
+
+.count_elem {
+  font-size: 2rem;
+  color: $color-secondary;
+  margin: 0 1rem;
+}
 
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = '/api/bird/'
+const API_URL = '/api/bird'
 
 //Get the last spotted bird
 const getLast = async (token) => {
@@ -10,7 +10,7 @@ const getLast = async (token) => {
         }
     }
 
-    const response = await axios.get(API_URL + 'add-bird', config)
+    const response = await axios.get(API_URL + '/add-bird', config)
 
     return response.data
 }
