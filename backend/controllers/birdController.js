@@ -51,6 +51,7 @@ const  getBird = asyncHandler(async (req, res) => {
 // Route    GET api/bird/last
 const  getLast = asyncHandler(async (req, res) => {
     //Get user with ID  in JWT
+
     const user = await User.findById(req.user.id)
 
     if(!user) {
@@ -62,6 +63,7 @@ const  getLast = asyncHandler(async (req, res) => {
 
     res.status(200).json(bird[0])
 });
+
 
 // Delete a single bird
 // Route    api/bird/:id

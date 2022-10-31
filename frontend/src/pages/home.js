@@ -9,7 +9,6 @@ function Home() {
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
 
-
     const created = dayjs(user.createdAt).format('dddd, MMMM D, YYYY')
     const updated = dayjs(user.updatedAt).format('dddd, MMMM D, YYYY')
 

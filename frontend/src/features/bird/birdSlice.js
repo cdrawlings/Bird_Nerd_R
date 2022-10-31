@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import birdService from './birdService'
-import authService from "../auth/authService";
+
 
 const initialState = {
     birds: [],
@@ -34,7 +34,7 @@ export const createBird = createAsyncThunk('bird/create', async (birdData, thunk
 export const getBird = createAsyncThunk('bird/create', async (birdData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await birdService.createBird(birdData, token)
+        return await birdService.getBird(birdData, token)
     } catch (error) {
         const message =
             (error.response &&
@@ -63,6 +63,8 @@ export const getAllBird = createAsyncThunk('bird/getAll', async (birdData, thunk
         return thunkAPI.rejectWithValue(message)
     }
 })
+
+
 
 export const birdSlice = createSlice({
     name: 'bird',

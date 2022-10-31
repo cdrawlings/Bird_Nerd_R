@@ -21,7 +21,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
     "path": "^0.12.7",
-    "react-leaflet": "^4.1.0",
     "sass": "^1.55.0"
   },
   "devDependencies": {

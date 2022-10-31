@@ -1,17 +1,22 @@
 const express = require('express')
 const router = express.Router()
 
-const {protect} = require('../middleware/authMiddleware')
-
 const {getBirds, getBird, createBird, deleteBird, updateBird, getLast} = require('../controllers/birdController')
 
-router.route('/').get(protect, getBirds)
+const {protect} = require('../middleware/authMiddleware')
 
-router.route('/:id').get(protect, getBird).delete(protect, deleteBird).put(protect, updateBird)
+router.get('/', protect, getBirds)
 
-router.route('/find-bird').post(protect, createBird)
+router.post('/find-bird', protect, createBird)
 
+router.get('/add-bird', protect, getLast)
 
+/*
+router.get('/:id', protect, getBird)
 
+router.delete('/:id', protect, deleteBird)
+
+router.put('/:id', protect, updateBird)
+*/
 
 module.exports = router

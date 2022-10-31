@@ -5,6 +5,7 @@ import locationReducer from '../features/location/locationSlice'
 import weatherReducer from '../features/weather/weatherSlice'
 import ebirdsReducer from '../features/ebirds/ebirdsSlice'
 import birdReducer from '../features/bird/birdSlice'
+import lastReducer from '../features/last/lastSlice'
 
 export const store = configureStore({
   reducer: {
@@ -13,4 +14,5 @@ export const store = configureStore({
     weather: weatherReducer,
     ebirds: ebirdsReducer,
     bird: birdReducer,
+    last: lastReducer,
   },});
