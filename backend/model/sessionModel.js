@@ -17,7 +17,6 @@ const CountSchema = new mongoose.Schema({
     lastSeen: Date,
 })
 
-
 const SessionSchema = new mongoose.Schema({
         temperature: {
             type: Number
