@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getLast, reset} from "../features/last/lastSlice";
-import {createSession, sessionReset} from "../features/session/sessionSlice";
+import {createSingle, singleReset} from "../features/singleBird/singleSlice";
 
 import dayjs from 'dayjs';
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
@@ -12,7 +12,7 @@ import Spinner from '../components/spinner'
 function AddBird() {
     const {user} = useSelector((state) => state.auth)
     const {last, isLoading, isError, message} = useSelector((state) => state.last)
-    const {session, sessionError, sessionSuccess, sessionMessage} = useSelector((state) => state.session)
+    //const {session, sessionError, sessionSuccess, sessionMessage} = useSelector((state) => state.session)
     const {location} = useSelector((state) => state.location)
 
     const [count, setCount] = useState(1)
@@ -25,16 +25,8 @@ function AddBird() {
             toast.error(message)
         }
 
-        if (sessionError) {
-            toast.error(sessionMessage)
-        }
 
-        if (sessionSuccess) {
-            dispatch(sessionReset())
-            dispatch(reset())
-            navigate('/')
-        }
-    }, [isError, message, sessionMessage, sessionSuccess, navigate, dispatch])
+    }, [isError, message])
 
     useEffect(() => {
             dispatch(getLast())
@@ -86,7 +78,12 @@ function AddBird() {
         }
 
         console.log(sessData)
-        dispatch(createSession(sessData))
+        dispatch(createSingle(sessData))
+
+        dispatch(reset())
+        dispatch(singleReset())
+        navigate('/')
+
     }
 
     const position = [location.lat, location.lon]

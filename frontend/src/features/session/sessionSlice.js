@@ -52,7 +52,7 @@ export const sessionSlice = createSlice({
     name: 'session',
     initialState,
     reducers: {
-        sessionReset: (state) => initialState
+        reset: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
@@ -84,5 +84,5 @@ export const sessionSlice = createSlice({
     }
 })
 
-export const {sessionReset} = sessionSlice.actions
+export const {reset} = sessionSlice.actions
 export default sessionSlice.reducer
