@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {addLocation} from '../features/location/locationSlice'
 import {geteBirds} from '../features/ebirds/ebirdsSlice'
@@ -12,7 +12,7 @@ function Current() {
 
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();3
+    const navigate = useNavigate();
 
     useEffect(() => {
         getCoords();

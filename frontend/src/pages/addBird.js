@@ -45,7 +45,6 @@ function AddBird() {
         return <Spinner/>
     }
 
-
     // Add one to count
     const addOne = (e) => {
         // Counter state is incremented
@@ -93,7 +92,7 @@ function AddBird() {
     const position = [location.lat, location.lon]
     const date = dayjs(last.createdAt).format('dddd, MMMM D, YYYY')
 
-
+console.log(position)
     return (
         <>
             <div className="main">
