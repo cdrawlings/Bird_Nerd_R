@@ -83,7 +83,6 @@ function AddBird() {
         dispatch(reset())
         dispatch(singleReset())
         navigate('/')
-
     }
 
     const position = [location.lat, location.lon]

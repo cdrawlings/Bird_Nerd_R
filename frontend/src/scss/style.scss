@@ -352,3 +352,62 @@ h3 {
 }
 
 
+/*** Bird watching sesssion Page ***/
+.sessionList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  width: 100%;
+  height: 3rem;
+  font-family: $font-stack;
+  font-size: 1.1rem;
+  font-weight: 400;
+  align-self: center;
+
+  p {
+    align-self: center;
+  }
+}
+
+.sessionInput {
+  border: 0;
+  font-family: $font-stack;
+  font-size: 1.1rem;
+  font-weight: 400;
+  align-self: center;
+}
+
+.sessionCounter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 35%;
+
+
+}
+
+.sessionCount {
+  align-self: center;
+  justify-self: center;
+  width: 1.5rem;
+  font-size: 1.2rem;
+  border: 0;
+  font-family: $font-stack;
+  font-weight: 400;
+}
+
+.bird-box {
+  font-size: .9rem;
+  width: 1.5rem;
+  align-self: center;
+  justify-self: center;
+}
+
+.allBirds {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  padding-inline-start: 0px;
+}

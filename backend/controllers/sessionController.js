@@ -21,7 +21,6 @@ const getSessions = asyncHandler(async (req, res) => {
 });
 
 
-
 // Adds a spotted bird to DB
 // Route    api/bird/
 const createSession = asyncHandler(async (req, res) => {
@@ -80,8 +79,27 @@ const createSingle = asyncHandler(async (req, res) => {
 });
 
 
+// get Last bird entered for user
+// Route    GET api/bird/last
+const getLastSession = asyncHandler(async (req, res) => {
+    //Get user with ID  in JWT
+
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error("User not found")
+    }
+
+    const session = await Session.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
+
+    res.status(200).json(session[0])
+});
+
+
 module.exports = {
     createSession,
     createSingle,
-    getSessions
+    getSessions,
+    getLastSession
 }

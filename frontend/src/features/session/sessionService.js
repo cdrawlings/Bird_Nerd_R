@@ -15,6 +15,7 @@ const createSession = async (sessionData, token) => {
     return response.data
 }
 
+
 //Get all bird watching sessions
 const getSessions = async (token) => {
     const config = {
@@ -28,9 +29,24 @@ const getSessions = async (token) => {
     return response.data
 }
 
+
+//Get last bird watching sessions
+const getSession = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.get(API_URL + 'last', config)
+
+    return response.data
+}
+
 const sessionService = {
     createSession,
     getSessions,
+    getSession,
 }
 
 export default sessionService

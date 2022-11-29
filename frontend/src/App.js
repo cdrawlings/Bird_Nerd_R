@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/home'
@@ -10,6 +10,7 @@ import Profile from "./pages/profile";
 import Current from "./pages/current";
 import FindBird from "./pages/findBird"
 import AddBird from "./pages/addBird"
+import Session from "./pages/session"
 
 
 import Header from './components/header'
@@ -35,15 +36,18 @@ function App() {
           <Route path="/bird" element={<PrivateRoute />} >
             <Route path="/bird" element={<Bird />} />
           </Route>
-          <Route path="/profile" element={<PrivateRoute />} >
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route path="/find-bird" element={<PrivateRoute />} >
-            <Route path="/find-bird" element={<FindBird />} />
-          </Route>
-          <Route path="/add-bird" element={<PrivateRoute />} >
-            <Route path="/add-bird" element={<AddBird />} />
-          </Route>
+            <Route path="/profile" element={<PrivateRoute/>}>
+                <Route path="/profile" element={<Profile/>}/>
+            </Route>
+            <Route path="/find-bird" element={<PrivateRoute/>}>
+                <Route path="/find-bird" element={<FindBird/>}/>
+            </Route>
+            <Route path="/add-bird" element={<PrivateRoute/>}>
+                <Route path="/add-bird" element={<AddBird/>}/>
+            </Route>
+            <Route path="/session/:id" element={<PrivateRoute/>}>
+                <Route path="/session/:id" element={<Session/>}/>
+            </Route>
 
 
         </Routes>

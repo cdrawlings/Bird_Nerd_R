@@ -48,6 +48,24 @@ export const getSessions = createAsyncThunk('session/getSessions', async (sessio
 })
 
 
+// Get Last bird watching session
+export const getSession = createAsyncThunk('session/getSession', async (sessionData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await sessionService.getSession(token)
+    } catch (error) {
+        const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 export const sessionSlice = createSlice({
     name: 'session',
     initialState,
@@ -66,7 +84,7 @@ export const sessionSlice = createSlice({
             .addCase(createSession.rejected, (state, action) => {
                 state.sessionLoading = true
                 state.sessionError = true
-                state.sessionMessage = action.payload
+                state.message = action.payload
             })
             .addCase(getSessions.pending, (state) => {
                 state.sessionLoading = true
@@ -79,7 +97,20 @@ export const sessionSlice = createSlice({
             .addCase(getSessions.rejected, (state, action) => {
                 state.sessionLoading = true
                 state.sessionError = true
-                state.sessionMessage = action.payload
+                state.message = action.payload
+            })
+            .addCase(getSession.pending, (state) => {
+                state.sessionLoading = true
+            })
+            .addCase(getSession.fulfilled, (state, action) => {
+                state.sessionLoading = false
+                state.sessionSuccess = true
+                state.session = action.payload
+            })
+            .addCase(getSession.rejected, (state, action) => {
+                state.sessionLoading = true
+                state.sessionError = true
+                state.message = action.payload
             })
     }
 })
