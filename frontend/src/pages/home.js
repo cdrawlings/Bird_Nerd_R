@@ -19,14 +19,13 @@ function Home() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-
+    // Gets the last bird watching session
     useEffect(() => {
         dispatch(getSession())
     }, [dispatch])
 
 
-// Navigate to the session page with the new sessions ID
-
+    // If asnewsession is created navigate to the session page with the new sessions ID
     useEffect(() => {
         if (success) {
             navigate('/session/' + session._id)
@@ -34,12 +33,8 @@ function Home() {
     }, [navigate, session])
 
 
-    console.log("location", location)
-
-
-    // Add one to count
+    // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
-
         let city = location.city;
         let lat = location.lat;
         let lon = location.lon;

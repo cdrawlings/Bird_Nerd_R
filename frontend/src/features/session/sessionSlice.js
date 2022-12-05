@@ -29,7 +29,6 @@ export const createSession = createAsyncThunk('session/create', async (sessionDa
     }
 })
 
-
 // Get all bird watching sessions
 export const getSessions = createAsyncThunk('session/getSessions', async (sessionData, thunkAPI) => {
     try {
@@ -46,7 +45,6 @@ export const getSessions = createAsyncThunk('session/getSessions', async (sessio
         return thunkAPI.rejectWithValue(message)
     }
 })
-
 
 // Get Last bird watching session
 export const getSession = createAsyncThunk('session/getSession', async (sessionData, thunkAPI) => {

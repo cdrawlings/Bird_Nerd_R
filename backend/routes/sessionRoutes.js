@@ -5,8 +5,10 @@ const {
     createSession,
     getSessions,
     createSingle,
-    updateCount,
-    getLastSession
+    getLastSession,
+    updateWatch,
+    getWatch,
+
 } = require('../controllers/sessionController')
 
 const {protect} = require('../middleware/authMiddleware')
@@ -19,7 +21,9 @@ router.post('/single', protect, createSingle)
 
 router.get('/last', protect, getLastSession)
 
-//router.put('/session', protect, updateCount)
+router.put('/session/:id', protect, updateWatch)
+
+//router.get('/session/:id', protect, getWatcht)
 
 
 module.exports = router

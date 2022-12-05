@@ -88,7 +88,7 @@ function AddBird() {
     const position = [location.lat, location.lon]
     const date = dayjs(last.createdAt).format('dddd, MMMM D, YYYY')
 
-console.log(position)
+    console.log(position)
     return (
         <>
             <div className="main">
@@ -104,7 +104,7 @@ console.log(position)
 
                         <div className="counter_elements">
                             <button onClick={minusOne} className='minus_button'>-</button>
-                            <div id='add_count' className='count_elem'>{count} </div>
+                            <div id='' className='count_elem'>{count} </div>
                             <button className='add_button' onClick={addOne}>+</button>
                         </div>
                     </div>

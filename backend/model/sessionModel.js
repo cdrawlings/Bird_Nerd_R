@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
 
-const CountSchema = new mongoose.Schema({
-    count: {
-        type: Number,
-    },
-    speciesCode: {
-        type: String,
-    },
-    comName: {
-        type: String,
-    },
-    birdid: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Bird'
-    },
-    lastSeen: Date,
-})
-
 const SessionSchema = new mongoose.Schema({
         temperature: {
             type: Number
@@ -43,7 +26,6 @@ const SessionSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
-        count: [CountSchema]
     }, {
         timestamps: true,
     }
