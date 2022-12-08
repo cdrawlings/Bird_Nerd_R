@@ -7,6 +7,10 @@ const BirdSchema = new mongoose.Schema({
         speciesCode: {
             type: String,
         },
+        isSeen: {
+            type: Boolean,
+            default: false
+        },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
