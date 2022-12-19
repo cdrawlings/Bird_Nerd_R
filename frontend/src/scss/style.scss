@@ -355,7 +355,7 @@ h3 {
 /*** Bird watching sesssion Page ***/
 .sessionList {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-content: center;
   width: 100%;
@@ -364,6 +364,7 @@ h3 {
   font-size: 1.1rem;
   font-weight: 400;
   align-self: center;
+  margin-bottom: .5rem;
 
   p {
     align-self: center;
@@ -385,8 +386,6 @@ h3 {
   align-items: center;
   align-content: center;
   width: 35%;
-
-
 }
 
 .sessionCount {
@@ -410,4 +409,9 @@ h3 {
   margin-block-start: 0em;
   margin-block-end: 0em;
   padding-inline-start: 0px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
 }

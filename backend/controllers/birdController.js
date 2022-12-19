@@ -20,33 +20,6 @@ const  getBirds = asyncHandler(async (req, res) => {
 });
 
 
-// get users a single bird
-// Route    api/bird/:id
-const  getBird = asyncHandler(async (req, res) => {
-    // Get user using the id in the JWT
-    const user = await User.findById(req.user.id)
-
-    if(!user) {
-        res.status(401)
-        throw new Error('User not found.')
-    }
-
-    const bird = await Bird.findById( req.params.id )
-
-    if(!bird){
-        res.status(401)
-        throw new Error('That bird has not been spotted yet.')
-    }
-
-    if(bird.user.toString() !== req.user.id){
-        res.status(401)
-        throw new Error('That bird has not been spotted yet.')
-    }
-
-    res.status(200).json(bird)
-});
-
-
 // get Last bird entered for user
 // Route    GET api/bird/last
 const  getLast = asyncHandler(async (req, res) => {
@@ -65,13 +38,39 @@ const  getLast = asyncHandler(async (req, res) => {
 });
 
 
+// update a created at time
+// Route    api/bird/time
+const updateTime = asyncHandler(async (req, res) => {
+    const bird = await Bird.findById(req.body.birdid)
+
+    if (!bird) {
+        res.status(401)
+        throw new Error('Bird not found.')
+    }
+
+    console.log('New Time', req.body.updated)
+
+    const filter = {_id: req.body.birdid}
+    const update = {updated: req.body.updated}
+
+    const updatedTime = await Bird.findOneAndUpdate(
+        filter, update
+    )
+
+    console.log('Time', updatedTime)
+
+    res.status(200).json(updatedTime)
+});
+
+
+/**********   NOT USED   ***********/
 // Delete a single bird
 // Route    api/bird/:id
-const  deleteBird = asyncHandler(async (req, res) => {
+const deleteBird = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
-    if(!user) {
+    if (!user) {
         res.status(401)
         throw new Error('User not found.')
     }
@@ -94,35 +93,7 @@ const  deleteBird = asyncHandler(async (req, res) => {
 });
 
 
-// update a bird
-// Route    api/bird/:id
-const  updateBird = asyncHandler(async (req, res) => {
-    // Get user using the id in the JWT
-    const user = await User.findById(req.user.id)
-
-    if(!user) {
-        res.status(401)
-        throw new Error('User not found.')
-    }
-
-    const bird = await Bird.findById( req.params.id )
-
-    if(!bird){
-        res.status(401)
-        throw new Error('That bird has not been spotted yet.')
-    }
-
-    if(bird.user.toString() !== req.user.id){
-        res.status(401)
-        throw new Error('That bird has not been spotted yet.')
-    }
-
-    const updatedBird = await Bird.findOneAndUpdate(req.params.id, req.body, {new: true})
-
-    res.status(200).json(updatedBird)
-});
-
-
+/**********   NOT USED   ***********/
 // Adds a spotted bird to DB
 // Route    api/bird/
 const  createBird = asyncHandler(async (req, res) => {
@@ -155,11 +126,40 @@ const  createBird = asyncHandler(async (req, res) => {
     res.status(201).json(createBird)
 });
 
+
+/**********   NOT USED   ***********/
+// get users a single bird
+// Route    api/bird/:id
+const getBird = asyncHandler(async (req, res) => {
+    // Get user using the id in the JWT
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found.')
+    }
+
+    const bird = await Bird.findById(req.params.id)
+
+    if (!bird) {
+        res.status(401)
+        throw new Error('That bird has not been spotted yet.')
+    }
+
+    if (bird.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('That bird has not been spotted yet.')
+    }
+
+    res.status(200).json(bird)
+});
+
+
 module.exports = {
     getBirds,
     getBird,
     createBird,
     deleteBird,
-    updateBird,
+    updateTime,
     getLast
 }

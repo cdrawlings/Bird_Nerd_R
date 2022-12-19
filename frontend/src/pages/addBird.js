@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getLast, reset} from "../features/last/lastSlice";
-import {createSingle, singleReset} from "../features/singleBird/singleSlice";
+import {getLast} from "../features/last/lastSlice";
+import {getLastSession} from "../features/lastSession/lastSessionSlice";
+import {postOneBird} from "../features/singleBird/singleSlice";
 
 import dayjs from 'dayjs';
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
@@ -12,7 +13,9 @@ import Spinner from '../components/spinner'
 function AddBird() {
     const {user} = useSelector((state) => state.auth)
     const {last, isLoading, isError, message} = useSelector((state) => state.last)
-    //const {session, sessionError, sessionSuccess, sessionMessage} = useSelector((state) => state.session)
+    const {lastSession} = useSelector((state) => state.lastSession)
+
+    const {single, Error, Success, Message, Loading} = useSelector((state) => state.single)
     const {location} = useSelector((state) => state.location)
 
     const [count, setCount] = useState(1)
@@ -21,19 +24,34 @@ function AddBird() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (isError) {
+        if (Error) {
             toast.error(message)
         }
 
 
-    }, [isError, message])
+    }, [Error, message])
 
     useEffect(() => {
             dispatch(getLast())
         }, [dispatch]
     )
 
-    if (isLoading) {
+    useEffect(() => {
+            dispatch(getLastSession())
+        }, [dispatch]
+    )
+
+    console.log("Last Seesion", lastSession)
+
+    useEffect(() => {
+        if (Success) {
+
+        }
+
+
+    }, [Error, message])
+
+    if (Loading) {
         return <Spinner/>
     }
 
@@ -62,6 +80,7 @@ function AddBird() {
         let birdid = last._id;
         let user = last.user
 
+
         let sessData = {
             city,
             lat,
@@ -70,19 +89,12 @@ function AddBird() {
             // temperature,
             // visibility,
             // condition,
-            count,
-            comName,
-            speciesCode,
-            birdid,
             user
         }
 
         console.log(sessData)
-        dispatch(createSingle(sessData))
+        dispatch(postOneBird(sessData))
 
-        dispatch(reset())
-        dispatch(singleReset())
-        navigate('/')
     }
 
     const position = [location.lat, location.lon]

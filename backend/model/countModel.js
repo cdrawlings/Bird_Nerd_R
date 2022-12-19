@@ -4,12 +4,6 @@ const CountSchema = new mongoose.Schema({
         count: {
             type: Number,
         },
-        speciesCode: {
-            type: String,
-        },
-        comName: {
-            type: String,
-        },
         birdid: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Bird'
@@ -18,7 +12,6 @@ const CountSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Session'
         },
-        lastSeen: Date,
     },
     {timestamps: true,}
 )

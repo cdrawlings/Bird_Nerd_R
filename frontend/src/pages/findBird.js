@@ -1,6 +1,5 @@
-import React from 'react';
-import {useState, useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {createBird, reset} from "../features/bird/birdSlice";
 
@@ -8,11 +7,19 @@ import {FaPlus} from "react-icons/fa";
 import {toast} from 'react-toastify'
 import Spinner from '../components/spinner'
 
+
+/* gets and displays the list of birds. Once a bird is selected
+it will be added to the Bird Database
+
+The page will advance to add-bird. There the bird will be added
+to the session database and the number of birds
+will be added to the cCount database
+ */
 function FindBird() {
     const {user} = useSelector((state) => state.auth)
-
     const {ebirds} = useSelector((state) => state.ebirds)
-    const {isLoading, isError, isSuccess, message} = useSelector((state) => state.bird)
+
+    const {birds, isSuccess, isLoading, isError, message} = useSelector((state) => state.bird)
 
     const [filtered, setFiltered] = useState([])
 
@@ -53,20 +60,20 @@ function FindBird() {
     }
 
     useEffect(() => {
-        if(isError){
+        if (isError) {
             toast.error(message)
         }
 
-        if(isSuccess){
-            dispatch(reset())
+    }, [dispatch, isError, message])
+
+    useEffect(() => {
+        if (isSuccess) {
             navigate('/add-bird')
         }
+    }, [isSuccess, navigate])
 
-        dispatch(reset())
-    }, [dispatch, isError, isSuccess, navigate, message])
-
-    if(isLoading){
-        return <Spinner />
+    if (isLoading) {
+        return <Spinner/>
     }
 
     const getData = (e) => {
@@ -81,6 +88,7 @@ function FindBird() {
 
         dispatch(createBird(spotted))
 
+        dispatch(reset())
     }
 
 

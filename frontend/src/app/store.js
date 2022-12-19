@@ -8,6 +8,7 @@ import birdReducer from '../features/bird/birdSlice'
 import lastReducer from '../features/last/lastSlice'
 import sessionReducer from '../features/session/sessionSlice'
 import singleReducer from '../features/singleBird/singleSlice'
+import lastSessionReducer from '../features/singleBird/lastSessionSlice'
 
 export const store = configureStore({
   reducer: {
@@ -19,4 +20,5 @@ export const store = configureStore({
     last: lastReducer,
     session: sessionReducer,
     single: singleReducer,
+    lastSession: lastSessionReducer,
   },});

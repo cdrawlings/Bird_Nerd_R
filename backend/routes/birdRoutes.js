@@ -1,15 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
-const {getBirds, getBird, createBird, deleteBird, updateBird, getLast} = require('../controllers/birdController')
+const {getBirds, getBird, createBird, deleteBird, updateTime, getLast} = require('../controllers/birdController')
 
 const {protect} = require('../middleware/authMiddleware')
 
 router.get('/', protect, getBirds)
 
-router.post('/find-bird', protect, createBird)
+// router.post('/find-bird', protect, createBird)
 
 router.get('/add-bird', protect, getLast)
+
+router.put('/time', protect, updateTime)
 
 /*
 router.get('/:id', protect, getBird)
