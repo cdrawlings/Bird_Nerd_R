@@ -67,7 +67,7 @@ function AddBird() {
         setCount(c => Math.max(c - 1, 0));
     }
 
-    const getSeen = (e) => {
+    const getData = (e) => {
         let birdid = last._id
         let sessionid = lastSession._id
 

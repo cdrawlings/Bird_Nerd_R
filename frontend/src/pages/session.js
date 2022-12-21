@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {updateTime} from "../features/time/updateSlice";
-import {reset as seenReset} from "../features/seen/seenSlice";
 import {useNavigate, useParams} from "react-router-dom";
 import BackButton from "../components/BackButton";
 import {FaPlus} from "react-icons/fa";
 import {getAllBird} from "../features/bird/birdSlice";
+import {toggleSeen} from "../features/toggle/toggleSlice";
 
 
 function Session() {
@@ -29,7 +28,7 @@ function Session() {
     }, [dispatch])
 
 
-    const toggleSeen = (index) => {
+    const toggleBird = (index) => {
         const newViews = [...birds];
 
         let birdid = newViews[index]._id
@@ -38,24 +37,11 @@ function Session() {
 
 
         const seen = {
-            birdid, count, sessionid, user
+            birdid, count, sessionid
         }
 
-        const now = Date.now()
-        const string = new Date(now)
-        const updated = string.toISOString()
+        dispatch(toggleSeen(seen))
 
-        const updateUpdated = {
-            updated, birdid
-        }
-
-        console.log("Update Time: ", updateUpdated)
-
-        // dispatch(postSeen(seen))
-
-        dispatch(seenReset())
-
-        dispatch(updateTime(updateUpdated))
     };
 
 
@@ -88,7 +74,7 @@ function Session() {
                                         <div className='' id={`name-${bird.speciesCode}`}>{bird.comName} </div>
                                         <div className='' id={bird.speciesCode}>{bird.speciesCode} </div>
                                         <div className='' id={bird._id}>{bird._id} </div>
-                                        <button className="sessionCounter" onClick={() => toggleSeen(index)}><FaPlus/>
+                                        <button className="sessionCounter" onClick={() => toggleBird(index)}><FaPlus/>
                                         </button>
                                     </>
                                 )

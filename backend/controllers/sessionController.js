@@ -40,7 +40,7 @@ const createSession = asyncHandler(async (req, res) => {
 
 // get Last bird entered for user
 // Route    GET api/bird/last
-// Page add-bird
+// Page     add-bird
 const getSession = asyncHandler(async (req, res) => {
     //Get user with ID  in JWT
 
@@ -59,7 +59,7 @@ const getSession = asyncHandler(async (req, res) => {
 
 // Adds a spotted bird to the count db
 // Route    api/session/seen
-// Page add-bird
+// Page     add-bird
 const postSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
@@ -95,10 +95,10 @@ const postSeen = asyncHandler(async (req, res) => {
 });
 
 
-// Adds a spotted bird to the count db
-// Route    api/session/seen
-// Page add-bird
-const OLDpostSeen = asyncHandler(async (req, res) => {
+// Toggled seen not seened bird on the session page
+// Route    api/session/toogle
+// Page     session
+const toggleSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
@@ -107,20 +107,46 @@ const OLDpostSeen = asyncHandler(async (req, res) => {
         throw new Error('User not found.')
     }
 
-    const session = await Session.findById(req.params.id)
-
-    if (!session) {
-        res.status(401)
-        throw new Error('Session not found.')
-    }
-
-    const create = await Count.create({
+    const createCount = await Count.create({
         count: req.body.count,
-        birdid: req.body.birdid,
-        session: req.params._id,
+        session: req.params.id,
+        birdid: birdid
     });
 
-    res.status(200).json(seen)
+    const now = Date.now()
+    const string = new Date(now)
+    const update = string.toISOString()
+
+    const filter = {_id: req.body.birdid}
+
+    const updatedTime = await Bird.findOneAndUpdate(
+        filter, update
+    )
+
+    res.status(200).json(createCount)
+
+});
+
+
+// Adds a spotted bird to the count db
+// Route    api/session/seen
+// Page     add-bird
+const sessionSeen = asyncHandler(async (req, res) => {
+    // Get user using the id in the JWT
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found.')
+    }
+
+    const createCount = await Count.create({
+        count: req.body.count,
+        session: req.params.id,
+        birdid: req.body.birdid
+    });
+
+    res.status(200).json(createCount)
 
 });
 
@@ -174,6 +200,38 @@ const getSessions = asyncHandler(async (req, res) => {
 
     res.status(200).json(sessions)
 });
+
+
+/******* NOT USED ************/
+// Adds a spotted bird to the count db
+// Route    api/session/seen
+// Page     add-bird
+const OLDpostSeen = asyncHandler(async (req, res) => {
+    // Get user using the id in the JWT
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found.')
+    }
+
+    const session = await Session.findById(req.params.id)
+
+    if (!session) {
+        res.status(401)
+        throw new Error('Session not found.')
+    }
+
+    const create = await Count.create({
+        count: req.body.count,
+        birdid: req.body.birdid,
+        session: req.params._id,
+    });
+
+    res.status(200).json(seen)
+
+});
+
 
 /******* NOT USED ************/
 // update a session with bird info and count
@@ -322,5 +380,7 @@ module.exports = {
     updateWatch,
     putSeen,
     postSeen,
+    sessionSeen,
+    toggleSeen
 
 }

@@ -6,9 +6,10 @@ const {
     getSession,
     createSingle,
     getLastSession,
-    updateWatch,
+    toggleSeen,
     putSeen,
-    postSeen
+    postSeen,
+    sessionSeen
 
 } = require('../controllers/sessionController')
 
@@ -18,9 +19,12 @@ router.get('/', protect, getSession) // Dashboard
 
 router.post('/', protect, createSession) // Dashboard
 
+router.post('/:id', protect, sessionSeen) // Session
+
+router.post('/toggle', protect, toggleSeen) // Session
+
 // router.get('/add-bird', protect, getLastSession)
 
-// router.post('/find-bird', protect, createSingle)
 
 // router.get('/last', protect, getLastSession)
 
@@ -28,7 +32,7 @@ router.post('/', protect, createSession) // Dashboard
 
 router.put('/seen', protect, putSeen)
 
-router.post('/seen', protect, postSeen)
+router.post('/seen', protect, postSeen) // Add bird
 
 //router.get('/session/:id', protect, getWatcht)
 
