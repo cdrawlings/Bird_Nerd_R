@@ -13,6 +13,7 @@ const initialState = {
 
 
 // create a bird watching session
+// add-bird
 export const createSession = createAsyncThunk('session/create', async (sessionData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
@@ -82,7 +83,7 @@ export const sessionSlice = createSlice({
             .addCase(createSession.rejected, (state, action) => {
                 state.sessionLoading = true
                 state.sessionError = true
-                state.message = action.payload
+                state.sessionMessage = action.payload
             })
             .addCase(getSessions.pending, (state) => {
                 state.sessionLoading = true
@@ -95,7 +96,7 @@ export const sessionSlice = createSlice({
             .addCase(getSessions.rejected, (state, action) => {
                 state.sessionLoading = true
                 state.sessionError = true
-                state.message = action.payload
+                state.sessionMessage = action.payload
             })
             .addCase(getSession.pending, (state) => {
                 state.sessionLoading = true
@@ -108,7 +109,7 @@ export const sessionSlice = createSlice({
             .addCase(getSession.rejected, (state, action) => {
                 state.sessionLoading = true
                 state.sessionError = true
-                state.message = action.payload
+                state.sessionMessage = action.payload
             })
     }
 })

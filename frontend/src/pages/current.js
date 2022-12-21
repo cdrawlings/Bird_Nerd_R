@@ -90,6 +90,7 @@ function Current() {
             dispatch(addLocation(placeData))
 
             setLoading(false)
+
             navigate('/dashboard')
 
         })}

@@ -10,7 +10,7 @@ const getLastSession = async (token) => {
         }
     }
 
-    const response = await axios.get(API_URL + '/add-bird', config)
+    const response = await axios.get(API_URL + '/last', config)
 
     return response.data
 }

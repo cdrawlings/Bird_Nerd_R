@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getLast} from "../features/last/lastSlice";
 import {getLastSession} from "../features/lastSession/lastSessionSlice";
-import {postOneBird} from "../features/singleBird/singleSlice";
+import {postSeen} from "../features/seen/seenSlice";
 
 import dayjs from 'dayjs';
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
@@ -28,7 +28,6 @@ function AddBird() {
             toast.error(message)
         }
 
-
     }, [Error, message])
 
     useEffect(() => {
@@ -41,6 +40,7 @@ function AddBird() {
         }, [dispatch]
     )
 
+    console.log("Last Bird", last)
     console.log("Last Seesion", lastSession)
 
     useEffect(() => {
@@ -67,33 +67,18 @@ function AddBird() {
         setCount(c => Math.max(c - 1, 0));
     }
 
-    const getData = (e) => {
-        let city = location.city;
-        let lat = location.lat;
-        let lon = location.lon;
-        // let temperature = document.getElementById('add_temp').innerText;
-        // let visibility = document.getElementById('add_vis').innerText;
-        // let condition = document.getElementById('add_cond').innerText;
-        // let icon = document.getElementById('add_icon').innerText;
-        let comName = last.comName;
-        let speciesCode = last.speciesCode;
-        let birdid = last._id;
-        let user = last.user
+    const getSeen = (e) => {
+        let birdid = last._id
+        let sessionid = lastSession._id
 
-
-        let sessData = {
-            city,
-            lat,
-            lon,
-            // icon,
-            // temperature,
-            // visibility,
-            // condition,
-            user
+        let seenCount = {
+            birdid,
+            sessionid,
+            count
         }
 
-        console.log(sessData)
-        dispatch(postOneBird(sessData))
+        console.log(seenCount)
+        dispatch(postSeen(seenCount))
 
     }
 

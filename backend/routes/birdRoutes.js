@@ -7,7 +7,7 @@ const {protect} = require('../middleware/authMiddleware')
 
 router.get('/', protect, getBirds)
 
-// router.post('/find-bird', protect, createBird)
+router.post('/find-bird', protect, createBird)
 
 router.get('/add-bird', protect, getLast)
 

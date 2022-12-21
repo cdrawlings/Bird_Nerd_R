@@ -5,11 +5,12 @@ const Bird = require('../model/birdModel')
 
 // get users list of spotted birds
 // Route    api/bird/
+// Page     Session
 const  getBirds = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
-    if(!user) {
+    if (!user) {
         res.status(401)
         throw new Error('User not found.')
     }
@@ -20,14 +21,48 @@ const  getBirds = asyncHandler(async (req, res) => {
 });
 
 
+// Adds a spotted bird to DB
+// Route    api/bird/
+// Page add-bird
+const createBird = asyncHandler(async (req, res) => {
+    // Get user using the id in the JWT
+    const user = await User.findById(req.user.id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found.')
+    }
+
+    // Check if the new bird has already been added to DB
+    const seen = await Bird.exists({
+        user: req.user.id,
+        speciesCode: req.body.speciesCode,
+    })
+
+    if (seen) {
+        res.status(401)
+        throw new Error("You have already spotted that bird!")
+    }
+
+    // Insert new product
+    const createBird = await Bird.create({
+        speciesCode: req.body.speciesCode,
+        comName: req.body.comName,
+        user: req.user.id,
+    });
+
+    res.status(201).json(createBird)
+});
+
+
 // get Last bird entered for user
 // Route    GET api/bird/last
-const  getLast = asyncHandler(async (req, res) => {
+const getLast = asyncHandler(async (req, res) => {
     //Get user with ID  in JWT
 
     const user = await User.findById(req.user.id)
 
-    if(!user) {
+    if (!user) {
         res.status(401)
         throw new Error("User not found")
     }
@@ -93,38 +128,6 @@ const deleteBird = asyncHandler(async (req, res) => {
 });
 
 
-/**********   NOT USED   ***********/
-// Adds a spotted bird to DB
-// Route    api/bird/
-const  createBird = asyncHandler(async (req, res) => {
-    // Get user using the id in the JWT
-    const user = await User.findById(req.user.id)
-
-    if(!user) {
-        res.status(401)
-        throw new Error('User not found.')
-    }
-
-    // Check if the new bird has already been added to DB
-    const seen = await Bird.exists({
-        user: req.user.id,
-        speciesCode: req.body.speciesCode,
-    })
-
-    if (seen) {
-        res.status(401)
-        throw new Error("You have already spotted that bird!")
-    }
-
-    // Insert new product
-    const createBird = await Bird.create({
-        speciesCode: req.body.speciesCode,
-        comName: req.body.comName,
-        user: req.user.id,
-    });
-
-    res.status(201).json(createBird)
-});
 
 
 /**********   NOT USED   ***********/

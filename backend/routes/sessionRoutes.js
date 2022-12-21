@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {
     createSession,
-    getSessions,
+    getSession,
     createSingle,
     getLastSession,
     updateWatch,
@@ -13,19 +13,18 @@ const {
 } = require('../controllers/sessionController')
 
 const {protect} = require('../middleware/authMiddleware')
-const {getLast} = require("../controllers/birdController");
 
-router.get('/', protect, getSessions)
+router.get('/', protect, getSession) // Dashboard
 
-router.post('/', protect, createSession)
+router.post('/', protect, createSession) // Dashboard
 
-router.get('/add-bird', protect, getLastSession)
+// router.get('/add-bird', protect, getLastSession)
 
-router.post('/find-bird', protect, createSingle)
+// router.post('/find-bird', protect, createSingle)
 
-router.get('/last', protect, getLastSession)
+// router.get('/last', protect, getLastSession)
 
-router.put('/session/:id', protect, updateWatch)
+// router.put('/session/:id', protect, updateWatch)
 
 router.put('/seen', protect, putSeen)
 

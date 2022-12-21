@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {createBird, reset} from "../features/bird/birdSlice";
-
+import {postSeen} from "../features/seen/seenSlice";
+// import {createBird, reset} from "../features/bird/birdSlice";
+// import {createSession, reset as resetSession} from "../features/session/sessionSlice";
 import {FaPlus} from "react-icons/fa";
-import {toast} from 'react-toastify'
-import Spinner from '../components/spinner'
+import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import dayjs from "dayjs";
 
 
 /* gets and displays the list of birds. Once a bird is selected
@@ -18,10 +19,24 @@ will be added to the cCount database
 function FindBird() {
     const {user} = useSelector((state) => state.auth)
     const {ebirds} = useSelector((state) => state.ebirds)
-
-    const {birds, isSuccess, isLoading, isError, message} = useSelector((state) => state.bird)
+    const {location} = useSelector((state) => state.location)
 
     const [filtered, setFiltered] = useState([])
+    const [count, setCount] = useState(1)
+
+    const [seen, setSeen] = useState({
+        city: "",
+        lat: "",
+        lon: "",
+        count: "",
+        temp: "",
+        condition: "",
+        icon: "",
+        visibility: "",
+        seen: false,
+        comName: "",
+        speciesCode: ""
+    })
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -49,7 +64,7 @@ function FindBird() {
     }
 
     // Reset the search bar
-    function reloadComponent(){
+    function reloadComponent() {
         let filter = document.getElementById('filter')
         let birdList = document.getElementById('birdlist')
         let resetBird = []
@@ -59,88 +74,157 @@ function FindBird() {
         birdList.style.display = 'none'
     }
 
-    useEffect(() => {
-        if (isError) {
-            toast.error(message)
-        }
 
-    }, [dispatch, isError, message])
-
-    useEffect(() => {
-        if (isSuccess) {
-            navigate('/add-bird')
-        }
-    }, [isSuccess, navigate])
-
-    if (isLoading) {
-        return <Spinner/>
+    // Add one to count
+    const addOne = (e) => {
+        // Counter state is incremented
+        setCount(count + 1);
     }
 
-    const getData = (e) => {
+    // Minus one to count
+    const minusOne = (e) => {
+        // Counter state is incremented
+        setCount(c => Math.max(c - 1, 0));
+    }
 
-        const comName = e.currentTarget.previousElementSibling.previousElementSibling.innerText;
-        const speciesCode = e.currentTarget.previousElementSibling.innerText;
+    // Adds Bird info and intial seesion info to seen state
+    const markSeen = (e) => {
+        const comName = e.currentTarget.previousElementSibling.innerText;
+        const speciesCode = e.currentTarget.previousElementSibling.previousElementSibling.innerText;
 
-        const spotted = {
+        setSeen((prevState) => ({
+            ...prevState,
             comName,
             speciesCode,
-        }
-
-        dispatch(createBird(spotted))
-
-        dispatch(reset())
+            city: location.city,
+            lat: location.lat,
+            lon: location.lon,
+            seen: true
+        }))
     }
 
 
+    const postNewBird = (e) => {
+        setSeen((prevState) => ({
+            ...prevState,
+            count
+        }))
 
+        dispatch(postSeen(seen))
 
+        console.log("Seen Saved")
+
+        navigate('/dashboard')
+
+    }
+
+    console.log("New Seen 2", seen)
+
+    const position = [location.lat, location.lon]
+
+    const date = dayjs().format('dddd, MMMM D, YYYY')
 
     return (
         <>
             <div className="main">
 
-                <section className="content">
 
-                    <h1 className='title'>Add a bird </h1>
-                    <p className='title-sub-text'>See a new bird? quickly add it to your viewed birds list.</p>
+                {!seen.seen ? (
+                    <>
+                        <section className="content">
 
-                    <input
-                        type="text"
-                        id="filter"
-                        name="filter"
-                        className="form-control search-bar"
-                        onChange={(e) => filter(e)}
-                        placeholder='Search birds'
-                    />
+                            <h1 className='title'>Add a bird </h1>
+                            <p className='title-sub-text'>See a new bird? quickly add it to your viewed birds list.</p>
 
-                    <div className="search-adds">
-                        <button className="full-list" onClick={fillList}>Full List</button>
-                        <button className="reset" onClick={reloadComponent} >Reset</button>
-                    </div>
-                </section>
+                            <input
+                                type="text"
+                                id="filter"
+                                name="filter"
+                                className="form-control search-bar"
+                                onChange={(e) => filter(e)}
+                                placeholder='Search birds'
+                            />
 
-                <section>
-                    <div className="searchcontainer">
-                        <div className="searchbox ">
+                            <div className="search-adds">
+                                <button className="full-list" onClick={fillList}>Full List</button>
+                                <button className="reset" onClick={reloadComponent}>Reset</button>
+                            </div>
+                        </section>
 
-                            <ul id='birdlist' >
-                                {filtered.map((bird) => {
-                                    return (
+                        <section>
+                            <div className="searchcontainer">
+                                <div className="searchbox ">
 
-                                        <li  className='bird-item' key={bird.comName}>
-                                            <p >{bird.comName}</p>
-                                            <p className='hidden'>{bird.speciesCode}</p>
-                                            <button id={bird.speciesCode} onClick={getData} className="bird-box"><FaPlus /></button>
-                                        </li>
+                                    <ul id='birdlist'>
+                                        {filtered.map((bird) => {
+                                            return (
 
-                                    )
+                                                <div className='bird-item' key={bird.comName}>
+                                                    <div className='hidden'>{bird.speciesCode}</div>
+                                                    <div>{bird.comName}</div>
+                                                    <button id={bird.speciesCode} onClick={markSeen}
+                                                            className="bird-box"><FaPlus/></button>
+                                                </div>
 
-                                })}
-                            </ul>
+                                            )
 
+                                        })}
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </section>
+                    </>
+                ) : (
+                    <>
+                        <div className="main">
+
+                            <section className="content">
+
+                                <div className='seen_title'>Add</div>
+                                <div id='add_comName' className='seen_bird'>{seen.comName}</div>
+                                <div className='seen_text'>to birds you have seen before.</div>
+
+                                <div className="counter_block">
+                                    <div className="counter_text">How many seen:</div>
+
+                                    <div className="counter_elements">
+                                        <button onClick={minusOne} className='minus_button'>-</button>
+                                        <div id='' className='count_elem'>{count} </div>
+                                        <button className='add_button' onClick={addOne}>+</button>
+                                    </div>
+                                </div>
+
+                                <MapContainer className='map_container' center={position} zoom={13}
+                                              scrollWheelZoom={false}
+                                              attributionControl={false}>
+
+                                    <TileLayer
+                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                    <Marker position={position}>
+                                        <Popup>
+                                            A pretty CSS3 popup. <br/> Easily customizable.
+                                        </Popup>
+                                    </Marker>
+                                </MapContainer>
+
+                                <div className="loc-date">
+                                    <p id='add_city' className='seen_city'> {location.city}</p>
+                                    <p className='seen_time'>{date}</p>
+                                </div>
+
+                                <button onClick={postNewBird} className="btn btn_session">ACCEPT</button>
+
+
+                            </section>
                         </div>
-                    </div>
-                </section>
+                    </>
+
+                )
+
+                }
 
             </div>
         </>

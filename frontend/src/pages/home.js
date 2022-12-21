@@ -58,13 +58,14 @@ function Home() {
         }
 
         console.log("Session Data", sessData)
+
         dispatch(createSession(sessData))
 
         dispatch(getSession())
 
+        console.log("New Session Data", session)
 
         setSuccess(true)
-
     }
 
 

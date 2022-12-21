@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import lastSessionService from './lastSessionService'
 
 const initialState = {
     lastSession: {},
@@ -13,7 +14,7 @@ const initialState = {
 export const getLastSession = createAsyncThunk('session/last', async (birdData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await lastService.getLastSession(token)
+        return await lastSessionService.getLastSession(token)
     } catch (error) {
         const message =
             (error.response &&
@@ -34,15 +35,15 @@ export const lastSessionSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getLast.pending, (state) => {
+            .addCase(getLastSession.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getLast.fulfilled, (state, action) => {
+            .addCase(getLastSession.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
                 state.last = action.payload
             })
-            .addCase(getLast.rejected, (state, action) => {
+            .addCase(getLastSession.rejected, (state, action) => {
                 state.isLoading = true
                 state.isError = true
                 state.message = action.payload
