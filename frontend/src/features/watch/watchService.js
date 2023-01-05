@@ -31,7 +31,7 @@ const getWatch = async (id, token) => {
 
 
 const singleService = {
-    UpdateWatch,
+
     getWatch,
 }
 

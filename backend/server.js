@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/bird', require('./routes/birdRoutes'))
 app.use('/api/session', require('./routes/sessionRoutes'))
+app.use('/api/count', require('./routes/countRoutes'))
 
 app.use(errorHandler)
 

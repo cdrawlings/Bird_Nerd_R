@@ -10,7 +10,7 @@ function Home() {
     const {user} = useSelector((state) => state.auth)
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
-    const {session} = useSelector((state) => state.session)
+    const {session, sessionSuccess} = useSelector((state) => state.session)
 
     const [success, setSuccess] = useState(false)
 
@@ -25,13 +25,6 @@ function Home() {
         dispatch(getSession())
     }, [dispatch])
 
-
-    // If asnewsession is created navigate to the session page with the new sessions ID
-    useEffect(() => {
-        if (success) {
-            navigate('/session/' + session._id)
-        }
-    }, [navigate, session])
 
 
     // When click saves the local data to a new session and updates the last session
@@ -66,6 +59,8 @@ function Home() {
         console.log("New Session Data", session)
 
         setSuccess(true)
+
+        navigate('/session/' + session._id)
     }
 
 

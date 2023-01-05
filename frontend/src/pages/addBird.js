@@ -32,16 +32,10 @@ function AddBird() {
 
     useEffect(() => {
             dispatch(getLast())
+        dispatch(getLastSession())
         }, [dispatch]
     )
 
-    useEffect(() => {
-            dispatch(getLastSession())
-        }, [dispatch]
-    )
-
-    console.log("Last Bird", last)
-    console.log("Last Seesion", lastSession)
 
     useEffect(() => {
         if (Success) {

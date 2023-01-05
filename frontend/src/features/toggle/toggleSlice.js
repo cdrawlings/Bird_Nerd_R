@@ -4,6 +4,7 @@ import toggleService from './toggleService'
 
 const initialState = {
     toggle: {},
+    toggles: [],
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -13,10 +14,10 @@ const initialState = {
 
 // create a bird watching session
 // add-bird
-export const toggleSeen = createAsyncThunk('session/toggle', async (sessionData, thunkAPI) => {
+export const postSeen = createAsyncThunk('count/toggle', async (sessionData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await toggleService.toggleSeen(sessionData, token)
+        return await toggleService.postSeen(sessionData, token)
     } catch (error) {
         const message =
             (error.response &&
@@ -30,25 +31,58 @@ export const toggleSeen = createAsyncThunk('session/toggle', async (sessionData,
 })
 
 
+// create a bird watching session
+export const getSeen = createAsyncThunk('count/seen',
+    async (id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await toggleService.getSeen(id, token)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 export const toggleSlice = createSlice({
-    name: 'session',
+    name: 'toggle',
     initialState,
     reducers: {
         reset: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
-            .addCase(toggleSeen.pending, (state) => {
+            .addCase(postSeen.pending, (state) => {
+                state.isLoading = true
+                state.postSuccess = false
+            })
+            .addCase(postSeen.fulfilled, (state) => {
+                state.isLoading = false
+                state.postSuccess = true
+            })
+            .addCase(postSeen.rejected, (state, action) => {
+                state.isLoading = true
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getSeen.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(toggleSeen.fulfilled, (state) => {
-                state.sessionLoading = false
-                state.sessionSuccess = true
+            .addCase(getSeen.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.getSuccess = true
+                state.toggles = action.payload
             })
-            .addCase(toggleSeen.rejected, (state, action) => {
-                state.sessionLoading = true
-                state.sessionError = true
-                state.sessionMessage = action.payload
+            .addCase(getSeen.rejected, (state, action) => {
+                state.isLoading = true
+                state.isError = true
+                state.message = action.payload
             })
 
     }

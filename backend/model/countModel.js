@@ -4,16 +4,15 @@ const CountSchema = new mongoose.Schema({
         count: {
             type: Number,
         },
-        birdid: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Bird'
-        },
         session: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Session'
         },
-    },
-    {timestamps: true,}
+        birdId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Bird'
+        },
+    }
 )
 
 module.exports = mongoose.model('Count', CountSchema)
