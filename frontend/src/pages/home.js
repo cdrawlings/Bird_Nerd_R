@@ -37,8 +37,6 @@ function Home() {
         // let condition = document.getElementById('add_cond').innerText;
         // let icon = document.getElementById('add_icon').innerText;
 
-        console.log("City", city)
-
         let sessData = {
             city,
             lat,
@@ -50,13 +48,9 @@ function Home() {
             user
         }
 
-        console.log("Session Data", sessData)
-
         dispatch(createSession(sessData))
 
         dispatch(getSession())
-
-        console.log("New Session Data", session)
 
         setSuccess(true)
 

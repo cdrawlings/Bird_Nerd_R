@@ -413,4 +413,19 @@ h3 {
 .col {
   display: flex;
   flex-direction: column;
+
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+}
+
+.move {
+  z-index: -10;
+  position: relative;
+  left: 3vw;
+}
+
+

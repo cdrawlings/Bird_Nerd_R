@@ -56,20 +56,14 @@ const getSeen = asyncHandler(async (req, res) => {
 
     const tosearch = req.params.id
 
-    console.log("Session id", tosearch)
-    console.log("Pass to search get")
-
     const seen = await Count.find({session: tosearch})
         .populate("birdId")
         .populate("session")
-
-    console.log("Seen: ", seen)
 
     if (!seen) {
         res.status(401)
         throw new Error('Sorry, there is nothing spotted.')
     }
-
 
     res.status(200).json(seen)
 });
