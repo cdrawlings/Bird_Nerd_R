@@ -1,11 +1,10 @@
-import React from 'react';
-import {useState, useEffect} from "react";
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {toast} from 'react-toastify'
-import {FaUser} from 'react-icons/fa'
 import {register, reset} from '../features/auth/authSlice'
 import Spinner from '../components/spinner'
+import BirdImg from "../img/login.jpg";
 
 
 function Registration() {
@@ -66,19 +65,26 @@ function Registration() {
 
     return (
         <>
-        <section className="logincard">
-            <div className="heading">
-                <h1><FaUser/> Register</h1>
-                <p>Please register an account</p>
-            </div>
+            <section className="logincard">
+                <div>
+                    <img className='login-image' src={BirdImg} alt=""/>
+                </div>
+                <div>
+                    <h1 className="register-title">BirdNird</h1>
+                    <div className="register-text">
+                        <h1>Registration</h1>
+                    </div>
+                    <p className="register-subtitle">Please register</p>
+                </div>
 
-            <div className="form">
-                <form onSubmit={onSubmit}>
 
-                    <div className="form-group">
-                        <input type="text"
-                               className="form-control"
-                               id='firstname'
+                <div className="form">
+                    <form onSubmit={onSubmit}>
+
+                        <div className="form-group">
+                            <input type="text"
+                                   className="form-control"
+                                   id='firstname'
                                name='firstname'
                                value={firstname}
                                onChange={onChange}

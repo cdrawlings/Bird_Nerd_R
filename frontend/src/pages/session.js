@@ -71,49 +71,60 @@ function Session() {
 
     };
 
-
-
     return (
         <>
+            <BackButton url='/dashboard'/>
             <div className="main">
 
-                <article className="content">
-                    <BackButton url='/dashboard'/>
-                    <p>Session city: {session.city}</p>
-                    <p>Session Latitude: {session.lat}</p>
-                    <p>Session Lon: {session.lon}</p>
+                <article className="session-space">
 
-                    <h4>Seen birds</h4>
 
-                    <div className='allBirds sessionList'>
+                    <section className="current-conditions">
+                        <h1 className='title find-top '>Bird watching in {session.city}</h1>
+                    </section>
 
-                        {spotted.map((toggle) => (
-                            <div className="col" key={toggle.speciesCode}>
+                    <section className="seen-session">
+                        <h4>Seen birds</h4>
 
-                                <div className=''>{toggle.comName} </div>
+                        <div className='allBirds sessionList'>
 
-                            </div>
-                        ))
-                        }
+                            {spotted.map((toggle) => (
+                                <div className="bird-item watch-box" key={toggle.speciesCode}>
 
-                    </div>
+                                    <div className='hidden'>{toggle.speciesCode}</div>
+                                    <div>{toggle.comName}</div>
 
-                    <h4>Unseen birds</h4>
+                                    -
+                                    <div>{toggle.count}</div>
+                                    +
 
-                    <div className='allBirds sessionList'>
-                        {previous.map((bird, index) => (
-                            <div className="row" key={bird.speciesCode}>
+                                </div>
+                            ))
+                            }
+
+                        </div>
+
+                    </section>
+                    <section className="unseen-session">
+                        <h4>Unseen birds</h4>
+
+                        <div className='allBirds sessionList'>
+                            {previous.map((bird, index) => (
                                 <>
-                                    <div className='' id={`name-${bird.speciesCode}`}>{bird.comName} </div>
-                                    <button id={bird.speciesCode} className="sessionCounter"
-                                            onClick={() => toggleBird(index)}><FaPlus/>
-                                    </button>
-                                </>
+                                    <div className="bird-item watch-box" key={bird.speciesCode}>
+                                        <div className='' id={`name-${bird.speciesCode}`}>{bird.comName} </div>
 
-                            </div>
-                        ))
-                        }
-                    </div>
+                                        <button id={bird.speciesCode} className="sessionCounter"
+                                                onClick={() => toggleBird(index)}><FaPlus/>
+                                        </button>
+
+
+                                    </div>
+                                </>
+                            ))
+                            }
+                        </div>
+                    </section>
 
                 </article>
             </div>

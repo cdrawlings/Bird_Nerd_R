@@ -6,10 +6,6 @@ $color-accent: #3651FF;
 
 $font-stack: 'Jost', sans-serif;
 
-
-
-
-
 /**********  Colors *********/
 
 /* SCSS HEX */
@@ -57,4 +53,13 @@ $gradient-radial: radial-gradient(#0f1a18ff, #5a0001ff, #177e89ff, #e8f7eeff);
   border-color: #000 transparent #555 transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
+}
+
+/******* Utility **********/
+h1,
+h2,
+h3,
+h4 {
+  margin-block-start: 0;
+  margin-block-end: 0;
 }

@@ -131,7 +131,7 @@ function FindBird() {
 
                 {!seen.seen ? (
                     <>
-                        <section className="content">
+                        <section className="content find-top">
 
                             <h1 className='title'>Add a bird </h1>
                             <p className='title-sub-text'>See a new bird? quickly add it to your viewed birds list.</p>

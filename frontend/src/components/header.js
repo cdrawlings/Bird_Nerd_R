@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaSignInAlt, FaSignOutAlt, FaUser} from "react-icons/fa";
 import {Link, useNavigate} from 'react-router-dom'
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logout, reset} from "../features/auth/authSlice";
 
 function Header() {
@@ -19,26 +19,28 @@ function Header() {
         <header>
             <nav>
                 <div className="navbar">
-                    <Link to='/dashboard'>React Bird Nerd</Link>
+                    <Link to='/dashboard' className='logobug'>BirdNird</Link>
                     <ul>
 
                         {user ? (
                             <>
-                                <li>
-                                    <button onClick={onLogout} > <FaSignOutAlt /> Logout</button>
+                                <li className='flex-vert'>
+                                    <div onClick={onLogout} className='btn-header'><span
+                                        className='fa-header'> <FaSignOutAlt/> </span> Logout
+                                    </div>
                                 </li>
-                                <li>
-                                    <Link to="/profile">Profile</Link>
+                                <li className='flex-vert'>
+                                    <Link to="/profile" className='btn-header'> Profile</Link>
                                 </li>
                             </>
 
                         ) : (
                             <>
-                                <li>
-                                    <Link to="/login"><FaSignInAlt />Login</Link>
+                                <li className='flex-vert'>
+                                    <Link to="/login" className='btn-header'><FaSignInAlt/> Login</Link>
                                 </li>
-                                <li>
-                                <Link to="/register"><FaUser />Register</Link>
+                                <li className='flex-vert'>
+                                    <Link to="/register" className='btn-header'><FaUser/>Register</Link>
                                 </li>
                             </>
                         )}
