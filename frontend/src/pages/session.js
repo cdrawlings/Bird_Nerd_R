@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import BackButton from "../components/BackButton";
-import {FaPlus} from "react-icons/fa";
 import {getAllBird} from "../features/bird/birdSlice";
 import {postSeen, reset} from "../features/toggle/toggleSlice";
 
@@ -10,12 +9,11 @@ import {postSeen, reset} from "../features/toggle/toggleSlice";
 function Session() {
     const {user} = useSelector((state) => state.auth)
     const {session} = useSelector((state) => state.session)
-    const {toggles, postSuccess, message} = useSelector((state) => state.toggle)
     const {birds, isSuccess} = useSelector((state) => state.bird)
 
     // const [items, setItems] = useState([]);
-    const [previous, setPrevious] = useState([])
     const [spotted, setSpotted] = useState([])
+    const [sessionBirds, setSessionBirds] = useState([])
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -27,102 +25,182 @@ function Session() {
         dispatch(reset())
     }, [dispatch])
 
-    // IF Get akll birds is succes then set birds to previous
+    // IF Get all birds is successful then add a count element and set birds to sessionBirds
     useEffect(() => {
         if (isSuccess) {
-            setPrevious(birds)
+
+            const viewed = birds.map((bird) => {
+
+                const comName = bird.comName
+                const count = 0
+                const speciesCode = bird.speciesCode
+                const birdid = bird._id
+                const updated = bird.updated
+                const user = bird.user
+                const sessionid = params.id
+                const seen = false
+
+                const toggle = {birdid, count, sessionid, speciesCode, comName, seen, user}
+
+                console.log("Toggled", toggle)
+
+                return toggle
+
+            })
+
+            setSessionBirds(viewed)
+
         }
-    }, [isSuccess, setPrevious])
-
-    // Gets the birds seen this session
-    useEffect(() => {
-        if (postSuccess) {
-            console.log("Toggled TB 1:", toggles)
-            console.log("Previous birds TB 1:", previous)
-            console.log("Spotted birds TB 1:", spotted)
+    }, [isSuccess, setSessionBirds])
 
 
-        }
-    }, [postSuccess])
+    // Add one to count
+    const addOne = (index) => {
+        // Counter state is incremented
+        const views = sessionBirds;
+        console.log("1", views)
+        const viewed = views.map((bird, i) => {
+            if (i === index) {
+                // Increment the clicked counter
+                const comName = bird.comName
+                const count = bird.count + 1
+                const speciesCode = bird.speciesCode
+                const birdid = bird.birdid
+                const updated = Date.now()
+                const sessionid = params.id
+                const seen = true
+
+                const toggle = {birdid, count, sessionid, speciesCode, comName, seen}
+                console.log("2", toggle)
+                dispatch(postSeen(toggle))
+                dispatch(reset())
+                return toggle
 
 
-    const toggleBird = (index) => {
-        const newViews = [...birds];
+            } else {
+                // The rest haven't changed
 
-        const birdid = newViews[index]._id
-        const speciesCode = newViews[index].speciesCode
-        const comName = newViews[index].comName
-        const count = 1
-        const sessionid = params.id
-
-        const seen = {birdid, count, sessionid, speciesCode, comName}
-
-        setSpotted(spotted => [...spotted, seen])
-
-        dispatch(postSeen(seen))
+                return bird
+            }
+        });
 
 
-        let element
-        element = document.getElementById(speciesCode)
-        element = element.parentElement
-        element.removeAttribute("class", "row");
-        element.setAttribute("class", "hidden");
-        element.clear()
+        setSessionBirds(viewed)
+
+    }
+
+    console.log("Viewed", sessionBirds)
+
+    // Minus one to count
+    const minusOne = (index) => {
+        // Counter state is incremented
+        const views = sessionBirds;
+
+
+        const viewed = views.map((bird, i) => {
+            if (i === index) {
+                // Decrease the clicked counter
+
+                const comName = bird.comName
+                const count = bird.count - 1
+                const speciesCode = bird.speciesCode
+                const birdid = bird.birdid
+                const updated = Date.now()
+                const sessionid = params.id
+                const seen = true
+
+                const toggle = {birdid, count, sessionid, speciesCode, comName, seen}
+                dispatch(postSeen(toggle))
+                console.log("2", toggle)
+                return toggle
+
+            } else {
+                // The rest haven't changed
+
+                return bird
+            }
+        });
+
+
+        setSessionBirds(viewed)
+
+    }
+
+    const onChange = (e) => {
+        /*
+                 setFormData((prevState) => ({
+                     ...prevState,
+                     [e.target.id]: e.target.value,
+                 }))
+}         */
+
 
     };
 
     return (
         <>
-            <BackButton url='/dashboard'/>
+
             <div className="main">
+
+                <div className="nav-sec">
+                    <BackButton url='/dashboard'/>
+                    <BackButton url='/add'/>
+                </div>
 
                 <article className="session-space">
 
 
-                    <section className="current-conditions">
-                        <h1 className='title find-top '>Bird watching in {session.city}</h1>
-                    </section>
-
-                    <section className="seen-session">
-                        <h4>Seen birds</h4>
-
-                        <div className='allBirds sessionList'>
-
-                            {spotted.map((toggle) => (
-                                <div className="bird-item watch-box" key={toggle.speciesCode}>
-
-                                    <div className='hidden'>{toggle.speciesCode}</div>
-                                    <div>{toggle.comName}</div>
-
-                                    -
-                                    <div>{toggle.count}</div>
-                                    +
-
-                                </div>
-                            ))
-                            }
-
-                        </div>
-
-                    </section>
                     <section className="unseen-session">
-                        <h4>Unseen birds</h4>
 
+                        <h1 className='title find-top session-heading'>Bird watching in {session.city}</h1>
+                        <div className="info">i</div>
+
+                        <h4 className='session-title'>Your previously spotted birds</h4>
+
+                        <p>Add or subtract any birds you see or click on the number to enter in a large number of birds
+                            spotted.
+                        </p><p>Click add bird above if you see a new bird you have never seen before.</p>
                         <div className='allBirds sessionList'>
-                            {previous.map((bird, index) => (
+                            {sessionBirds.map((bird, index) => (
                                 <>
-                                    <div className="bird-item watch-box" key={bird.speciesCode}>
-                                        <div className='' id={`name-${bird.speciesCode}`}>{bird.comName} </div>
+                                    {bird.count <= 0 ?
 
-                                        <button id={bird.speciesCode} className="sessionCounter"
-                                                onClick={() => toggleBird(index)}><FaPlus/>
-                                        </button>
+                                        <div className="bird-item watch-box" key={bird.speciesCode}>
+
+                                            <div className="unseen-icon"></div>
 
 
-                                    </div>
+                                            <div className='bird-name'
+                                                 id={`name-${bird.speciesCode}`}>{bird.comName} </div>
+
+
+                                            <button className="minus_button" onClick={() => minusOne(index)}></button>
+
+                                            <div className="bird-count">{bird.count}</div>
+
+                                            <button className="add_button" onClick={() => addOne(index)}>+</button>
+                                        </div> :
+
+                                        <div className="bird-item watch-box" key={bird.speciesCode}>
+
+                                            <div className="seen-icon">#</div>
+
+
+                                            <div className='bird-name'
+                                                 id={`name-${bird.speciesCode}`}>{bird.comName} </div>
+
+
+                                            <button className="minus_button" onClick={() => minusOne(index)}>-</button>
+
+                                            <div className="bird-count">{bird.count}</div>
+
+                                            <button className="add_button" onClick={() => addOne(index)}>+</button>
+                                        </div>
+                                    }
+
+
                                 </>
-                            ))
-                            }
+                            ))}
                         </div>
                     </section>
 

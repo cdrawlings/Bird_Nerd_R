@@ -59,11 +59,8 @@ function Home() {
 
                 <p className='greeting'>Hello {user.firstname}, lets spot some birds.</p>
 
-
-                <section className="content">
-
-                    <article className='dash-weather-card'>
-
+                <section className='dash-weather-card'>
+                    <div className="weather-container">
                         <p className="card-title">Current conditions in kalaual umpur {location.city}</p>
                         <div className="current-info">
                             <div className="weather-info">
@@ -72,6 +69,7 @@ function Home() {
                                     63°
                                 </div>
                             </div>
+
                             <div className="weather-info">
                                 <h3 className='weather-subhead'>Condition</h3>
                                 <div className='condition'>
@@ -86,45 +84,35 @@ function Home() {
                                 </div>
                             </div>
                         </div>
-
-                        <div className='last-watch'>
-                            <p className="card-title">Last bird watching session</p>
-                            <p>Last bird watching session</p>
-                        </div>
-
-
-                    </article>
-
-
-                    <article className="bottom-cards">
-
-                        <section className='dash-card start-session-card'>
-                            <h1>Start bird watching</h1>
-                            <button className='btn-dash-card' onClick={sessionStart}>Start</button>
-                        </section>
-
-                        <section className='dash-card add-bird-card'>
-                            <h1>Add a bird</h1>
-                            <Link to="/find-bird">
-                                <button className='btn-dash-card'>Add</button>
-                            </Link>
-                        </section>
-
-                        <section className='dash-card spotted-bird-card'>
-                            <h1>Spotted birds</h1>
-                            <Link to="/find-bird">
-                                <button className='btn-dash-card'>Go</button>
-                            </Link>
-                        </section>
-
-                    </article>
-
-
+                    </div>
                 </section>
+
+                <section className="bottom-cards">
+                    <div className="dash-buttons">
+                        <button className='btn-dash-card start-session' onClick={sessionStart}>Start bird watching
+                        </button>
+
+                        <Link to="/find-bird">
+                            <button className='btn-dash-card add-bird'>Add a bird</button>
+                        </Link>
+
+                        <Link to="/find-bird">
+                            <button className='btn-dash-card spotted-bird'>Spotted birds</button>
+                        </Link>
+                    </div>
+                </section>
+
+                <section className='last-watch'>
+                    <div className="last-container">
+                        <p className="card-title">Last bird watching session</p>
+                        <p>Last bird watching session</p>
+                    </div>
+                </section>
+
             </div>
         </>
-    )
-        ;
+    );
 }
+
 
 export default Home;

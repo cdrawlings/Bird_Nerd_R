@@ -2,13 +2,13 @@ const express = require('express')
 const router = express.Router()
 
 const {
-    toggle,
+    postSeen,
     getSeen,
 } = require('../controllers/countController')
 
 const {protect} = require('../middleware/authMiddleware')
 
-router.post('/toggle', protect, toggle) // Session
+router.post('/post-seen', protect, postSeen) // Session
 
 router.get('/session-seen/:id', protect, getSeen) // Session
 

@@ -11,19 +11,27 @@ const Session = require('../model/sessionModel')
 // Toggled seen not seened bird on the session page
 // Route    api/session/toogle
 // Page     session
-const toggle = asyncHandler(async (req, res) => {
+const postSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
+    console.log("Post seen started")
     if (!user) {
         res.status(401)
         throw new Error('User not found.')
     }
 
-    const createCount = await Count.create({
+
+    const createCount = await Count.findOneAndUpdate({
+        birdId: req.body.birdid,
+        session: req.body.sessionid
+    }, {
         count: req.body.count,
         session: req.body.sessionid,
         birdId: req.body.birdid
+    }, {
+        upsert: true,
+        new: true,
     });
 
     const now = Date.now()
@@ -32,11 +40,13 @@ const toggle = asyncHandler(async (req, res) => {
 
     const filter = {_id: req.body.birdid}
     const updateUpdated = {updated: update}
+    console.log("3")
 
     const updatedTime = await Bird.findOneAndUpdate(
         filter, updateUpdated
     )
 
+    console.log("Post seen finished")
     res.status(200).json(createCount)
 });
 
@@ -70,6 +80,6 @@ const getSeen = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-    toggle,
+    postSeen,
     getSeen,
 }

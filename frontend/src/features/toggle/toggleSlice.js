@@ -14,7 +14,7 @@ const initialState = {
 
 // create a bird watching session
 // add-bird
-export const postSeen = createAsyncThunk('count/toggle', async (sessionData, thunkAPI) => {
+export const postSeen = createAsyncThunk('count/post-seen', async (sessionData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
         return await toggleService.postSeen(sessionData, token)
@@ -60,7 +60,6 @@ export const toggleSlice = createSlice({
         builder
             .addCase(postSeen.pending, (state) => {
                 state.isLoading = true
-                state.postSuccess = false
             })
             .addCase(postSeen.fulfilled, (state) => {
                 state.isLoading = false

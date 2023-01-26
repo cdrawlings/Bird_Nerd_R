@@ -11,7 +11,7 @@ const postSeen = async (sessionData, token) => {
         }
     }
 
-    const response = await axios.post(API_URL + '/toggle', sessionData, config)
+    const response = await axios.post(API_URL + '/post-seen', sessionData, config)
     return response.data
 }
 

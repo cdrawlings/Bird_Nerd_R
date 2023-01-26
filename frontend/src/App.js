@@ -30,13 +30,11 @@ function App() {
 
                 <Routes>
                     <Route path="" element={<ContentTemplate/>}>
-
+                        <Route index element={<Current/>}/>
                         <Route path="/dashboard" element={<PrivateRoute/>}>
                             <Route path="/dashboard" element={<Home/>}/>
                         </Route>
-                        <Route path="/" element={<PrivateRoute/>}>
-                            <Route path="/" element={<Current/>}/>
-                        </Route>
+
                         <Route path="/bird" element={<PrivateRoute/>}>
                             <Route path="/bird" element={<Bird/>}/>
                         </Route>
