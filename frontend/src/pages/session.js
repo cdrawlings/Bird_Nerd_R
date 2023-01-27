@@ -1,10 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
+import Modal from 'react-modal';
 import BackButton from "../components/BackButton";
 import {getAllBird} from "../features/bird/birdSlice";
 import {postSeen, reset} from "../features/toggle/toggleSlice";
+import {FaDove, FaInfo} from "react-icons/fa";
 
+
+const customStyle = {
+    content: {
+        backgroundColor: 'transparent',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: "translate(-50%, -50%)",
+        border: "0",
+    }
+}
+
+Modal.setAppElement('#root')
 
 function Session() {
     const {user} = useSelector((state) => state.auth)
@@ -14,6 +31,7 @@ function Session() {
     // const [items, setItems] = useState([]);
     const [spotted, setSpotted] = useState([])
     const [sessionBirds, setSessionBirds] = useState([])
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -28,7 +46,6 @@ function Session() {
     // IF Get all birds is successful then add a count element and set birds to sessionBirds
     useEffect(() => {
         if (isSuccess) {
-
             const viewed = birds.map((bird) => {
 
                 const comName = bird.comName
@@ -47,12 +64,9 @@ function Session() {
                 return toggle
 
             })
-
             setSessionBirds(viewed)
-
         }
     }, [isSuccess, setSessionBirds])
-
 
     // Add one to count
     const addOne = (index) => {
@@ -89,8 +103,6 @@ function Session() {
 
     }
 
-    console.log("Viewed", sessionBirds)
-
     // Minus one to count
     const minusOne = (index) => {
         // Counter state is incremented
@@ -125,16 +137,11 @@ function Session() {
         setSessionBirds(viewed)
 
     }
+// open/ close Modal
+    const openModal = () => setModalIsOpen(true)
+    const closeModal = () => setModalIsOpen(false)
 
     const onChange = (e) => {
-        /*
-                 setFormData((prevState) => ({
-                     ...prevState,
-                     [e.target.id]: e.target.value,
-                 }))
-}         */
-
-
     };
 
     return (
@@ -153,19 +160,18 @@ function Session() {
                     <section className="unseen-session">
 
                         <h1 className='title find-top session-heading'>Bird watching in {session.city}</h1>
-                        <div className="info">i</div>
+
+                        <button className="info" id="info" onClick={openModal}><FaInfo/></button>
 
                         <h4 className='session-title'>Your previously spotted birds</h4>
 
-                        <p>Add or subtract any birds you see or click on the number to enter in a large number of birds
-                            spotted.
-                        </p><p>Click add bird above if you see a new bird you have never seen before.</p>
+
                         <div className='allBirds sessionList'>
                             {sessionBirds.map((bird, index) => (
                                 <>
                                     {bird.count <= 0 ?
 
-                                        <div className="bird-item watch-box" key={bird.speciesCode}>
+                                        <div className="bird-item watch-box-unseen" key={bird.speciesCode}>
 
                                             <div className="unseen-icon"></div>
 
@@ -183,7 +189,7 @@ function Session() {
 
                                         <div className="bird-item watch-box" key={bird.speciesCode}>
 
-                                            <div className="seen-icon">#</div>
+                                            <div className="seen-icon"><FaDove/></div>
 
 
                                             <div className='bird-name'
@@ -205,6 +211,27 @@ function Session() {
                     </section>
 
                 </article>
+
+                <Modal isOpen={modalIsOpen} onRequestClose={closeModal}
+                       style={customStyle} contentLabel={'Instruction'}>
+
+                    <div id="instruction" className="instruction">
+                        <div className="card-title-instruct">Enter birds spotted
+                            <button className='modal-close' onClick={closeModal}>X</button>
+                        </div>
+
+                        <p className='instruct-text'>When you spot a bird just click the add button
+                            for any bird you have previously seen. If you see a flock of birds click on
+                            the number to enter in a large number of birds.
+
+                        </p>
+                        <p className='instruct-text'>If you made a mistake and clicked on the wrong bird click on the
+                            subtract button to remove the bird.</p>
+                        <p className='instruct-text'>Click add bird button above if you see a new bird you have never
+                            seen before.</p>
+                    </div>
+
+                </Modal>
             </div>
 
 

@@ -15,12 +15,10 @@ const postSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
-    console.log("Post seen started")
     if (!user) {
         res.status(401)
         throw new Error('User not found.')
     }
-
 
     const createCount = await Count.findOneAndUpdate({
         birdId: req.body.birdid,
@@ -40,13 +38,12 @@ const postSeen = asyncHandler(async (req, res) => {
 
     const filter = {_id: req.body.birdid}
     const updateUpdated = {updated: update}
-    console.log("3")
+
 
     const updatedTime = await Bird.findOneAndUpdate(
         filter, updateUpdated
     )
 
-    console.log("Post seen finished")
     res.status(200).json(createCount)
 });
 

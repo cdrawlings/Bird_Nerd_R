@@ -363,6 +363,15 @@ nav {
   color: #000000;
   border: 0;
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.bird-count {
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 
@@ -475,6 +484,14 @@ nav {
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
   border: 1px solid $color-primary;
   color: $color-l-text;
+}
+
+.watch-box-unseen {
+  width: 90%;
+  background-color: lighten($color-primary, 30%);
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
+  border: 1px solid lighten($color-primary, 20%);
+  color: lighten($color-primary, 60%);
 }
 
 .seen-watch-box {
@@ -714,9 +731,13 @@ nav {
 }
 
 .seen-icon {
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: 1.2rem;
   text-align: right;
   margin-right: .3rem;
+
 }
 
 .unseen-icon {
@@ -728,4 +749,58 @@ nav {
 .bird-name {
   text-align: left;
   width: 50%;
+}
+
+.info {
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: .8rem;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  color: lighten($color-primary, 55%);
+}
+
+.ReactModalPortal .ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-color: rgba(0, 0, 0, .5) !important;
+
+}
+
+.instruction {
+  border-radius: 10px;
+  display: block;
+  background-color: $color-primary;
+  width: 80vw;
+  margin: 0 auto;
+  padding: 5vw 5vw 8vw;
+  color: $color-l-text;
+  font-family: $font-stack;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.card-title-instruct {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+  font-family: $font-stack;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.modal-close {
+  text-align: right;
+  font-weight: 800;
+  font-family: $font-stack;
+  color: $color-l-text;
+  font-size: 1.1rem;
+  background-color: transparent;
+  border: 0;
+}
+
+.instruct-text {
+  margin-bottom: .5rem;
 }
