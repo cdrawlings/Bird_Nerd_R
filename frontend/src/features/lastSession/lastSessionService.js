@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = '/api/session'
 
-//Get the last spotted bird
+//Get the last Session
 const getLastSession = async (token) => {
     const config = {
         headers: {
@@ -10,7 +10,7 @@ const getLastSession = async (token) => {
         }
     }
 
-    const response = await axios.get(API_URL + '/last', config)
+    const response = await axios.get(API_URL + '/', config)
 
     return response.data
 }

@@ -28,10 +28,10 @@ export const getLastSession = createAsyncThunk('session/last', async (birdData, 
 })
 
 export const lastSessionSlice = createSlice({
-    name: 'last',
+    name: 'lastSession',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        resetSession: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
@@ -41,7 +41,7 @@ export const lastSessionSlice = createSlice({
             .addCase(getLastSession.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.last = action.payload
+                state.lastSession = action.payload
             })
             .addCase(getLastSession.rejected, (state, action) => {
                 state.isLoading = true
@@ -51,5 +51,5 @@ export const lastSessionSlice = createSlice({
     }
 })
 
-export const {reset} = lastSessionSlice.actions
+export const {resetSession} = lastSessionSlice.actions
 export default lastSessionSlice.reducer

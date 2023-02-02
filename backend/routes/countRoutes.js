@@ -8,7 +8,7 @@ const {
 
 const {protect} = require('../middleware/authMiddleware')
 
-router.post('/post-seen', protect, postSeen) // Session
+router.post('/post-seen', protect, postSeen) // Session // Add bird
 
 router.get('/session-seen/:id', protect, getSeen) // Session
 

@@ -31,7 +31,7 @@ export const lastSlice = createSlice({
     name: 'last',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        resetLast: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
@@ -51,5 +51,5 @@ export const lastSlice = createSlice({
     }
 })
 
-export const {reset} = lastSlice.actions
+export const {resetLast} = lastSlice.actions
 export default lastSlice.reducer

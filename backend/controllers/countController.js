@@ -15,6 +15,8 @@ const postSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
+    console.log("Save started")
+
     if (!user) {
         res.status(401)
         throw new Error('User not found.')
@@ -31,6 +33,8 @@ const postSeen = asyncHandler(async (req, res) => {
         upsert: true,
         new: true,
     });
+
+    console.log("Should be saved")
 
     const now = Date.now()
     const string = new Date(now)

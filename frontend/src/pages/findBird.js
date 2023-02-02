@@ -19,16 +19,17 @@ to the session database and the number of birds
 will be added to the cCount database
  */
 function FindBird() {
-    const {user} = useSelector((state) => state.auth)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {last, gotLast} = useSelector((state) => state.last)
     const {lastSession} = useSelector((state) => state.lastSession)
     const {birds, isSuccess} = useSelector((state) => state.bird)
 
+
     const {location} = useSelector((state) => state.location)
 
     const [filtered, setFiltered] = useState([])
     const [quantity, setQuantity] = useState(1)
+    const [selected, setSelected] = useState(false)
 
     const [seen, setSeen] = useState({
         city: location.city,
@@ -64,15 +65,15 @@ function FindBird() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    console.log("Birds", ebirds)
 
     useEffect(() => {
         if (isSuccess) {
             dispatch(getLast())
             dispatch(getLastSession())
-
         }
-
     }, [isSuccess, dispatch])
+
 
     // Filter the bird by input
     const filter = (e) => {
@@ -141,25 +142,29 @@ function FindBird() {
         dispatch(createSession(seen))
 
         dispatch(createBird(seenData))
+        setSelected(true)
 
     }
 
+
     const postNewBird = (e) => {
+
+        console.log("Last", last)
+        console.log("Last Session", lastSession)
 
         const seenData = {
             comName,
             speciesCode,
             city,
             sessionid: lastSession._id,
-            birdid: last._id,
+            birdid: last[0]._id,
             count: quantity,
             temp, lat, lon, visibility, condition, icon
         }
 
-
         dispatch(postSeen(seenData))
         setSeen(resetSeen)
-
+        setSelected(false)
         navigate('/dashboard')
     }
 
@@ -171,8 +176,8 @@ function FindBird() {
     console.log("LAst Bird ", last)
     console.log("Last Session", lastSession)
 
-    if (gotLast) {
-        console.log("yay!")
+    if (selected) {
+
         return (
             <>
                 <div className="main">

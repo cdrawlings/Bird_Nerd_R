@@ -56,44 +56,7 @@ const getSession = asyncHandler(async (req, res) => {
 });
 
 
-// Adds a spotted bird to the count db
-// Route    api/session/seen
-// Page     add-bird
-const postSeen = asyncHandler(async (req, res) => {
-    // Get user using the id in the JWT
-    const user = await User.findById(req.user.id)
-
-    if (!user) {
-        res.status(401)
-        throw new Error('User not found.')
-    }
-
-    const createSession = await Session.create({
-        city: req.body.city,
-        lat: req.body.lat,
-        lon: req.body.lon,
-    });
-
-    const createBird = await Bird.create({
-        comName: req.body.comName,
-        speciesCode: req.body.speciesCode,
-        user: req.user.id
-    });
-
-    const sessionid = createSession.id
-    const birdid = createBird.id
-
-    const createCount = await Count.create({
-        count: req.body.count,
-        session: sessionid,
-        birdid: birdid
-    });
-
-    res.status(200).json(createCount)
-
-});
-
-
+/******* NOT USED ************/
 // Adds a spotted bird to the count db
 // Route    api/session/seen
 // Page     add-bird
@@ -117,6 +80,7 @@ const sessionSeen = asyncHandler(async (req, res) => {
 });
 
 
+/******* NOT USED ************/
 // update the session count to a previoiusly spotted bitd
 // Route    api/session/seen
 const putSeen = asyncHandler(async (req, res) => {
@@ -342,6 +306,5 @@ module.exports = {
     createSingle,
     getSession,
     putSeen,
-    postSeen,
     sessionSeen,
 }
