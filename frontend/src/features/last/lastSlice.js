@@ -1,11 +1,11 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import lastService from './lastService'
 
 const initialState = {
     last: {},
     isLoading: false,
     isError: false,
-    isSuccess: false,
+    gotLast: false,
     message: ''
 }
 
@@ -40,7 +40,7 @@ export const lastSlice = createSlice({
             })
             .addCase(getLast.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
+                state.gotLast = true
                 state.last = action.payload
             })
             .addCase(getLast.rejected, (state, action) => {

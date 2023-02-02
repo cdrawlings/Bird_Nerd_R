@@ -10,7 +10,7 @@ const getLast = async (token) => {
         }
     }
 
-    const response = await axios.get(API_URL + '/add-bird', config)
+    const response = await axios.get(API_URL + '/get-last', config)
 
     return response.data
 }

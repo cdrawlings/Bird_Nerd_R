@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {postSeen} from "../features/seen/seenSlice";
-// import {createBird, reset} from "../features/bird/birdSlice";
-// import {createSession, reset as resetSession} from "../features/session/sessionSlice";
+// import {postSeen} from "../features/seen/seenSlice";
+import {createBird} from "../features/bird/birdSlice";
+import {getLast} from "../features/last/lastSlice";
+import {createSession} from "../features/session/sessionSlice";
 import {FaPlus} from "react-icons/fa";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import dayjs from "dayjs";
@@ -19,27 +20,43 @@ will be added to the cCount database
 function FindBird() {
     const {user} = useSelector((state) => state.auth)
     const {ebirds} = useSelector((state) => state.ebirds)
+    const {last, gotLast} = useSelector((state) => state.last)
+    const {birds, isSuccess} = useSelector((state) => state.bird)
+
     const {location} = useSelector((state) => state.location)
 
     const [filtered, setFiltered] = useState([])
-    const [count, setCount] = useState(1)
+    const [quantity, setQuantity] = useState(1)
 
     const [seen, setSeen] = useState({
-        city: "",
-        lat: "",
-        lon: "",
-        count: "",
+        city: location.city,
+        lat: location.lat,
+        lon: location.lon,
         temp: "",
         condition: "",
         icon: "",
         visibility: "",
-        seen: false,
         comName: "",
-        speciesCode: ""
+        speciesCode: "",
+        birdid: "",
+        count: 0,
     })
+
+    const {comName, count, birdid, speciesCode, city, temp, lat, lon, icon, visibility, condition} = seen
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(getLast())
+        }
+        if (gotLast) {
+            console.log("yay!")
+        }
+
+    }, [isSuccess, dispatch])
 
     // Filter the bird by input
     const filter = (e) => {
@@ -78,47 +95,56 @@ function FindBird() {
     // Add one to count
     const addOne = (e) => {
         // Counter state is incremented
-        setCount(count + 1);
+        setQuantity(quantity + 1);
     }
 
     // Minus one to count
     const minusOne = (e) => {
         // Counter state is incremented
-        setCount(c => Math.max(c - 1, 0));
+        setQuantity(c => Math.max(c - 1, 0));
     }
 
     // Adds Bird info and intial seesion info to seen state
     const markSeen = (e) => {
-        const comName = e.currentTarget.previousElementSibling.innerText;
-        const speciesCode = e.currentTarget.previousElementSibling.previousElementSibling.innerText;
+        const name = e.currentTarget.previousElementSibling.innerText;
+        const code = e.currentTarget.previousElementSibling.previousElementSibling.innerText;
 
-        setSeen((prevState) => ({
-            ...prevState,
-            comName,
-            speciesCode,
-            city: location.city,
-            lat: location.lat,
-            lon: location.lon,
-            seen: true
-        }))
+        const seenData = {
+            comName: name,
+            speciesCode: code,
+            city,
+            count,
+            birdid,
+            temp,
+            lat, lon, visibility, condition, icon,
+        }
+
+        setSeen(seenData)
+
+        dispatch(createSession(seen))
+
+        dispatch(createBird(seenData))
+
     }
-
 
     const postNewBird = (e) => {
-        setSeen((prevState) => ({
-            ...prevState,
-            count
-        }))
 
-        dispatch(postSeen(seen))
+        const seenData = {
+            comName,
+            speciesCode,
+            city,
+            birdid: last._id,
+            count: quantity,
+            temp, lat, lon, visibility, condition, icon
+        }
 
-        console.log("Seen Saved")
+        console.log("Seen ", seenData)
+        console.log("Last", last)
 
-        navigate('/dashboard')
+        //   dispatch(postSeen(seen))
 
+        // navigate('/dashboard')
     }
-
-    console.log("New Seen 2", seen)
 
     const position = [location.lat, location.lon]
 
@@ -129,7 +155,7 @@ function FindBird() {
             <div className="main">
 
 
-                {!seen.seen ? (
+                {!seen.comName ? (
                     <>
                         <section className="content find-top">
 
@@ -190,7 +216,7 @@ function FindBird() {
 
                                     <div className="counter_elements">
                                         <button onClick={minusOne} className='minus_button'>-</button>
-                                        <div id='' className='count_elem'>{count} </div>
+                                        <div id='' className='count_elem'>{quantity} </div>
                                         <button className='add_button' onClick={addOne}>+</button>
                                     </div>
                                 </div>

@@ -7,9 +7,11 @@ const {protect} = require('../middleware/authMiddleware')
 
 router.get('/', protect, getBirds) // Session
 
-router.get('/add-bird', protect, getLast)
+router.get('/get-last', protect, getLast) //Find Bird
 
-router.put('/time', protect, updateTime)
+// router.put('/time', protect, updateTime)
+
+router.post('/find-bird', protect, createBird) //Find Bird
 
 /*
 router.get('/:id', protect, getBird)
@@ -18,7 +20,7 @@ router.delete('/:id', protect, deleteBird)
 
 router.put('/:id', protect, updateBird)
 
-router.post('/find-bird', protect, createBird)
+
 */
 
 module.exports = router

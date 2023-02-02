@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import birdService from './birdService'
 
 
@@ -70,7 +70,12 @@ export const birdSlice = createSlice({
     name: 'bird',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state) => initialState,
+        addBird: (state, action) => {
+            const newBird = action.payload
+            // state,birds: [newBird, ...state.birds]
+            console.log(newBird)
+        }
     },
     extraReducers: (builder) => {
 builder
@@ -102,5 +107,5 @@ builder
     }
 })
 
-export const {reset} = birdSlice.actions
+export const {reset, addBird} = birdSlice.actions
 export default birdSlice.reducer

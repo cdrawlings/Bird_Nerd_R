@@ -67,12 +67,13 @@ const getLast = asyncHandler(async (req, res) => {
         throw new Error("User not found")
     }
 
-    const bird = await Bird.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
+    const bird = await Bird.find({user: req.user.id}).sort({created: -1}).limit(1)
 
-    res.status(200).json(bird[0])
+    res.status(200).json(bird)
 });
 
 
+/**********   NOT USED   ***********/
 // update a created at time
 // Route    api/bird/time
 const updateTime = asyncHandler(async (req, res) => {

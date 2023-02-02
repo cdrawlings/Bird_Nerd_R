@@ -1,145 +1,237 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import Modal from 'react-modal';
+import {FaPlus} from 'react-icons/fa'
+// import BackButton from "../components/BackButton";
+import {createBird, reset} from "../features/bird/birdSlice";
 import {getLast} from "../features/last/lastSlice";
-import {getLastSession} from "../features/lastSession/lastSessionSlice";
-import {postSeen} from "../features/seen/seenSlice";
 
-import dayjs from 'dayjs';
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
-import {toast} from "react-toastify";
-import Spinner from '../components/spinner'
+/* gets and displays the list of birds. Once a bird is selected
+it will be added to the Bird Database
+
+The page will advance to add-bird. There the bird will be added
+to the session database and the number of birds
+will be added to the cCount database
+ */
+
+const customStyle = {
+    content: {
+        backgroundColor: 'transparent',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: "translate(-50%, -50%)",
+        border: "0",
+    }
+}
+
+Modal.setAppElement('#root')
+
 
 function AddBird() {
-    const {user} = useSelector((state) => state.auth)
-    const {last, isLoading, isError, message} = useSelector((state) => state.last)
-    const {lastSession} = useSelector((state) => state.lastSession)
+    const {last} = useSelector((state) => state.last)
+    const {ebirds} = useSelector((state) => state.ebirds)
+    const {birds, isSuccess,} = useSelector((state) => state.bird)
 
-    const {single, Error, Success, Message, Loading} = useSelector((state) => state.single)
-    const {location} = useSelector((state) => state.location)
 
-    const [count, setCount] = useState(1)
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    // const [items, setItems] = useState([]);
+    const [modal, setModal] = useState({
+        comName: "",
+        count: "",
+        speciesCode: "",
+        birdid: "",
+        updated: "",
+        sessionid: "",
+        seen: "",
+    })
+
+    const {comName, count, speciesCode, birdid, updated, sessionid, seen} = modal
+
+    const [filtered, setFiltered] = useState([])
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const params = useParams()
 
     useEffect(() => {
-        if (Error) {
-            toast.error(message)
+        if (isSuccess) {
+            dispatch(getLast)
+            console.log("Last", last)
         }
 
-    }, [Error, message])
-
-    useEffect(() => {
-            dispatch(getLast())
-        dispatch(getLastSession())
-        }, [dispatch]
-    )
+    }, [isSuccess, dispatch])
 
 
-    useEffect(() => {
-        if (Success) {
+    // Filter the bird by input
+    const filter = (e) => {
+        let birdList = document.getElementById('birdlist')
 
+        let value = e.target.value.toLowerCase();
+        birdList.style.display = 'block'
+
+        let result = [];
+        result = ebirds.filter((bird) => {
+            return bird.comName.toLowerCase().search(value) !== -1;
+        });
+        setFiltered(result);
+    }
+
+
+    // Show the full list of birds
+    const fillList = () => {
+        let birdList = document.getElementById('birdlist')
+        birdList.style.display = 'block'
+
+        setFiltered(ebirds)
+    }
+
+    // Reset the search bar
+    function reloadComponent() {
+        let filter = document.getElementById('filter')
+        let birdList = document.getElementById('birdlist')
+        let resetBird = []
+        setFiltered(resetBird);
+
+        filter.value = '';
+        birdList.style.display = 'none'
+    }
+
+    const closeModal = () => setModalIsOpen(false)
+
+    const openModal = (index) => {
+        const views = ebirds;
+
+        const viewed = views.map((bird, i) => {
+            if (i === index) {
+                const comName = bird.comName
+                const count = bird.count
+                const speciesCode = bird.speciesCode
+                const updated = Date.now()
+                const sessionid = params.id
+                const seen = true
+
+                const element = {count, sessionid, speciesCode, comName, seen, updated}
+                setModal(element)
+            }
+        });
+
+        setModalIsOpen(true)
+    }
+
+    const onChange = (e) => {
+        setModal((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }))
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const views = ebirds;
+
+        console.log("Submitting")
+
+        const resetModal = {
+            comName: "",
+            count: "",
+            speciesCode: "",
+            birdid: "",
+            updated: "",
+            sessionid: "",
+            seen: "",
         }
 
+        console.log("new Bird")
 
-    }, [Error, message])
+        dispatch(createBird(modal))
 
-    if (Loading) {
-        return <Spinner/>
+        console.log("Bird Created")
+
+        dispatch(reset())
+        setModal(resetModal)
+        // dispatch(addBird(modalData))
+
+        // navigate("/session/" + params.id)
+
+        setModalIsOpen(false)
     }
 
-    // Add one to count
-    const addOne = (e) => {
-        // Counter state is incremented
-        setCount(count + 1);
-    }
 
-    // Minus one to count
-    const minusOne = (e) => {
-        // Counter state is incremented
-        setCount(c => Math.max(c - 1, 0));
-    }
 
-    const getData = (e) => {
-        let birdid = last._id
-        let sessionid = lastSession._id
-
-        let seenCount = {
-            birdid,
-            sessionid,
-            count
-        }
-
-        console.log(seenCount)
-        dispatch(postSeen(seenCount))
-
-    }
-
-    const position = [location.lat, location.lon]
-    const date = dayjs(last.createdAt).format('dddd, MMMM D, YYYY')
-
-    console.log(position)
     return (
         <>
             <div className="main">
 
-                <section className="content">
+                <section className="content find-top-add">
 
-                    <div className='seen_title'>Add</div>
-                    <div id='add_comName' className='seen_bird'>{last.comName}</div>
-                    <div className='seen_text'>to birds you have seen before.</div>
+                    <h1 className='title'>Add a bird </h1>
+                    <p className='title-sub-text'>See a new bird? quickly add it to your viewed birds list.</p>
 
-                    <div className="counter_block">
-                        <div className="counter_text">How many seen:</div>
+                    <input
+                        type="text"
+                        id="filter"
+                        name="filter"
+                        className="form-control search-bar"
+                        onChange={(e) => filter(e)}
+                        placeholder='Search birds'
+                    />
 
-                        <div className="counter_elements">
-                            <button onClick={minusOne} className='minus_button'>-</button>
-                            <div id='' className='count_elem'>{count} </div>
-                            <button className='add_button' onClick={addOne}>+</button>
+                    <div className="search-adds">
+                        <button className="full-list" onClick={fillList}>Full List</button>
+                        <button className="reset" onClick={reloadComponent}>Reset</button>
+                    </div>
+                </section>
+
+                <section>
+                    <div className="searchcontainer">
+                        <div className="searchbox ">
+
+                            <ul id='birdlist'>
+                                {filtered.map((bird, index) => {
+                                    return (
+
+                                        <div className='bird-item' key={bird.speciesCode}>
+                                            <div className='hidden'>{bird.speciesCode}</div>
+                                            <div>{bird.comName}</div>
+                                            <button id={bird.speciesCode} className="bird-count"
+                                                    onClick={() => openModal(index)}>
+                                                <FaPlus/>
+                                            </button>
+                                        </div>
+                                    )
+                                })}
+                            </ul>
+
                         </div>
                     </div>
-
-                    <MapContainer className='map_container' center={position} zoom={13} scrollWheelZoom={false}
-                                  attributionControl={false}>
-
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={position}>
-                            <Popup>
-                                A pretty CSS3 popup. <br/> Easily customizable.
-                            </Popup>
-                        </Marker>
-                    </MapContainer>
-
-                    <div className="loc-date">
-                        <p id='add_city' className='seen_city'> {location.city}</p>
-                        <p className='seen_time'>{date}</p>
-                    </div>
-
-                    <div className='hidden'>
-
-                        <p id='add_user'>User: {last.user}</p>
-
-                        <p id='add_speciesCode'>Species code:{last.speciesCode}</p>
-                        <p id='add_bird_id'>BIRD ID: {last._id}</p>
-
-                        <p id='add_lat'>Lat: {location.lat}</p>
-                        <p id='add_lon'>Lon: {location.lon}</p>
-
-                    </div>
-
-                    <button onClick={getData} className="btn btn_session">ACCEPT</button>
-
-
                 </section>
             </div>
 
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal}
+                   style={customStyle} contentLabel={'Instruction'}>
 
+
+                <button className='modal-close' onClick={closeModal}>X</button>
+                <div id="modal-box" className="modal-box">
+                    <div className="card-title-modal">How many {modal.comName}s have you spotted?
+                    </div>
+
+                    <form className="form-group" onSubmit={onSubmit}>
+                        <input type="number" name='count' placeholder={count} className="form-control"
+                               onChange={onChange}/>
+                        <button type='submit'>Submit</button>
+                    </form>
+                </div>
+
+            </Modal>
         </>
-    );
+    )
+
 }
 
 export default AddBird;

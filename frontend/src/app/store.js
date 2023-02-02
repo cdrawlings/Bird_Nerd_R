@@ -9,6 +9,7 @@ import sessionReducer from '../features/session/sessionSlice'
 import lastSessionReducer from '../features/lastSession/lastSessionSlice'
 import seenReducer from '../features/seen/seenSlice'
 import toggleReducer from '../features/toggle/toggleSlice'
+import lastReducer from '../features/last/lastSlice'
 
 export const store = configureStore({
     reducer: {
@@ -17,7 +18,7 @@ export const store = configureStore({
         weather: weatherReducer,
         ebirds: ebirdsReducer,
         bird: birdReducer,
-        // last: lastReducer,
+        last: lastReducer,
         session: sessionReducer,
         // single: singleReducer,
         lastSession: lastSessionReducer,

@@ -44,11 +44,11 @@ function App() {
                         <Route path="/find-bird" element={<PrivateRoute/>}>
                             <Route path="/find-bird" element={<FindBird/>}/>
                         </Route>
-                        <Route path="/add-bird" element={<PrivateRoute/>}>
-                            <Route path="/add-bird" element={<AddBird/>}/>
+                        <Route path="/add-bird/:id" element={<PrivateRoute/>}>
+                            <Route path="/add-bird/:id" element={<AddBird/>}/>
                         </Route>
                         <Route path="/session/:id" element={<PrivateRoute/>}>
-                            <Route path="/session/:id" element={<Session/>}/>
+                            <Route path="/session/:id" element={<Session/>}/>`
                         </Route>
 
                     </Route>

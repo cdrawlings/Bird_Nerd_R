@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import BackButton from "../components/BackButton";
 import {getAllBird} from "../features/bird/birdSlice";
 import {postSeen, reset} from "../features/toggle/toggleSlice";
-import {FaDove, FaInfo} from "react-icons/fa";
+import {FaBinoculars, FaDove, FaInfo} from "react-icons/fa";
 
 
 const customStyle = {
@@ -29,8 +29,20 @@ function Session() {
     const {birds, isSuccess} = useSelector((state) => state.bird)
 
     // const [items, setItems] = useState([]);
-    const [spotted, setSpotted] = useState([])
     const [sessionBirds, setSessionBirds] = useState([])
+    const [modal, setModal] = useState({
+        comName: "",
+        count: "",
+        speciesCode: "",
+        birdid: "",
+        updated: "",
+        sessionid: "",
+        seen: "",
+
+    })
+
+    const {comName, count, speciesCode, birdid, updated, sessionid, seen} = modal
+
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
     const dispatch = useDispatch()
@@ -47,7 +59,6 @@ function Session() {
     useEffect(() => {
         if (isSuccess) {
             const viewed = birds.map((bird) => {
-
                 const comName = bird.comName
                 const count = 0
                 const speciesCode = bird.speciesCode
@@ -59,10 +70,7 @@ function Session() {
 
                 const toggle = {birdid, count, sessionid, speciesCode, comName, seen, user}
 
-                console.log("Toggled", toggle)
-
                 return toggle
-
             })
             setSessionBirds(viewed)
         }
@@ -72,7 +80,6 @@ function Session() {
     const addOne = (index) => {
         // Counter state is incremented
         const views = sessionBirds;
-        console.log("1", views)
         const viewed = views.map((bird, i) => {
             if (i === index) {
                 // Increment the clicked counter
@@ -85,11 +92,9 @@ function Session() {
                 const seen = true
 
                 const toggle = {birdid, count, sessionid, speciesCode, comName, seen}
-                console.log("2", toggle)
                 dispatch(postSeen(toggle))
                 dispatch(reset())
                 return toggle
-
 
             } else {
                 // The rest haven't changed
@@ -98,9 +103,7 @@ function Session() {
             }
         });
 
-
         setSessionBirds(viewed)
-
     }
 
     // Minus one to count
@@ -133,38 +136,131 @@ function Session() {
             }
         });
 
-
         setSessionBirds(viewed)
+    }
 
+    // OPen the modal ang get the dat to inclde for the DB count
+    const openModal = (index) => {
+        const views = sessionBirds;
+
+        const viewed = views.map((bird, i) => {
+            if (i === index) {
+                const comName = bird.comName
+                const count = bird.count
+                const speciesCode = bird.speciesCode
+                const birdid = bird.birdid
+                const updated = Date.now()
+                const sessionid = params.id
+                const seen = true
+
+                const element = {birdid, count, sessionid, speciesCode, comName, seen, updated}
+
+                setModal(element)
+                console.log("Modal", element)
+
+            }
+        });
+        setModalIsOpen(true)
+    }
+
+    const openInstruct = (e) => {
+        e.preventDefault();
+        console.log("instructions")
+        let element = document.getElementById('instruction')
+        console.log('Element', element)
+        element.removeAttribute("class")
+        element.setAttribute('class', 'show instruction')
+    }
+
+    const closeInstruct = (e) => {
+        e.preventDefault();
+        console.log("instructions")
+        let element = document.getElementById('instruction')
+        console.log('Element', element)
+        element.removeAttribute('class')
+        element.setAttribute('class', 'hidden')
     }
 // open/ close Modal
-    const openModal = () => setModalIsOpen(true)
+
     const closeModal = () => setModalIsOpen(false)
 
-    const onChange = (e) => {
-    };
+    const addBirdNav = () => {
+        navigate('/add-bird/' + params.id)
+    }
+
+    function onChange(e) {
+        setModal((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }))
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        const views = sessionBirds;
+        const modalData = {
+            comName,
+            speciesCode,
+            count: parseInt(count),
+            updated,
+            birdid,
+            sessionid,
+            seen: true
+        }
+        const resetModal = {
+            comName: "",
+            count: "",
+            speciesCode: "",
+            birdid: "",
+            updated: "",
+            sessionid: "",
+            seen: "",
+        }
+
+        const viewed = views.map((bird) => {
+            if (birdid === bird.birdid) {
+                dispatch(postSeen(modalData))
+                return modalData
+            } else {
+                // The rest haven't changed
+                return bird
+            }
+        });
+
+        setSessionBirds(viewed)
+        setModal(resetModal)
+        setModalIsOpen(false)
+    }
+
 
     return (
         <>
 
             <div className="main">
+                <div className="second-nav">
+                    <div className="nav-sec">
+                        <BackButton url='/dashboard'/>
 
-                <div className="nav-sec">
-                    <BackButton url='/dashboard'/>
-                    <BackButton url='/add'/>
+                        <button className='btn-new-bird' onClick={addBirdNav}>
+                            <div className="new-birdbtn-text">New</div>
+                            <div className="new-birdbtn-icon"><FaDove/></div>
+                            <div className="new-birdbtn-text">Bird</div>
+                        </button>
+                    </div>
                 </div>
 
                 <article className="session-space">
 
 
-                    <section className="unseen-session">
+                    <section className="session-container">
 
-                        <h1 className='title find-top session-heading'>Bird watching in {session.city}</h1>
+                        <h1 className='title find-top session-heading'>Bird watching in aaaaa huala
+                            lumpr {session.city}</h1>
 
-                        <button className="info" id="info" onClick={openModal}><FaInfo/></button>
+                        <button className="info" id="info" onClick={openInstruct}><FaInfo/></button>
 
                         <h4 className='session-title'>Your previously spotted birds</h4>
-
 
                         <div className='allBirds sessionList'>
                             {sessionBirds.map((bird, index) => (
@@ -182,14 +278,15 @@ function Session() {
 
                                             <button className="minus_button" onClick={() => minusOne(index)}></button>
 
-                                            <div className="bird-count">{bird.count}</div>
+                                            <div className="bird-count"
+                                                 onClick={() => openModal(index)}>{bird.count}</div>
 
                                             <button className="add_button" onClick={() => addOne(index)}>+</button>
                                         </div> :
 
                                         <div className="bird-item watch-box" key={bird.speciesCode}>
 
-                                            <div className="seen-icon"><FaDove/></div>
+                                            <div className="seen-icon">< FaBinoculars/></div>
 
 
                                             <div className='bird-name'
@@ -198,7 +295,8 @@ function Session() {
 
                                             <button className="minus_button" onClick={() => minusOne(index)}>-</button>
 
-                                            <div className="bird-count">{bird.count}</div>
+                                            <div className="bird-count"
+                                                 onClick={() => openModal(index)}>{bird.count}</div>
 
                                             <button className="add_button" onClick={() => addOne(index)}>+</button>
                                         </div>
@@ -212,23 +310,36 @@ function Session() {
 
                 </article>
 
+                <div id="instruction" className="instruction hidden">
+                    <div className="card-title-instruct">Enter birds spotted
+                        <button className='modal-close' onClick={closeInstruct}>X</button>
+                    </div>
+
+                    <p className='instruct-text'>When you spot a bird just click the add button
+                        for any bird you have previously seen. If you see a flock of birds click on
+                        the number to enter in a large number of birds.
+
+                    </p>
+                    <p className='instruct-text'>If you made a mistake and clicked on the wrong bird click on the
+                        subtract button to remove the bird.</p>
+                    <p className='instruct-text'>Click add bird button above if you see a new bird you have never
+                        seen before.</p>
+                </div>
+
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal}
                        style={customStyle} contentLabel={'Instruction'}>
 
-                    <div id="instruction" className="instruction">
-                        <div className="card-title-instruct">Enter birds spotted
-                            <button className='modal-close' onClick={closeModal}>X</button>
+
+                    <button className='modal-close' onClick={closeModal}>X</button>
+                    <div id="modal-box" className="modal-box">
+                        <div className="card-title-modal">How many {modal.comName}s have you spotted?
                         </div>
 
-                        <p className='instruct-text'>When you spot a bird just click the add button
-                            for any bird you have previously seen. If you see a flock of birds click on
-                            the number to enter in a large number of birds.
-
-                        </p>
-                        <p className='instruct-text'>If you made a mistake and clicked on the wrong bird click on the
-                            subtract button to remove the bird.</p>
-                        <p className='instruct-text'>Click add bird button above if you see a new bird you have never
-                            seen before.</p>
+                        <form className="form-group" onSubmit={onSubmit}>
+                            <input type="number" name='count' placeholder={count} className="form-control"
+                                   onChange={onChange}/>
+                            <button type='submit'>Submit</button>
+                        </form>
                     </div>
 
                 </Modal>
