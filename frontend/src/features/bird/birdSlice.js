@@ -71,11 +71,10 @@ export const birdSlice = createSlice({
     initialState,
     reducers: {
         reset: (state) => initialState,
+        // Adding new bird to the the list of seen birds
         addBird: (state, action) => {
-            const newBird = action.payload
-            // state,birds: [newBird, ...state.birds]
-            console.log(newBird)
-        }
+            state.concat(action.payload)
+        },
     },
     extraReducers: (builder) => {
 builder

@@ -14,7 +14,7 @@ const initialState = {
 
 // create a bird watching session
 // add-bird
-export const postSeen = createAsyncThunk('count/post-seen', async (sessionData, thunkAPI) => {
+export const postSeen = createAsyncThunk('count/post-seen??', async (sessionData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
         return await toggleService.postSeen(sessionData, token)
@@ -32,7 +32,7 @@ export const postSeen = createAsyncThunk('count/post-seen', async (sessionData, 
 
 
 // create a bird watching session
-export const getSeen = createAsyncThunk('count/seen',
+export const getSeen = createAsyncThunk('count/seen??',
     async (id, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token

@@ -7,7 +7,6 @@ import ebirdsReducer from '../features/ebirds/ebirdsSlice'
 import birdReducer from '../features/bird/birdSlice'
 import sessionReducer from '../features/session/sessionSlice'
 import lastSessionReducer from '../features/lastSession/lastSessionSlice'
-import seenReducer from '../features/seen/seenSlice'
 import toggleReducer from '../features/toggle/toggleSlice'
 import lastReducer from '../features/last/lastSlice'
 
@@ -22,7 +21,6 @@ export const store = configureStore({
         session: sessionReducer,
         // single: singleReducer,
         lastSession: lastSessionReducer,
-        seen: seenReducer,
         toggle: toggleReducer,
     },
 });

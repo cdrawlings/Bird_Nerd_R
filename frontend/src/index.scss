@@ -10,9 +10,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body,
+html,
+#root {
+  height: 100vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 p {
@@ -23,11 +29,13 @@ p {
   margin-inline-end: 0;
 }
 
-.container{
+.container {
   width: 100vw;
   height: 100%;
   margin: 0 auto;
-  overflow: hidden;
+  overflow-x: hidden;
+
+  position: relative;
 }
 
 .form-group {
@@ -57,7 +65,7 @@ p {
   // don't honor that edge case; we style them as disabled anyway.
   &:disabled,
   &[readonly] {
-    background-color: $color-light;
+    background-color: $color-primary;
     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
   }

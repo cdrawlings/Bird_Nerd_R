@@ -58,7 +58,7 @@ const getSession = asyncHandler(async (req, res) => {
 
 /******* NOT USED ************/
 // Adds a spotted bird to the count db
-// Route    api/session/seen
+// Route    api/session/seen??
 // Page     add-bird
 const sessionSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
@@ -82,7 +82,7 @@ const sessionSeen = asyncHandler(async (req, res) => {
 
 /******* NOT USED ************/
 // update the session count to a previoiusly spotted bitd
-// Route    api/session/seen
+// Route    api/session/seen??
 const putSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
@@ -134,7 +134,7 @@ const getSessions = asyncHandler(async (req, res) => {
 
 /******* NOT USED ************/
 // Adds a spotted bird to the count db
-// Route    api/session/seen
+// Route    api/session/seen??
 // Page     add-bird
 const OLDpostSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT

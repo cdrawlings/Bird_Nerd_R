@@ -10,13 +10,12 @@ const postSeen = async (sessionData, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-
     const response = await axios.post(API_URL + '/post-seen', sessionData, config)
     return response.data
 }
 
 
-// Get birds seen in session
+// Get birds seen?? in session
 const getSeen = async (id, token) => {
     const config = {
         headers: {

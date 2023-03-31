@@ -12,53 +12,78 @@ import FindBird from "./pages/findBird"
 import AddBird from "./pages/addBird"
 import Session from "./pages/session"
 import PrivateRoute from "./components/PrivateRoute";
-import AuthTemplate from "./components/AuthTemplate";
-import ContentTemplate from "./components/ContentTemplate";
+import Header from './components/header';
 
 
 function App() {
-    return <>
-        <Router>
-            <div className="container">
-                <Routes>
-                    <Route path="" element={<AuthTemplate/>}>
+    return (
+        <>
+            <Router>
+                <div className="container">
+                    <Header/>
+                    <Routes>
+                        <Route path="/" element={<Current/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Registration/>}/>
-                    </Route>
-                </Routes>
 
 
-                <Routes>
-                    <Route path="" element={<ContentTemplate/>}>
                         <Route index element={<Current/>}/>
-                        <Route path="/dashboard" element={<PrivateRoute/>}>
-                            <Route path="/dashboard" element={<Home/>}/>
-                        </Route>
 
-                        <Route path="/bird" element={<PrivateRoute/>}>
-                            <Route path="/bird" element={<Bird/>}/>
-                        </Route>
-                        <Route path="/profile" element={<PrivateRoute/>}>
-                            <Route path="/profile" element={<Profile/>}/>
-                        </Route>
-                        <Route path="/find-bird" element={<PrivateRoute/>}>
-                            <Route path="/find-bird" element={<FindBird/>}/>
-                        </Route>
-                        <Route path="/add-bird/:id" element={<PrivateRoute/>}>
-                            <Route path="/add-bird/:id" element={<AddBird/>}/>
-                        </Route>
-                        <Route path="/session/:id" element={<PrivateRoute/>}>
-                            <Route path="/session/:id" element={<Session/>}/>`
-                        </Route>
-
-                    </Route>
+                        <Route
+                            path="/dashboard"
+                            element={
+                                <PrivateRoute>
+                                    <Home/>
+                                </PrivateRoute>
+                            }/>
 
 
-                </Routes>
-      </div>
-    </Router>
-    <ToastContainer />
-  </>
+                        <Route
+                            path="/bird"
+                            element={
+                                <PrivateRoute>
+                                    <Bird/>
+                                </PrivateRoute>
+                            }/>
+
+                        <Route
+                            path="/profile"
+                            element={
+                                <PrivateRoute>
+                                    <Profile/>
+                                </PrivateRoute>
+                            }/>
+
+                        <Route
+                            path="/find-bird"
+                            element={
+                                <PrivateRoute>
+                                    <FindBird/>
+                                </PrivateRoute>
+                            }/>
+                        <Route
+                            path="/add-bird/:id"
+                            element={
+                                <PrivateRoute>
+                                    <AddBird/>
+                                </PrivateRoute>
+                            }/>
+
+                        <Route
+                            path="/session/:id"
+                            element={
+                                <PrivateRoute>
+                                    <Session/>
+                                </PrivateRoute>
+                            }/>
+
+
+                    </Routes>
+                </div>
+            </Router>
+            <ToastContainer/>
+        </>
+    )
 }
 
 export default App;

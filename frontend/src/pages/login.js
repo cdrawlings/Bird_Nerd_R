@@ -2,7 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {toast} from 'react-toastify'
-import {FaSignInAlt} from 'react-icons/fa'
+
+
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSignInAlt} from '@fortawesome/free-solid-svg-icons'
 import {login, reset} from '../features/auth/authSlice'
 import BirdImg from '../img/login.jpg'
 import Spinner from '../components/spinner'
@@ -69,7 +72,7 @@ function Login() {
                         <p className="login-subtitle">The bird watchers tracking app</p>
                     </div>
                     <div className="login-text">
-                        <h1><FaSignInAlt/> Login</h1>
+                        <h1><FontAwesomeIcon icon={faSignInAlt}/> Login</h1>
                     </div>
 
                     <div className="form">

@@ -10,13 +10,11 @@ function Current() {
     const {ebirds} = useSelector((state) => state.ebirds)
     const [loading, setLoading] = useState(true)
 
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
         getCoords();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -48,11 +46,9 @@ function Current() {
             if (response) {
                 let data = await response.json()
                 city = data.results[0].address_components[3].long_name
-
-
             }
 
-            // Get the recent birds seen in the area from ebird.org
+            // Get the recent birds seen?? in the area from ebird.org
             if(response){
 
             const birdsResponse = await fetch(`https://api.ebird.org/v2/data/obs/geo/recent?lat=${lat}&lng=${lon}`, requestOptions)

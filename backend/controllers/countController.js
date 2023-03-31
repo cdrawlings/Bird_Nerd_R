@@ -8,20 +8,19 @@ const Count = require('../model/countModel')
 const Session = require('../model/sessionModel')
 
 
-// Toggled seen not seened bird on the session page
+// Toggled seen?? not seened bird on the session page
 // Route    api/session/toogle
 // Page     session
 const postSeen = asyncHandler(async (req, res) => {
     // Get user using the id in the JWT
     const user = await User.findById(req.user.id)
 
-    console.log("Save started")
-
     if (!user) {
         res.status(401)
         throw new Error('User not found.')
     }
 
+    console.log("Save started")
     const createCount = await Count.findOneAndUpdate({
         birdId: req.body.birdid,
         session: req.body.sessionid
@@ -33,7 +32,7 @@ const postSeen = asyncHandler(async (req, res) => {
         upsert: true,
         new: true,
     });
-
+    console.log("Count", count)
     console.log("Should be saved")
 
     const now = Date.now()

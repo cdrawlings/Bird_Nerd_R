@@ -49,6 +49,7 @@ const createBird = asyncHandler(async (req, res) => {
         speciesCode: req.body.speciesCode,
         comName: req.body.comName,
         user: req.user.id,
+        _id: req.body.birdid,
     });
 
     res.status(201).json(createBird)

@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
+
 import Modal from 'react-modal';
-import {FaPlus} from 'react-icons/fa'
-// import BackButton from "../components/BackButton";
-import {createBird, reset} from "../features/bird/birdSlice";
-import {getLast} from "../features/last/lastSlice";
+
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPlus} from '@fortawesome/free-solid-svg-icons'
+import {addBird, createBird} from "../features/bird/birdSlice";
+import Spinner from "../components/spinner";
+import {postSeen} from "../features/toggle/toggleSlice";
 
 /* gets and displays the list of birds. Once a bird is selected
 it will be added to the Bird Database
@@ -13,7 +16,7 @@ it will be added to the Bird Database
 The page will advance to add-bird. There the bird will be added
 to the session database and the number of birds
 will be added to the cCount database
- */
+*/
 
 const customStyle = {
     content: {
@@ -30,12 +33,11 @@ const customStyle = {
 
 Modal.setAppElement('#root')
 
-
 function AddBird() {
     const {last} = useSelector((state) => state.last)
     const {ebirds} = useSelector((state) => state.ebirds)
-    const {birds, isSuccess,} = useSelector((state) => state.bird)
-
+    const {birds, isSuccess, isLoading} = useSelector((state) => state.bird)
+    const {postSuccess} = useSelector((state) => state.toggle)
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
@@ -50,6 +52,9 @@ function AddBird() {
         seen: "",
     })
 
+    const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
+        rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
+
     const {comName, count, speciesCode, birdid, updated, sessionid, seen} = modal
 
     const [filtered, setFiltered] = useState([])
@@ -59,13 +64,13 @@ function AddBird() {
     const params = useParams()
 
     useEffect(() => {
-        if (isSuccess) {
-            dispatch(getLast)
-            console.log("Last", last)
+        if (isLoading) {
+            <Spinner/>
         }
-
-    }, [isSuccess, dispatch])
-
+        if (postSuccess) {
+            navigate('/dashboard')
+        }
+    }, [isLoading, navigate, postSuccess])
 
     // Filter the bird by input
     const filter = (e) => {
@@ -80,7 +85,6 @@ function AddBird() {
         });
         setFiltered(result);
     }
-
 
     // Show the full list of birds
     const fillList = () => {
@@ -101,27 +105,37 @@ function AddBird() {
         birdList.style.display = 'none'
     }
 
+
     const closeModal = () => setModalIsOpen(false)
 
     const openModal = (index) => {
         const views = ebirds;
+        let bId = ObjectId();
 
         const viewed = views.map((bird, i) => {
+
             if (i === index) {
                 const comName = bird.comName
                 const count = bird.count
                 const speciesCode = bird.speciesCode
-                const updated = Date.now()
                 const sessionid = params.id
-                const seen = true
+                const birdid = bId;
+                const _id = bId;
 
-                const element = {count, sessionid, speciesCode, comName, seen, updated}
+
+                const element = {count, sessionid, speciesCode, comName, birdid}
+                const data = {speciesCode, comName, _id}
                 setModal(element)
+                dispatch(createBird(data))
+                dispatch(addBird(data))
+                console.log("_id", _id)
+                console.log("Data", data)
+
+                setModalIsOpen(true)
             }
         });
-
-        setModalIsOpen(true)
     }
+
 
     const onChange = (e) => {
         setModal((prevState) => ({
@@ -132,36 +146,8 @@ function AddBird() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const views = ebirds;
-
-        console.log("Submitting")
-
-        const resetModal = {
-            comName: "",
-            count: "",
-            speciesCode: "",
-            birdid: "",
-            updated: "",
-            sessionid: "",
-            seen: "",
-        }
-
-        console.log("new Bird")
-
-        dispatch(createBird(modal))
-
-        console.log("Bird Created")
-
-        dispatch(reset())
-        setModal(resetModal)
-        // dispatch(addBird(modalData))
-
-        // navigate("/session/" + params.id)
-
-        setModalIsOpen(false)
+        dispatch(postSeen(modal))
     }
-
-
 
     return (
         <>
@@ -200,7 +186,7 @@ function AddBird() {
                                             <div>{bird.comName}</div>
                                             <button id={bird.speciesCode} className="bird-count"
                                                     onClick={() => openModal(index)}>
-                                                <FaPlus/>
+                                                <FontAwesomeIcon icon={faPlus}/>
                                             </button>
                                         </div>
                                     )
