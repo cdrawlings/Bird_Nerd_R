@@ -50,7 +50,6 @@ const postSeen = asyncHandler(async (req, res) => {
     res.status(200).json(createCount)
 });
 
-
 // get users a single session by ID
 // Route    api/session/session/:id
 const getSeen = asyncHandler(async (req, res) => {

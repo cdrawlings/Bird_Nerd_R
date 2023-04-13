@@ -51,6 +51,8 @@ function Session() {
     const navigate = useNavigate()
     const params = useParams()
 
+    console.log(" session param ID", params)
+
     // Add a count element and set birds to sessionBirds
     useEffect(() => {
 

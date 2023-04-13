@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = '/api/bird'
+const API_URL = '/api/session'
 
-//Get the last spotted bird
+//Get the last session
 const getLast = async (token) => {
     const config = {
         headers: {

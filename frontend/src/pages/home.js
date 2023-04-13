@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {createSession, getSession} from '../features/session/sessionSlice'
+import {createSession} from '../features/session/sessionSlice'
 import dayjs from 'dayjs';
 import {getAllBird} from "../features/bird/birdSlice";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import LastSession from "../components/LastSession";
-
+import {getLast} from "../features/last/lastSlice";
 
 const data = [
     {year: 1980, efficiency: 24.3, sales: 8949000},
@@ -15,14 +15,22 @@ const data = [
     {year: 1991, efficiency: 28.4, sales: 8185000},
     {year: 1992, efficiency: 27.9, sales: 8213000},
     {year: 1993, efficiency: 28.4, sales: 8518000},
-]
-
+    {year: 1994, efficiency: 28.3, sales: 8991000},
+    {year: 1995, efficiency: 28.6, sales: 8620000},
+    {year: 1996, efficiency: 28.5, sales: 8479000},
+    {year: 1997, efficiency: 28.7, sales: 8217000},
+    {year: 1998, efficiency: 28.8, sales: 8085000},
+    {year: 1999, efficiency: 28.3, sales: 8638000},
+    {year: 2000, efficiency: 28.5, sales: 8778000},
+    {year: 2001, efficiency: 28.8, sales: 8352000},
+    {year: 2002, efficiency: 29, sales: 8042000},]
 function Home() {
     const {user} = useSelector((state) => state.auth)
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {session, sessionSuccess} = useSelector((state) => state.session)
     const {birds} = useSelector((state) => state.bird)
+    const {last} = useSelector((state) => state.last)
 
     const [success, setSuccess] = useState(false)
 
@@ -35,24 +43,71 @@ function Home() {
     const date = dayjs().format('dddd, MMMM D, YYYY')
     const position = [location.lat, location.lon]
 
+    const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
+        rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
+
     // Gets the last bird watching session
     useEffect(() => {
-        dispatch(getSession())
         dispatch(getAllBird())
+        dispatch(getLast())
+        //  dispatch(flattened())
     }, [dispatch])
 
-    // When click saves the local data to a new session and updates the last session
+
+    console.log('Last:', last)
+
+    /*
+        let flattenedData
+
+        const flattened = () => {
+            flattenedData = data.map((x) =>
+                ({
+                    createdAt:x.session[0].createdAt,
+                    count:x.count,
+                    name:x.birds[0].comName
+                })
+            )
+        }
+
+        flattened()
+
+        console.log("3", flattenedData)
+
+
+      const flattened = () => {
+          flattenedData = last.map(({ session: [{ createdAt }], count, birds: [{ comName }] }) => ({
+            createdAt,
+            count,
+            comName
+      }));
+      }
+
+      arr.map((x) =>
+          ({
+              createdAt:x.location[0].createdAt,
+              count:x.count,
+              name:x.item[0].name
+          })
+      )
+      */
+
+
+// When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
+        let sid = ObjectId();
+
         let city = location.city;
         let lat = location.lat;
         let lon = location.lon;
+        let id = sid;
         // let temperature = document.getElementById('add_temp').innerText;
         // let visibility = document.getElementById('add_vis').innerText;
         // let condition = document.getElementById('add_cond').innerText;
         // let icon = document.getElementById('add_icon').innerText;
 
+
         let sessData = {
-            city, lat, lon, // icon,
+            city, lat, lon, id, // icon,
             // temperature,
             // visibility,
             // condition,
@@ -60,12 +115,7 @@ function Home() {
         }
 
         dispatch(createSession(sessData))
-
-        dispatch(getSession())
-
-        setSuccess(true)
-
-        navigate('/session/' + session._id)
+        navigate('/session/' + sid)
     }
 
 
@@ -127,7 +177,7 @@ function Home() {
                     <div className="last-container">
                         <p className="card-title">Last bird watching session</p>
                         <p>Last bird watching session</p>
-                        <LastSession data={data}/>
+                        <LastSession data={last}/>
                     </div>
                 </section>
 

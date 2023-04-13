@@ -30,41 +30,6 @@ export const createSession = createAsyncThunk('session/create', async (sessionDa
     }
 })
 
-// Get all bird watching sessions
-export const getSessions = createAsyncThunk('session/getSessions', async (sessionData, thunkAPI) => {
-    try {
-        const token = thunkAPI.getState().auth.user.token
-        return await sessionService.getSessions(token)
-    } catch (error) {
-        const message =
-            (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-            error.message ||
-            error.toString()
-
-        return thunkAPI.rejectWithValue(message)
-    }
-})
-
-// Get Last bird watching session
-export const getSession = createAsyncThunk('session/getSession', async (sessionData, thunkAPI) => {
-    try {
-        const token = thunkAPI.getState().auth.user.token
-        return await sessionService.getSession(token)
-    } catch (error) {
-        const message =
-            (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-            error.message ||
-            error.toString()
-
-        return thunkAPI.rejectWithValue(message)
-    }
-})
-
-
 export const sessionSlice = createSlice({
     name: 'session',
     initialState,
@@ -85,32 +50,7 @@ export const sessionSlice = createSlice({
                 state.sessionError = true
                 state.sessionMessage = action.payload
             })
-            .addCase(getSessions.pending, (state) => {
-                state.sessionLoading = true
-            })
-            .addCase(getSessions.fulfilled, (state, action) => {
-                state.sessionLoading = false
-                state.sessionSuccess = true
-                state.session = action.payload
-            })
-            .addCase(getSessions.rejected, (state, action) => {
-                state.sessionLoading = true
-                state.sessionError = true
-                state.sessionMessage = action.payload
-            })
-            .addCase(getSession.pending, (state) => {
-                state.sessionLoading = true
-            })
-            .addCase(getSession.fulfilled, (state, action) => {
-                state.sessionLoading = false
-                state.sessionSuccess = true
-                state.session = action.payload
-            })
-            .addCase(getSession.rejected, (state, action) => {
-                state.sessionLoading = true
-                state.sessionError = true
-                state.sessionMessage = action.payload
-            })
+
     }
 })
 

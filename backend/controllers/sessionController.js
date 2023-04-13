@@ -4,6 +4,7 @@ const User = require('../model/userModel')
 const Bird = require('../model/birdModel')
 const Count = require('../model/countModel')
 const Session = require('../model/sessionModel')
+const mongoose = require("mongoose");
 
 
 
@@ -27,14 +28,11 @@ const createSession = asyncHandler(async (req, res) => {
         city: req.body.city,
         lon: req.body.lon,
         lat: req.body.lat,
+        _id: req.body.id,
         user,
     });
 
-    const sessionid = create.id
-
-
     res.status(200).json({message: "Started a new bird watching session"})
-
 });
 
 // get Last bird entered for user
@@ -53,6 +51,57 @@ const getSession = asyncHandler(async (req, res) => {
     const session = await Session.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
 
     res.status(200).json(session[0])
+});
+
+
+// get Last bird entered for user
+// Route    GET api/bird/last
+const lastSeen = asyncHandler(async (req, res) => {
+    //Get user with ID  in JWT
+    const lastSession = await Session.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
+    const last = lastSession[0]._id
+
+    console.log("Last Controller", last)
+
+    const sessionlast = await Count.aggregate([
+
+        {$match: {session: last}},
+        {
+            $lookup: {
+                from: "birds",
+                localField: "birdId",
+                foreignField: "_id",
+                as: "birds",
+            },
+        },
+        {
+            $lookup: {
+                from: "sessions",
+                localField: "session",
+                foreignField: "_id",
+                as: "session",
+            },
+        },
+        {
+            $project: {
+                _id: 0, count: 1, birds: {comName: 1, created: 1}, session: {createdAt: 1}
+            }
+        },
+    ]);
+
+    let flat = sessionlast.map((x) =>
+        ({
+            count: x.count,
+            created: x.birds[0].created,
+            date: x.session[0].createdAt,
+            name: x.birds[0].comName,
+        })
+    )
+
+
+    console.log("Last flat:", flat)
+
+    res.status(200).json(flat)
 });
 
 
@@ -78,7 +127,6 @@ const sessionSeen = asyncHandler(async (req, res) => {
     res.status(200).json(createCount)
 
 });
-
 
 /******* NOT USED ************/
 // update the session count to a previoiusly spotted bitd
@@ -112,7 +160,6 @@ const putSeen = asyncHandler(async (req, res) => {
     res.status(200).json(updateSeen)
 });
 
-
 /******* NOT USED ************/
 // get users list of spotted birds
 // Route    api/bird/
@@ -130,7 +177,6 @@ const getSessions = asyncHandler(async (req, res) => {
 
     res.status(200).json(sessions)
 });
-
 
 /******* NOT USED ************/
 // Adds a spotted bird to the count db
@@ -161,7 +207,6 @@ const OLDpostSeen = asyncHandler(async (req, res) => {
     res.status(200).json(seen)
 
 });
-
 
 /******* NOT USED ************/
 // update a session with bird info and count
@@ -230,7 +275,6 @@ const updateWatch = asyncHandler(async (req, res) => {
 
     res.status(200).json(updateWatch)
 });
-
 
 /******* NOT USED ************/
 // get users a single session by ID
@@ -307,4 +351,5 @@ module.exports = {
     getSession,
     putSeen,
     sessionSeen,
+    lastSeen,
 }
