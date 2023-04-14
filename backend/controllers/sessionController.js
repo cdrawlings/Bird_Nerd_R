@@ -61,10 +61,7 @@ const lastSeen = asyncHandler(async (req, res) => {
     const lastSession = await Session.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
     const last = lastSession[0]._id
 
-    console.log("Last Controller", last)
-
     const sessionlast = await Count.aggregate([
-
         {$match: {session: last}},
         {
             $lookup: {
@@ -97,9 +94,6 @@ const lastSeen = asyncHandler(async (req, res) => {
             name: x.birds[0].comName,
         })
     )
-
-
-    console.log("Last flat:", flat)
 
     res.status(200).json(flat)
 });

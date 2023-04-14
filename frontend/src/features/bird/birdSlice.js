@@ -12,29 +12,11 @@ const initialState = {
 }
 
 
-// Add a new bird to spotted list
+// Add a new bird to spotted list - U
 export const createBird = createAsyncThunk('bird/create', async (birdData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
         return await birdService.createBird(birdData, token)
-    } catch (error) {
-        const message =
-            (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-            error.message ||
-            error.toString()
-
-        return thunkAPI.rejectWithValue(message)
-    }
-})
-
-
-// Get the last bird added to DB
-export const getBird = createAsyncThunk('bird/create', async (birdData, thunkAPI) => {
-    try {
-        const token = thunkAPI.getState().auth.user.token
-        return await birdService.getBird(birdData, token)
     } catch (error) {
         const message =
             (error.response &&

@@ -31,7 +31,6 @@ const getAllBird = async (token) => {
 const birdService = {
     createBird,
     getAllBird,
-
 }
 
 export default birdService

@@ -33,11 +33,15 @@ const createBird = asyncHandler(async (req, res) => {
         throw new Error('User not found.')
     }
 
+    console.log("Create working")
+
     // Check if the new bird has already been added to DB
     const seen = await Bird.exists({
         user: req.user.id,
         speciesCode: req.body.speciesCode,
     })
+
+    console.log("Create working")
 
     if (seen) {
         res.status(401)
@@ -49,7 +53,7 @@ const createBird = asyncHandler(async (req, res) => {
         speciesCode: req.body.speciesCode,
         comName: req.body.comName,
         user: req.user.id,
-        _id: req.body.birdid,
+        _id: req.body._id,
     });
 
     res.status(201).json(createBird)

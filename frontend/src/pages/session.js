@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import Modal from 'react-modal';
 import BackButton from "../components/BackButton";
-import {createBird} from "../features/bird/birdSlice";
 import {postSeen, reset} from "../features/toggle/toggleSlice";
+import {addBird} from "../features/addBird/addBirdSlice";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBinoculars, faDove, faInfo, faMinus, faPlus, faTimes} from '@fortawesome/free-solid-svg-icons'
@@ -51,7 +51,6 @@ function Session() {
     const navigate = useNavigate()
     const params = useParams()
 
-    console.log(" session param ID", params)
 
     // Add a count element and set birds to sessionBirds
     useEffect(() => {
@@ -88,9 +87,8 @@ function Session() {
                 const speciesCode = bird.speciesCode
                 const birdid = bird.birdid
                 const sessionid = params.id
-                const seen = true
 
-                const toggle = {birdid, count, sessionid, speciesCode, comName, seen}
+                const toggle = {birdid, count, sessionid, speciesCode, comName}
                 dispatch(postSeen(toggle))
                 dispatch(reset())
                 return toggle
@@ -119,9 +117,8 @@ function Session() {
                 const speciesCode = bird.speciesCode
                 const birdid = bird.birdid
                 const sessionid = params.id
-                const seen = true
 
-                const toggle = {birdid, count, sessionid, speciesCode, comName, seen}
+                const toggle = {birdid, count, sessionid, speciesCode, comName}
 
 
                 dispatch(postSeen(toggle))
@@ -161,9 +158,6 @@ function Session() {
     const openNewModal = (index) => {
         const newId = ObjectId()
 
-        console.log('Opened')
-        console.log('New ID', newId)
-
         const viewed = ebirds.map((bird, i) => {
             if (i === index) {
                 const comName = bird.comName
@@ -172,14 +166,12 @@ function Session() {
                 const sessionid = params.id
 
                 const element = {birdid, sessionid, speciesCode, comName}
-
                 setModal(element)
-
-                dispatch(createBird(element))
             }
         });
         setModalForNew(true)
     }
+
 
     // Open the instruct Div
     const openInstruct = (e) => {
@@ -262,9 +254,6 @@ function Session() {
         birdList.style.display = 'none'
     }
 
-    const addBirdNav = () => {
-
-    }
 
     function onChange(e) {
         setModal((prevState) => ({
@@ -311,14 +300,13 @@ function Session() {
     const onSubmitNew = (e) => {
         e.preventDefault();
 
-        const views = sessionBirds;
-
         const modalData = {
             comName: modal.comName,
             speciesCode: modal.speciesCode,
             count: parseInt(count),
             birdid: modal.birdid,
-            sessionid: modal.sessionid,
+            sessionid: params.id,
+            user
         }
 
         const resetModal = {
@@ -329,9 +317,14 @@ function Session() {
             sessionid: "",
         }
 
-        dispatch(postSeen(modalData))
+        dispatch(addBird(modalData))
 
-        addNew(modalData)
+        console.log('ADD NEW START')
+
+        setSessionBirds((prevState) => ([...prevState, modalData]))
+
+        console.log('Modal data', modal)
+        console.log('Session Birds', sessionBirds)
 
         setModal(resetModal)
         reloadComponent()
@@ -341,8 +334,10 @@ function Session() {
     }
 
     const addNew = (modalData) => {
+        console.log('ADD NEW START')
         setSessionBirds([...sessionBirds, modalData]);
     }
+
 
     return (
         <>
@@ -450,6 +445,7 @@ function Session() {
                             seen before.</p>
                     </div>
                 </div>
+
 
                 <div className='add-bird-session new-bird' id='new-bird'>
 

@@ -4,9 +4,10 @@ import * as d3 from 'd3';
 
 function LastSession({data}) {
 
-
-
     const ref = useD3(() => {
+
+
+            console.log("D3 Chart", data)
 
             // Dimensions
             let dimensions = {
@@ -29,8 +30,6 @@ function LastSession({data}) {
                     "transform",
                     `translate(${dimensions.margins}, ${dimensions.margins})`
                 )
-
-
         },
         [data.length]
     )

@@ -6,7 +6,6 @@ import Modal from 'react-modal';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
-import {addBird, createBird} from "../features/bird/birdSlice";
 import Spinner from "../components/spinner";
 import {postSeen} from "../features/toggle/toggleSlice";
 
@@ -44,18 +43,15 @@ function AddBird() {
     // const [items, setItems] = useState([]);
     const [modal, setModal] = useState({
         comName: "",
-        count: "",
         speciesCode: "",
         birdid: "",
-        updated: "",
-        sessionid: "",
-        seen: "",
+        count: ""
     })
 
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
-    const {comName, count, speciesCode, birdid, updated, sessionid, seen} = modal
+    const {comName, speciesCode, birdid, count} = modal
 
     const [filtered, setFiltered] = useState([])
 
@@ -116,20 +112,15 @@ function AddBird() {
 
             if (i === index) {
                 const comName = bird.comName
-                const count = bird.count
                 const speciesCode = bird.speciesCode
                 const sessionid = params.id
                 const birdid = bId;
-                const _id = bId;
 
+                console.log("Add ID", bId)
 
-                const element = {count, sessionid, speciesCode, comName, birdid}
-                const data = {speciesCode, comName, _id}
+                const element = {sessionid, speciesCode, comName, birdid}
+
                 setModal(element)
-                dispatch(createBird(data))
-                dispatch(addBird(data))
-                console.log("_id", _id)
-                console.log("Data", data)
 
                 setModalIsOpen(true)
             }
@@ -145,6 +136,7 @@ function AddBird() {
     }
 
     const onSubmit = (e) => {
+
         e.preventDefault();
         dispatch(postSeen(modal))
     }

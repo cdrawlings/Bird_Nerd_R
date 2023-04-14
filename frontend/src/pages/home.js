@@ -54,44 +54,6 @@ function Home() {
     }, [dispatch])
 
 
-    console.log('Last:', last)
-
-    /*
-        let flattenedData
-
-        const flattened = () => {
-            flattenedData = data.map((x) =>
-                ({
-                    createdAt:x.session[0].createdAt,
-                    count:x.count,
-                    name:x.birds[0].comName
-                })
-            )
-        }
-
-        flattened()
-
-        console.log("3", flattenedData)
-
-
-      const flattened = () => {
-          flattenedData = last.map(({ session: [{ createdAt }], count, birds: [{ comName }] }) => ({
-            createdAt,
-            count,
-            comName
-      }));
-      }
-
-      arr.map((x) =>
-          ({
-              createdAt:x.location[0].createdAt,
-              count:x.count,
-              name:x.item[0].name
-          })
-      )
-      */
-
-
 // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
         let sid = ObjectId();

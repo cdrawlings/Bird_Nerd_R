@@ -17,6 +17,7 @@ to the session database and the number of birds
 will be added to the cCount database
 */
 
+// Custom styles for Modal
 const customStyle = {
     content: {
         backgroundColor: 'transparent',
@@ -38,6 +39,9 @@ function FindBird() {
     const {ebirds} = useSelector((state) => state.ebirds)
     const {birds, isSuccess, isLoading} = useSelector((state) => state.bird)
     const {postSuccess, reset} = useSelector((state) => state.toggle)
+    const {location} = useSelector((state) => state.location)
+
+    console.log("Location", location)
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
@@ -48,14 +52,26 @@ function FindBird() {
         speciesCode: "",
         birdid: "",
         updated: "",
+        city: location.city,
+        lon: location.lon,
+        lat: location.lat,
         sessionid: "",
-        seen: "",
+        //temperature: location.temperature,
+        //condition: location.condition,
+        //visibility: location.visibility,
+        //icon: location.icon,
+
     })
 
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
-    const {comName, count, speciesCode, birdid, updated, sessionid, seen} = modal
+    const {
+        comName,
+        count,
+        speciesCode,
+        birdid, updated, sessionid, city, lon, lat
+    } = modal
 
     const [filtered, setFiltered] = useState([])
 
@@ -107,27 +123,32 @@ function FindBird() {
 
     const closeModal = () => setModalIsOpen(false)
 
+
+    // Creates a new bird entry in the bird DB including name, speciescode and birdID
     const openModal = (index) => {
         const views = ebirds;
-        let bId = ObjectId();
+        const bId = ObjectId();
 
         const viewed = views.map((bird, i) => {
 
             if (i === index) {
                 const comName = bird.comName
-                const count = bird.count
                 const speciesCode = bird.speciesCode
-                const sessionid = params.id
+                const sessionid = ObjectId()
                 const birdid = bId;
                 const _id = bId;
 
 
-                const element = {count, sessionid, speciesCode, comName, birdid}
+                console.log("bird ID", _id)
+
+                const element = {sessionid, speciesCode, comName, birdid, city, lat, lon}
+
+
                 const data = {speciesCode, comName, _id}
+                console.log("Element", element)
                 setModal(element)
                 dispatch(createBird(data))
-                console.log("_id", _id)
-                console.log("Data", data)
+                console.log("Data - new bird", data)
 
                 setModalIsOpen(true)
             }
@@ -142,7 +163,9 @@ function FindBird() {
         }))
     }
 
+
     const onSubmit = (e) => {
+        console.log("Modal", modal)
         e.preventDefault();
         dispatch(postSeen(modal))
         navigate('/dashboard');
