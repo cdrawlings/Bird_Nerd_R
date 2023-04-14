@@ -54,6 +54,9 @@ function Home() {
     }, [dispatch])
 
 
+    console.log("Spotted birds", birds)
+
+
 // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
         let sid = ObjectId();

@@ -41,6 +41,7 @@ function Session() {
         sessionid: "",
     })
 
+
     // Modal states
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [modalForNew, setModalForNew] = useState(false)
@@ -171,7 +172,6 @@ function Session() {
         });
         setModalForNew(true)
     }
-
 
     // Open the instruct Div
     const openInstruct = (e) => {

@@ -79,14 +79,16 @@ const newBird = asyncHandler(async (req, res) => {
         throw new Error('User not found.')
     }
 
-    console.log("New Bird Save started")
+    console.log("New Bird Save started", req.user.id)
 
     const newBird = await Bird.create({
         speciesCode: req.body.speciesCode,
         comName: req.body.comName,
         _id: req.body.birdid,
+        user: req.user.id
     });
 
+    console.log("new Bird", newBird)
 
     const createCount = await Count.findOneAndUpdate({
         birdId: req.body.birdid,
@@ -94,7 +96,7 @@ const newBird = asyncHandler(async (req, res) => {
     }, {
         count: req.body.count,
         session: req.body.sessionid,
-        birdId: req.body.birdid
+        birdId: req.body.birdid,
     }, {
         upsert: true,
         new: true,
