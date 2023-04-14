@@ -79,7 +79,6 @@ const newBird = asyncHandler(async (req, res) => {
         throw new Error('User not found.')
     }
 
-    console.log("New Bird Save started", req.user.id)
 
     const newBird = await Bird.create({
         speciesCode: req.body.speciesCode,

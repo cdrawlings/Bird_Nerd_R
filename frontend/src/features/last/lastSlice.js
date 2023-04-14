@@ -10,8 +10,8 @@ const initialState = {
 }
 
 
-// Get the last bird added to DB
-export const getLast = createAsyncThunk('bird/last', async (birdData, thunkAPI) => {
+// Get the last session added to DB
+export const getLast = createAsyncThunk('session/last', async (birdData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
         return await lastService.getLast(token)

@@ -54,7 +54,7 @@ function Home() {
     }, [dispatch])
 
 
-    console.log("Spotted birds", birds)
+    console.log("last Spotted birds", last)
 
 
 // When click saves the local data to a new session and updates the last session
