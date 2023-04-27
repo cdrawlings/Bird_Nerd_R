@@ -1,53 +1,35 @@
-import {useD3} from '../hooks/useD3';
-import React from 'react';
-import * as d3 from 'd3';
+import React, {useEffect, useRef} from "react";
+import {select} from "d3";
+import useResizeObserver from "../hooks/useResizeObserver";
+
+/**
+ * Component that renders a StackedBarChart
+ */
 
 function LastSession({data}) {
+    const svgRef = useRef();
+    const wrapperRef = useRef();
+    const dimensions = useResizeObserver(wrapperRef);
 
-    const ref = useD3(() => {
+    // will be called initially and on every data change
+    useEffect(() => {
+        const svg = select(svgRef.current);
+        const {width, height} =
+        dimensions || wrapperRef.current.getBoundingClientRect();
 
 
-            console.log("D3 Chart", data)
-
-            // Dimensions
-            let dimensions = {
-                width: 1000,
-                height: 600,
-                margins: 20,
-            };
-
-            dimensions.ctrWidth = dimensions.width - dimensions.margins * 2
-            dimensions.ctrHeight = dimensions.height - dimensions.margins * 2
-
-// Draw Image
-            const svg = d3.select('#chart')
-                .append("svg")
-                .attr("width", dimensions.width)
-                .attr("height", dimensions.height)
-
-            const ctr = svg.append("g")
-                .attr(
-                    "transform",
-                    `translate(${dimensions.margins}, ${dimensions.margins})`
-                )
-        },
-        [data.length]
-    )
+    }, [data, dimensions]);
 
     return (
-        <svg
-            ref={ref}
-            style={{
-                height: 500,
-                width: "100%",
-                marginRight: "0px",
-                marginLeft: "0px",
-            }}
-        >
-            <g className="plot-area"/>
-            <g className="x-axis"/>
-            <g className="y-axis"/>
-        </svg>
+        <React.Fragment>
+            <div ref={wrapperRef} style={{marginBottom: "2rem"}}>
+                <svg ref={svgRef}>
+                    <g className="x-axis"/>
+                    <g className="y-axis"/>
+                </svg>
+            </div>
+        </React.Fragment>
     );
 }
+
 export default LastSession;
