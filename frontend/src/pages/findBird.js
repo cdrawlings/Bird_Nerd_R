@@ -218,6 +218,11 @@ function FindBird() {
                         </div>
                     </div>
                 </section>
+
+                <section className="bottom-cards">
+                    <div className="dash-buttons">
+                    </div>
+                </section>
             </div>
 
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal}

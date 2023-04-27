@@ -54,8 +54,6 @@ function Home() {
     }, [dispatch])
 
 
-    console.log("last Spotted birds", last)
-
 
 // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
@@ -92,7 +90,7 @@ function Home() {
             <div className="main">
 
 
-                <p className="greeting">Current conditions for kalaual umpur Bostin {location.city}, {date}</p>
+                <p className="greeting">Current conditions for {location.city}, {date}</p>
 
 
                 <section className='dash-weather-card'>
@@ -122,26 +120,26 @@ function Home() {
                     </div>
                 </section>
 
-                <MapContainer className='map_container' center={position} zoom={13}
-                              scrollWheelZoom={false}
-                              attributionControl={false}>
+                <section>
+                    <MapContainer className='map_container' center={position} zoom={13}
+                                  scrollWheelZoom={false}
+                                  attributionControl={false}>
 
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={position}>
-                        <Popup>
-                            A pretty CSS3 popup. <br/> Easily customizable.
-                        </Popup>
-                    </Marker>
-                </MapContainer>
-
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={position}>
+                            <Popup>
+                                A pretty CSS3 popup. <br/> Easily customizable.
+                            </Popup>
+                        </Marker>
+                    </MapContainer>
+                </section>
 
                 <section className='last-watch'>
                     <div className="last-container">
                         <p className="card-title">Last bird watching session</p>
-                        <p>Last bird watching session</p>
                         <LastSession data={last}/>
                     </div>
                 </section>

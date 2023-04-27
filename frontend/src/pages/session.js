@@ -7,7 +7,7 @@ import {postSeen, reset} from "../features/toggle/toggleSlice";
 import {addBird} from "../features/addBird/addBirdSlice";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faBinoculars, faDove, faInfo, faMinus, faPlus, faTimes} from '@fortawesome/free-solid-svg-icons'
+import {faDove, faEye, faInfo, faMinus, faPlus, faTimes} from '@fortawesome/free-solid-svg-icons'
 
 const customStyle = {
     content: {
@@ -72,6 +72,7 @@ function Session() {
 
     }, [setSessionBirds])
 
+
     // Create a MongoDB like _Id
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
@@ -103,6 +104,7 @@ function Session() {
 
         setSessionBirds(viewed)
     }
+
 
     // Minus one to count
     const minusOne = (index) => {
@@ -255,16 +257,19 @@ function Session() {
     }
 
 
-    function onChange(e) {
+    const onChange = (e) => {
         setModal((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }))
     }
 
+
     // Add multiple birds to
     const onSubmit = (e) => {
         e.preventDefault();
+
+        console.log("Submit Modal", modal)
 
         const views = sessionBirds;
         const modalData = {
@@ -272,6 +277,7 @@ function Session() {
             speciesCode,
             birdid,
             sessionid,
+            count
         }
 
         const resetModal = {
@@ -281,6 +287,10 @@ function Session() {
             birdid: "",
             sessionid: "",
         }
+
+
+        console.log("Modal Data", modalData)
+        console.log("Session Birds", sessionBirds)
 
         const viewed = views.map((bird) => {
             if (birdid === bird.birdid) {
@@ -292,13 +302,25 @@ function Session() {
             }
         });
 
-        setSessionBirds(viewed)
+
+        const newCount = sessionBirds.map((count) => {
+            if (count.birdid === birdid) {
+                return {...count, count: parseInt(modalData.count)};
+            }
+            return count;
+        });
+
+        setSessionBirds(newCount);
+
+
+        console.log("Session Birds 2", sessionBirds)
         setModal(resetModal)
         setModalIsOpen(false)
     }
 
     const onSubmitNew = (e) => {
         e.preventDefault();
+
 
         const modalData = {
             comName: modal.comName,
@@ -319,18 +341,15 @@ function Session() {
 
         dispatch(addBird(modalData))
 
-        console.log('ADD NEW START')
-
         setSessionBirds((prevState) => ([...prevState, modalData]))
-
-        console.log('Modal data', modal)
-        console.log('Session Birds', sessionBirds)
 
         setModal(resetModal)
         reloadComponent()
 
         closeNewBird(e)
         setModalForNew(false)
+
+
     }
 
     const addNew = (modalData) => {
@@ -377,28 +396,40 @@ function Session() {
 
                                             <div className="bird-counter watch-box-unseen" key={bird.speciesCode}>
 
-                                                <div className="unseen-icon"></div>
-
-                                                <div className='bird-name'
-                                                     id={`name-${bird.speciesCode}`}>{bird.comName} </div>
-
-                                                <button className="minus_button"
-                                                        onClick={() => minusOne(index)}></button>
-
-                                                <div className="bird-count"
-                                                     onClick={() => openModal(index)}>{bird.count}</div>
-
-                                                <button className="add_button" onClick={() => addOne(index)}>
-                                                    <FontAwesomeIcon icon={faPlus}/></button>
-                                            </div> : <div className="bird-counter watch-box" key={bird.speciesCode}>
-
                                                 <div className="counter-name">
                                                     <div className="seen-icon">
-                                                        <FontAwesomeIcon icon={faBinoculars}/>
+
                                                     </div>
 
                                                     <div className='bird-name'
                                                          id={`name-${bird.speciesCode}`}>{bird.comName}
+                                                    </div>
+                                                </div>
+
+                                                <div className="counter">
+
+
+                                                    <div className="bird-count" onClick={() => openModal(index)}>
+                                                        {bird.count}
+                                                    </div>
+
+                                                    <button className="add_button-seen" onClick={() => addOne(index)}>
+                                                        <FontAwesomeIcon icon={faPlus}/>
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+                                            :
+                                            <div className="bird-counter watch-box" key={bird.speciesCode}>
+
+                                                <div className="counter-name">
+                                                    <div className="seen-icon">
+                                                        <FontAwesomeIcon icon={faEye}/>
+                                                    </div>
+
+                                                    <div className='bird-name' id={`name-${bird.speciesCode}`}>
+                                                        {bird.comName}
                                                     </div>
                                                 </div>
 
@@ -462,7 +493,6 @@ function Session() {
                     </div>
 
 
-                    <div className="card-title-modal">Add a new bird</div>
 
                     <section className="content find-top-add">
 
@@ -511,22 +541,29 @@ function Session() {
 
                 </div>
 
-
+                <section className="bottom-cards">
+                    <div className="dash-buttons">
+                    </div>
+                </section>
             </div>
 
 
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal}
                    style={customStyle} contentLabel={'Add multiple birds to Database'}>
 
-                <button className='modal-close' onClick={closeModal}>X</button>
+
                 <div id="modal-box" className="modal-box">
+                    <button className='modal-close' onClick={closeModal}><FontAwesomeIcon icon={faTimes}/></button>
                     <div className="card-title-modal">How many {modal.comName}s have you spotted?
                     </div>
 
                     <form className="form-group" onSubmit={onSubmit}>
-                        <input type="number" name='count' placeholder={count} className="form-control"
-                               onChange={onChange}/>
-                        <button type='submit'>Submit</button>
+                        <input type="number"
+                               name='count'
+                               placeholder={count}
+                               className="form-control"
+                               onKeyUp={onChange}/>
+                        <button className='btn-submit' type='submit'>Submit</button>
                     </form>
                 </div>
 
@@ -535,15 +572,16 @@ function Session() {
             <Modal isOpen={modalForNew} onRequestClose={closeModal}
                    style={customStyle} contentLabel={'Add bird count to database'}>
 
-                <button className='modal-close' onClick={closeModal}>X</button>
+
                 <div id="modal-box" className="modal-box">
+                    <button className='modal-close' onClick={closeModal}>X</button>
                     <div className="card-title-modal">How many {modal.comName}s have you spotted?
                     </div>
 
                     <form className="form-group" onSubmit={onSubmitNew}>
                         <input type="number" name='count' placeholder={count} className="form-control"
                                onChange={onChange}/>
-                        <button type='submit'>Submit</button>
+                        <button type='submit' className='btn-submit'>Submit</button>
                     </form>
                 </div>
 
