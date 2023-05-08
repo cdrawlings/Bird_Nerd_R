@@ -5,6 +5,7 @@ const Bird = require('../model/birdModel')
 const Count = require('../model/countModel')
 const Session = require('../model/sessionModel')
 const mongoose = require("mongoose");
+const {all} = require("express/lib/application");
 
 
 
@@ -95,7 +96,17 @@ const lastSeen = asyncHandler(async (req, res) => {
         })
     )
 
-    res.status(200).json(flat)
+    // Filter flat for use with D3 stacked Bar
+    let arr = flat;
+    let farr = [Object.fromEntries(arr.map(o => [o.name, o.count]))];
+
+    let obj = farr[0]
+    let fdate = {date: flat[0].date}
+
+    let allfiltered = {...obj, ...fdate}
+
+
+    res.status(200).json(allfiltered)
 });
 
 

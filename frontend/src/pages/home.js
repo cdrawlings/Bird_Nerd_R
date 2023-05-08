@@ -8,22 +8,50 @@ import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import LastSession from "../components/LastSession";
 import {getLast} from "../features/last/lastSlice";
 
+
 const data = [
-    {year: 1980, efficiency: 24.3, sales: 8949000},
-    {year: 1985, efficiency: 27.6, sales: 10979000},
-    {year: 1990, efficiency: 28, sales: 9303000},
-    {year: 1991, efficiency: 28.4, sales: 8185000},
-    {year: 1992, efficiency: 27.9, sales: 8213000},
-    {year: 1993, efficiency: 28.4, sales: 8518000},
-    {year: 1994, efficiency: 28.3, sales: 8991000},
-    {year: 1995, efficiency: 28.6, sales: 8620000},
-    {year: 1996, efficiency: 28.5, sales: 8479000},
-    {year: 1997, efficiency: 28.7, sales: 8217000},
-    {year: 1998, efficiency: 28.8, sales: 8085000},
-    {year: 1999, efficiency: 28.3, sales: 8638000},
-    {year: 2000, efficiency: 28.5, sales: 8778000},
-    {year: 2001, efficiency: 28.8, sales: 8352000},
-    {year: 2002, efficiency: 29, sales: 8042000},]
+    {
+        year: 1980,
+        "🥑": 10,
+        "🍌": 20,
+        "🍆": 30
+    },
+    {
+        year: 1990,
+        "🥑": 20,
+        "🍌": 40,
+        "🍆": 60
+    },
+    {
+        year: 2000,
+        "🥑": 30,
+        "🍌": 45,
+        "🍆": 80
+    },
+    {
+        year: 2010,
+        "🥑": 40,
+        "🍌": 60,
+        "🍆": 100
+    },
+    {
+        year: 2020,
+        "🥑": 50,
+        "🍌": 80,
+        "🍆": 120
+
+    }
+];
+
+const allKeys = ["🥑", "🍌", "🍆"];
+
+const colors = {
+    "🥑": "green",
+    "🍌": "orange",
+    "🍆": "purple"
+};
+
+
 function Home() {
     const {user} = useSelector((state) => state.auth)
     const {location} = useSelector((state) => state.location)
@@ -33,6 +61,7 @@ function Home() {
     const {last} = useSelector((state) => state.last)
 
     const [success, setSuccess] = useState(false)
+    const [keys, setKeys] = useState(allKeys);
 
     const created = dayjs(user.createdAt).format('dddd, MMMM D, YYYY')
     const updated = dayjs(user.updatedAt).format('dddd, MMMM D, YYYY')
@@ -140,7 +169,28 @@ function Home() {
                 <section className='last-watch'>
                     <div className="last-container">
                         <p className="card-title">Last bird watching session</p>
-                        <LastSession data={last}/>
+                        <LastSession data={data} keys={keys} colors={colors}/>
+                        <div className="fields">
+                            {allKeys.map(key => (
+                                <div key={key} className="field">
+                                    <input
+                                        id={key}
+                                        type="checkbox"
+                                        checked={keys.includes(key)}
+                                        onChange={e => {
+                                            if (e.target.checked) {
+                                                setKeys(Array.from(new Set([...keys, key])));
+                                            } else {
+                                                setKeys(keys.filter(_key => _key !== key));
+                                            }
+                                        }}
+                                    />
+                                    <label htmlFor={key} style={{color: colors[key]}}>
+                                        {key}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
