@@ -3,11 +3,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {addLocation} from '../features/location/locationSlice'
 import {geteBirds} from '../features/ebirds/ebirdsSlice'
+
+
+import {getAllBird} from "../features/bird/birdSlice";
+import {getLast} from "../features/last/lastSlice";
+
 import Spinner from "../components/spinner";
 
 function Current() {
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
+    const {birds} = useSelector((state) => state.bird)
+    const {last} = useSelector((state) => state.last)
+
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch();
@@ -17,6 +25,13 @@ function Current() {
         getCoords();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    // Gets the last bird watching session
+    useEffect(() => {
+        dispatch(getAllBird())
+        dispatch(getLast())
+        //  dispatch(flattened())
+    }, [dispatch])
 
     // Get location data from the browser
     const getCoords = async () => {

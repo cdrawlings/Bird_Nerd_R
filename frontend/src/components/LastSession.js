@@ -11,6 +11,8 @@ function LastSession({data, keys, colors}) {
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
 
+    console.log("D3", data)
+
     // will be called initially and on every data change
     useEffect(() => {
         const svg = select(svgRef.current);
@@ -27,7 +29,7 @@ function LastSession({data, keys, colors}) {
 
         // scales
         const xScale = scaleBand()
-            .domain(data.map(d => d.year))
+            .domain(data.map(d => d.date))
             .range([0, width])
             .padding(0.25);
 
@@ -45,7 +47,7 @@ function LastSession({data, keys, colors}) {
             .selectAll("rect")
             .data(layer => layer)
             .join("rect")
-            .attr("x", sequence => xScale(sequence.data.year))
+            .attr("x", sequence => xScale(sequence.data.date))
             .attr("width", xScale.bandwidth())
             .attr("y", sequence => yScale(sequence[1]))
             .attr("height", sequence => yScale(sequence[0]) - yScale(sequence[1]));
@@ -59,6 +61,8 @@ function LastSession({data, keys, colors}) {
 
         const yAxis = axisLeft(yScale);
         svg.select(".y-axis").call(yAxis);
+
+
     }, [colors, data, dimensions, keys]);
 
 

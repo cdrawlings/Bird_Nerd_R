@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {createSession} from '../features/session/sessionSlice'
 import dayjs from 'dayjs';
-import {getAllBird} from "../features/bird/birdSlice";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import LastSession from "../components/LastSession";
-import {getLast} from "../features/last/lastSlice";
 
 
-const data = [
+const OriginalData = [
     {
         year: 1980,
         "🥑": 10,
@@ -43,12 +41,34 @@ const data = [
     }
 ];
 
-const allKeys = ["🥑", "🍌", "🍆"];
+const data2 = [
+    {
+        "Acadian Flycatcher": 5,
+        "American Goldfinch": 3,
+        "Cliff Swallow": 6,
+        "date": "2023-04-27T13:56:00.249Z"
+    },
+    {
+        "Acadian Flycatcher": 3,
+        "American Goldfinch": 7,
+        "Cliff Swallow": 4,
+        "date": "2023-04-28T13:56:00.249Z"
+    },
+    {
+        "Acadian Flycatcher": 12,
+        "American Goldfinch": 2,
+        "Cliff Swallow": 6,
+        "date": "2023-04-29T13:56:00.249Z"
+    }
+];
+
+
+const allKeys = ["Acadian Flycatcher", "American Goldfinch", "Cliff Swallow"];
 
 const colors = {
-    "🥑": "green",
-    "🍌": "orange",
-    "🍆": "purple"
+    "Acadian Flycatcher": "green",
+    "American Goldfinch": "orange",
+    "Cliff Swallow": "purple"
 };
 
 
@@ -72,17 +92,22 @@ function Home() {
     const date = dayjs().format('dddd, MMMM D, YYYY')
     const position = [location.lat, location.lon]
 
+
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
-    // Gets the last bird watching session
-    useEffect(() => {
-        dispatch(getAllBird())
-        dispatch(getLast())
-        //  dispatch(flattened())
-    }, [dispatch])
 
+    let deleteDate = last
 
+    const newdate = last[0]
+
+    delete deleteDate.sessiondate
+
+    console.log("dd", deleteDate)
+
+    let keybird = Object.keys(newdate);
+
+    console.log("k", keybird)
 
 // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
@@ -169,7 +194,7 @@ function Home() {
                 <section className='last-watch'>
                     <div className="last-container">
                         <p className="card-title">Last bird watching session</p>
-                        <LastSession data={data} keys={keys} colors={colors}/>
+                        <LastSession data={last} keys={keys} colors={colors}/>
                         <div className="fields">
                             {allKeys.map(key => (
                                 <div key={key} className="field">

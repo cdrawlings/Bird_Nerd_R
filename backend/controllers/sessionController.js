@@ -103,7 +103,7 @@ const lastSeen = asyncHandler(async (req, res) => {
     let obj = farr[0]
     let fdate = {date: flat[0].date}
 
-    let allfiltered = {...obj, ...fdate}
+    let allfiltered = [{...obj, ...fdate}]
 
 
     res.status(200).json(allfiltered)
