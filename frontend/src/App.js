@@ -11,6 +11,7 @@ import Current from "./pages/current";
 import FindBird from "./pages/findBird"
 import AddBird from "./pages/addBird"
 import Session from "./pages/session"
+import Index from "./pages/index"
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/header';
 
@@ -22,12 +23,13 @@ function App() {
                 <div className="container">
                     <Header/>
                     <Routes>
-                        <Route path="/" element={<Current/>}/>
+                        <Route path="/current" element={<Current/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Registration/>}/>
+                        <Route path="/" element={<Index/>}/>
 
 
-                        <Route index element={<Current/>}/>
+                        <Route index element={<Index/>}/>
 
                         <Route
                             path="/dashboard"

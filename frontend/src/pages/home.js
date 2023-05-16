@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {createSession} from '../features/session/sessionSlice'
@@ -7,69 +7,20 @@ import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import LastSession from "../components/LastSession";
 
 
-const OriginalData = [
-    {
-        year: 1980,
-        "🥑": 10,
-        "🍌": 20,
-        "🍆": 30
-    },
-    {
-        year: 1990,
-        "🥑": 20,
-        "🍌": 40,
-        "🍆": 60
-    },
-    {
-        year: 2000,
-        "🥑": 30,
-        "🍌": 45,
-        "🍆": 80
-    },
-    {
-        year: 2010,
-        "🥑": 40,
-        "🍌": 60,
-        "🍆": 100
-    },
-    {
-        year: 2020,
-        "🥑": 50,
-        "🍌": 80,
-        "🍆": 120
-
-    }
-];
-
-const data2 = [
-    {
-        "Acadian Flycatcher": 5,
-        "American Goldfinch": 3,
-        "Cliff Swallow": 6,
-        "date": "2023-04-27T13:56:00.249Z"
-    },
-    {
-        "Acadian Flycatcher": 3,
-        "American Goldfinch": 7,
-        "Cliff Swallow": 4,
-        "date": "2023-04-28T13:56:00.249Z"
-    },
-    {
-        "Acadian Flycatcher": 12,
-        "American Goldfinch": 2,
-        "Cliff Swallow": 6,
-        "date": "2023-04-29T13:56:00.249Z"
-    }
-];
-
-
-const allKeys = ["Acadian Flycatcher", "American Goldfinch", "Cliff Swallow"];
-
 const colors = {
     "Acadian Flycatcher": "green",
     "American Goldfinch": "orange",
     "Cliff Swallow": "purple"
 };
+
+const data = [
+    {
+        "Acadian Flycatcher": 1,
+        "American Goldfinch": 3,
+        "Cliff Swallow": 6,
+        "sessiondate": "2023-04-27T13:56:00.249Z"
+    }
+]
 
 
 function Home() {
@@ -81,7 +32,7 @@ function Home() {
     const {last} = useSelector((state) => state.last)
 
     const [success, setSuccess] = useState(false)
-    const [keys, setKeys] = useState(allKeys);
+    const [keys, setKeys] = useState('');
 
     const created = dayjs(user.createdAt).format('dddd, MMMM D, YYYY')
     const updated = dayjs(user.updatedAt).format('dddd, MMMM D, YYYY')
@@ -92,22 +43,25 @@ function Home() {
     const date = dayjs().format('dddd, MMMM D, YYYY')
     const position = [location.lat, location.lon]
 
+    useEffect(() => {
+        getKeys()
+    }, [])
+
 
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
 
-    let deleteDate = last
+    const getKeys = () => {
+        const newdate = last[0]
 
-    const newdate = last[0]
+        let keybird = Object.keys(newdate);
+        keybird.splice(3)
+        setKeys(keybird)
+    }
 
-    delete deleteDate.sessiondate
+    console.log("Keys", keys)
 
-    console.log("dd", deleteDate)
-
-    let keybird = Object.keys(newdate);
-
-    console.log("k", keybird)
 
 // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
@@ -194,28 +148,9 @@ function Home() {
                 <section className='last-watch'>
                     <div className="last-container">
                         <p className="card-title">Last bird watching session</p>
-                        <LastSession data={last} keys={keys} colors={colors}/>
-                        <div className="fields">
-                            {allKeys.map(key => (
-                                <div key={key} className="field">
-                                    <input
-                                        id={key}
-                                        type="checkbox"
-                                        checked={keys.includes(key)}
-                                        onChange={e => {
-                                            if (e.target.checked) {
-                                                setKeys(Array.from(new Set([...keys, key])));
-                                            } else {
-                                                setKeys(keys.filter(_key => _key !== key));
-                                            }
-                                        }}
-                                    />
-                                    <label htmlFor={key} style={{color: colors[key]}}>
-                                        {key}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
+                        <LastSession data={data} keys={keys} colors={colors}/>
+
+
                     </div>
                 </section>
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending} from "d3";
+import {max, scaleBand, scaleLinear, select, stack} from "d3";
 import useResizeObserver from "../hooks/useResizeObserver";
 
 /**
@@ -11,7 +11,15 @@ function LastSession({data, keys, colors}) {
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
 
-    console.log("D3", data)
+    const stackGenerator = stack().keys(keys)
+    //  ensures consistent stack ordering
+    //.order(stackOrderAscending)
+    const layers = stackGenerator(data)
+
+    // maty n\eed to flip this if horizontel is working
+    const extent = [max(layers, layer =>
+        max(layer, sequence => sequence[1])), 0]
+
 
     // will be called initially and on every data change
     useEffect(() => {
@@ -19,48 +27,44 @@ function LastSession({data, keys, colors}) {
         const {width, height} =
         dimensions || wrapperRef.current.getBoundingClientRect();
 
-        // stacks / layers
-        const stackGenerator = stack()
-            .keys(keys)
-            .order(stackOrderAscending);
-        const layers = stackGenerator(data);
-        const extent = [0, max(layers, layer => max(layer, sequence => sequence[1]))
-        ];
-
-        // scales
-        const xScale = scaleBand()
+        const yScale = scaleBand()
             .domain(data.map(d => d.date))
-            .range([0, width])
-            .padding(0.25);
+            .range([height, 0])
+            .padding(0.25)
 
-        const yScale = scaleLinear()
+        const xScale = scaleLinear()
             .domain(extent)
-            .range([height, 0]);
+            // will be called initially and on every data change
+            .range([width, 0])
 
-        // rendering
-        svg
-            .selectAll(".layer")
+        /*
+        // shows axis keys and ticks
+        const yAxis = axisLeft(yScale)
+        svg.select(".y-axis").call(yAxis)
+
+        const xAxis = axisBottom(xScale)
+        svg.select(".x-axis")
+            .attr("transform", `translate(0, ${height} )`)
+            .call(xAxis)
+        */
+
+        svg.selectAll('.layer')
             .data(layers)
-            .join("g")
-            .attr("class", "layer")
-            .attr("fill", layer => colors[layer.key])
-            .selectAll("rect")
+            .join('g')
+            .join('g')
+            .attr('class', 'layer')
+            .attr('fill', layer => {
+                return colors[layer.key]
+            })
+            .selectAll('rect')
             .data(layer => layer)
-            .join("rect")
-            .attr("x", sequence => xScale(sequence.data.date))
-            .attr("width", xScale.bandwidth())
-            .attr("y", sequence => yScale(sequence[1]))
-            .attr("height", sequence => yScale(sequence[0]) - yScale(sequence[1]));
-
-        // axes
-        const xAxis = axisBottom(xScale);
-        svg
-            .select(".x-axis")
-            .attr("transform", `translate(0, ${height})`)
-            .call(xAxis);
-
-        const yAxis = axisLeft(yScale);
-        svg.select(".y-axis").call(yAxis);
+            .join('rect')
+            .attr('y', sequence => {
+                return yScale(sequence.data.date)
+            })
+            .attr('height', yScale.bandwidth())
+            .attr('x', sequence => xScale(sequence[0]))
+            .attr('width', sequence => xScale(sequence[1]) - xScale(sequence[0]))
 
 
     }, [colors, data, dimensions, keys]);

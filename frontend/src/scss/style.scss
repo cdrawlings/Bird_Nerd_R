@@ -352,18 +352,19 @@ nav {
 
 .last-watch {
   padding: .5rem 0 1rem;
-
+  width: 100vw;
 }
 
 .weather-container,
 .last-container {
   width: 90%;
-  margin: 0 auto;
+
 }
 
 .last-container {
   background-color: #cccccc;
   height: 25vh;
+  margin: 0 auto;
 }
 
 .bottom-cards {

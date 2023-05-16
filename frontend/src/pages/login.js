@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {toast} from 'react-toastify'
 
-
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSignInAlt} from '@fortawesome/free-solid-svg-icons'
 import {login, reset} from '../features/auth/authSlice'
@@ -31,7 +30,7 @@ function Login() {
 
         // Redirect when logged in
         if (isSuccess || user) {
-            navigate('/')
+            navigate('/current')
         }
 
         dispatch(reset())
