@@ -4,10 +4,6 @@ import {useNavigate} from "react-router-dom";
 import {addLocation} from '../features/location/locationSlice'
 import {geteBirds} from '../features/ebirds/ebirdsSlice'
 
-
-import {getAllBird} from "../features/bird/birdSlice";
-import {getLast} from "../features/last/lastSlice";
-
 import Spinner from "../components/spinner";
 
 function Current() {
@@ -28,8 +24,7 @@ function Current() {
 
     // Gets the last bird watching session
     useEffect(() => {
-        dispatch(getAllBird())
-        dispatch(getLast())
+
         //  dispatch(flattened())
     }, [dispatch])
 
