@@ -54,20 +54,24 @@ export const birdSlice = createSlice({
     reducers: {
         reset: (state) => initialState,
         // Adding new bird to the the list of seen birds
-        addBird: (state, action) => {
-            state.concat(action.payload)
-        },
+        newBird: (state, action) => {
+            const prevState = [...state.birds]
+            return {
+                ...state,
+                birds: [...prevState, action.payload] //new todos array
+            }
+        }
     },
     extraReducers: (builder) => {
-builder
-    .addCase(createBird.pending, (state) => {
-        state.isLoading = true
-    })
-    .addCase(createBird.fulfilled, (state) => {
-        state.isLoading = false
-        state.isSuccess = true
-    })
-    .addCase(createBird.rejected, (state, action) => {
+        builder
+            .addCase(createBird.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createBird.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(createBird.rejected, (state, action) => {
         state.isLoading = true
         state.isError = true
         state.message = action.payload
@@ -88,5 +92,5 @@ builder
     }
 })
 
-export const {reset, addBird} = birdSlice.actions
+export const {reset, newBird} = birdSlice.actions
 export default birdSlice.reducer

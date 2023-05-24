@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
-
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Modal from 'react-modal';
+
+import {postSeen} from "../features/toggle/toggleSlice";
+import {createBird, newBird} from "../features/bird/birdSlice";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
 import Spinner from "../components/spinner";
-import {postSeen} from "../features/toggle/toggleSlice";
 
 /* gets and displays the list of birds. Once a bird is selected
 it will be added to the Bird Database
@@ -48,16 +49,18 @@ function AddBird() {
         count: ""
     })
 
-    const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
-        rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
     const {comName, speciesCode, birdid, count} = modal
 
-    const [filtered, setFiltered] = useState([])
+    const [filtered, setFiltered] = new useState(ebirds)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
+
+    const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
+        rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
+
 
     useEffect(() => {
         if (isLoading) {
@@ -68,18 +71,50 @@ function AddBird() {
         }
     }, [isLoading, navigate, postSuccess])
 
+
+    const openModal = (index) => {
+        const views = filtered;
+        let bId = ObjectId();
+
+        const viewed = views.map((bird, i) => {
+
+            if (i === index) {
+                const comName = bird.comName
+                const speciesCode = bird.speciesCode
+                const sessionid = params.id
+                const birdid = bId;
+
+                console.log("Add ID", bId)
+                console.log("Name", comName)
+                console.log("codee", speciesCode)
+                console.log("session", sessionid)
+
+                const element = {sessionid, speciesCode, comName, birdid}
+
+                console.log("Ele", element)
+
+                setModal(element)
+                console.log("Opened", modal)
+                setModalIsOpen(true)
+            }
+        });
+    }
+
+
     // Filter the bird by input
     const filter = (e) => {
         let birdList = document.getElementById('birdlist')
 
         let value = e.target.value.toLowerCase();
-        birdList.style.display = 'block'
 
-        let result = [];
-        result = ebirds.filter((bird) => {
+
+        let upDated = [...ebirds];
+        upDated = upDated.filter((bird) => {
             return bird.comName.toLowerCase().search(value) !== -1;
         });
-        setFiltered(result);
+        setFiltered(upDated);
+        console.log('f', filtered)
+        console.log('e', ebirds)
     }
 
     // Show the full list of birds
@@ -101,32 +136,7 @@ function AddBird() {
         birdList.style.display = 'none'
     }
 
-
     const closeModal = () => setModalIsOpen(false)
-
-    const openModal = (index) => {
-        const views = ebirds;
-        let bId = ObjectId();
-
-        const viewed = views.map((bird, i) => {
-
-            if (i === index) {
-                const comName = bird.comName
-                const speciesCode = bird.speciesCode
-                const sessionid = params.id
-                const birdid = bId;
-
-                console.log("Add ID", bId)
-
-                const element = {sessionid, speciesCode, comName, birdid}
-
-                setModal(element)
-
-                setModalIsOpen(true)
-            }
-        });
-    }
-
 
     const onChange = (e) => {
         setModal((prevState) => ({
@@ -136,14 +146,24 @@ function AddBird() {
     }
 
     const onSubmit = (e) => {
-
         e.preventDefault();
+        console.log('Modal', modal)
         dispatch(postSeen(modal))
+        dispatch(createBird(modal))
+        dispatch(newBird(modal))
+
+
+        navigate('/session/' + params.id)
     }
 
     return (
         <>
             <div className="main">
+                <section className="session-navbar">
+                    <div className="session-nav">
+                        <Link to={`/session/${params.id}`} className="finished">Back to bird watchig</Link>
+                    </div>
+                </section>
 
                 <section className="content find-top-add">
 
@@ -170,19 +190,17 @@ function AddBird() {
                         <div className="searchbox ">
 
                             <ul id='birdlist'>
-                                {filtered.map((bird, index) => {
-                                    return (
+                                {filtered.map((bird, index) => (
 
-                                        <div className='bird-item' key={bird.speciesCode}>
-                                            <div className='hidden'>{bird.speciesCode}</div>
-                                            <div>{bird.comName}</div>
-                                            <button id={bird.speciesCode} className="bird-count"
-                                                    onClick={() => openModal(index)}>
-                                                <FontAwesomeIcon icon={faPlus}/>
-                                            </button>
-                                        </div>
-                                    )
-                                })}
+                                    <li className='bird-item' key={bird.speciesCode}>
+                                        <div className='hidden'>{bird.speciesCode}</div>
+                                        <div>{bird.comName}</div>
+                                        <button id={bird.speciesCode} className="bird-count"
+                                                onClick={() => openModal(index)}>
+                                            <FontAwesomeIcon icon={faPlus}/>
+                                        </button>
+                                    </li>
+                                ))}
                             </ul>
 
                         </div>

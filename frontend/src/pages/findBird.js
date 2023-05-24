@@ -92,15 +92,15 @@ function FindBird() {
         let birdList = document.getElementById('birdlist')
 
         let value = e.target.value.toLowerCase();
-        birdList.style.display = 'block'
 
-        let result = [];
-        result = ebirds.filter((bird) => {
+
+        let upDated = [...ebirds];
+        upDated = upDated.filter((bird) => {
             return bird.comName.toLowerCase().search(value) !== -1;
         });
-        setFiltered(result);
-    }
+        setFiltered(upDated);
 
+    }
     // Show the full list of birds
     const fillList = () => {
         let birdList = document.getElementById('birdlist')
@@ -126,7 +126,7 @@ function FindBird() {
 
     // Creates a new bird entry in the bird DB including name, speciescode and birdID
     const openModal = (index) => {
-        const views = ebirds;
+        const views = filtered;
         const bId = ObjectId();
 
         const viewed = views.map((bird, i) => {
@@ -138,17 +138,12 @@ function FindBird() {
                 const birdid = bId;
                 const _id = bId;
 
-
-                console.log("bird ID", _id)
-
                 const element = {sessionid, speciesCode, comName, birdid, city, lat, lon}
 
-
                 const data = {speciesCode, comName, _id}
-                console.log("Element", element)
+
                 setModal(element)
                 dispatch(createBird(data))
-                console.log("Data - new bird", data)
 
                 setModalIsOpen(true)
             }
@@ -165,7 +160,6 @@ function FindBird() {
 
 
     const onSubmit = (e) => {
-        console.log("Modal", modal)
         e.preventDefault();
         dispatch(postSeen(modal))
         navigate('/dashboard');
@@ -214,6 +208,7 @@ function FindBird() {
                                     )
                                 })}
                             </ul>
+
 
                         </div>
                     </div>

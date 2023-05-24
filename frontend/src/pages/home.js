@@ -53,13 +53,12 @@ function Home() {
     const position = [location.lat, location.lon]
 
     useEffect(() => {
-        getCoords()
         dispatch(getAllBird())
         dispatch(getLast())
         // getKeys()
     }, [])
 
-    const getCoords = async () => {
+    useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
             const locApi = "AIzaSyAF2o2lBWk9H8JQhpwvI_U9e5rFZUikQY4";
             const apiKey = 'c2badbed053fc07c15b017c4906fade6';
@@ -120,8 +119,7 @@ function Home() {
             navigate('/dashboard')
 
         })
-    }
-
+    }, [dispatch, navigate])
 
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
@@ -135,7 +133,7 @@ function Home() {
         setKeys(keybird)
     }
 
-    console.log("Keys", keys)
+    // console.log("Keys", keys)
 
 
     // When click saves the local data to a new session and updates the last session
