@@ -45,8 +45,6 @@ function Session() {
         sessionid: "",
     })
 
-    console.log("Birds laod", birds)
-
     const {comName, count, speciesCode, birdid, sessionid} = modal
 
     const dispatch = useDispatch()

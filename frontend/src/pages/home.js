@@ -42,7 +42,6 @@ function Home() {
 
     const [loading, setLoading] = useState(true)
 
-
     const created = dayjs(user.createdAt).format('dddd, MMMM D, YYYY')
     const updated = dayjs(user.updatedAt).format('dddd, MMMM D, YYYY')
 
@@ -52,11 +51,18 @@ function Home() {
     const date = dayjs().format('dddd, MMMM D, YYYY')
     const position = [location.lat, location.lon]
 
+    console.log("getting last", last)
+
     useEffect(() => {
         dispatch(getAllBird())
         dispatch(getLast())
-        // getKeys()
-    }, [dispatch, getAllBird])
+    }, [dispatch, getAllBird, getLast])
+
+    useEffect(() => {
+        if (last) {
+            getKeys()
+        }
+    }, [last])
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
@@ -127,13 +133,17 @@ function Home() {
 
     const getKeys = () => {
         const newdate = last[0]
-
+        console.log("new date", newdate)
+        console.log("last", last)
         let keybird = Object.keys(newdate);
-        keybird.splice(3)
+
+        keybird.pop()
+        console.log("Keys", keybird)
         setKeys(keybird)
     }
 
-    // console.log("Keys", keys)
+
+    console.log("last", last)
 
 
     // When click saves the local data to a new session and updates the last session
@@ -233,7 +243,7 @@ function Home() {
                         <section className='last-watch'>
                             <div className="last-container">
                                 <p className="card-title">Last bird watching session</p>
-                                <LastSession data={data} keys={keys} colors={colors}/>
+                                <LastSession data={last} keys={keys} colors={colors}/>
 
 
                             </div>

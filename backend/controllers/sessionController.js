@@ -238,8 +238,6 @@ const updateWatch = asyncHandler(async (req, res) => {
 
     });
 
-    console.log("EX Sess", existingSession)
-
     if (existingSession) {
         // Update existing session
         const updateWatch = await Count.findOneAndUpdate(
@@ -275,8 +273,6 @@ const updateWatch = asyncHandler(async (req, res) => {
         );
         res.status(200).json({message: "Added a bird to the session"})
     }
-
-    console.log("4")
 
     res.status(200).json(updateWatch)
 });
