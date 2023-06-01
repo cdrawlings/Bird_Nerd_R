@@ -60,6 +60,17 @@ export const birdSlice = createSlice({
                 ...state,
                 birds: [...prevState, action.payload] //new todos array
             }
+        },
+        updateBird: (state, action) => {
+            const newState = [...state.birds]
+            const update = state.birds.find(bird => bird.comName !== action.payload); //finding index of the item
+
+            newState[update].count = action.payload.count
+
+            return {
+                ...state,
+                birds: newState  //new array
+            }
         }
     },
     extraReducers: (builder) => {
@@ -92,5 +103,5 @@ export const birdSlice = createSlice({
     }
 })
 
-export const {reset, newBird} = birdSlice.actions
+export const {reset, newBird, updateBird} = birdSlice.actions
 export default birdSlice.reducer

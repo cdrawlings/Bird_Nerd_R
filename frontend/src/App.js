@@ -9,7 +9,7 @@ import Bird from './pages/bird'
 import Profile from "./pages/profile";
 import Current from "./pages/current";
 import FindBird from "./pages/findBird"
-import AddBird from "./pages/addBird"
+// import AddBird from "./pages/addBird"
 import Session from "./pages/session"
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/header';
@@ -62,13 +62,7 @@ function App() {
                                     <FindBird/>
                                 </PrivateRoute>
                             }/>
-                        <Route
-                            path="/add-bird/:id"
-                            element={
-                                <PrivateRoute>
-                                    <AddBird/>
-                                </PrivateRoute>
-                            }/>
+
 
                         <Route
                             path="/session/:id"

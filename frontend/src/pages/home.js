@@ -56,7 +56,7 @@ function Home() {
         dispatch(getAllBird())
         dispatch(getLast())
         // getKeys()
-    }, [])
+    }, [dispatch, getAllBird])
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
