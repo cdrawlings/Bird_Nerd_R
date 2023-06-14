@@ -7,9 +7,8 @@ import Login from './pages/login'
 import Registration from './pages/registration'
 import Bird from './pages/bird'
 import Profile from "./pages/profile";
-import Current from "./pages/current";
 import FindBird from "./pages/findBird"
-// import AddBird from "./pages/addBird"
+import Load from "./pages/load"
 import Session from "./pages/session"
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/header';
@@ -22,13 +21,20 @@ function App() {
                 <div className="container">
                     <Header/>
                     <Routes>
-                        <Route path="/current" element={<Current/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Registration/>}/>
-                        <Route path="/" element={<Home/>}/>
+                        <Route path="/" element={<Login/>}/>
 
 
-                        <Route index element={<Home/>}/>
+                        <Route index element={<Login/>}/>
+
+                        <Route
+                            path="/load"
+                            element={
+                                <PrivateRoute>
+                                    <Load/>
+                                </PrivateRoute>
+                            }/>
 
                         <Route
                             path="/dashboard"

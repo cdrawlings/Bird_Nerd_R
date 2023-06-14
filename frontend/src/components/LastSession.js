@@ -1,25 +1,41 @@
 import React, {useEffect, useRef} from "react";
-import {max, scaleBand, scaleLinear, select, stack} from "d3";
+import {interpolateRgb, max, scaleBand, scaleLinear, select, stack} from "d3";
 import useResizeObserver from "../hooks/useResizeObserver";
 
 /**
  * Component that renders a StackedBarChart
  */
 
-function LastSession({data, keys, colors}) {
+function LastSession({data, keys}) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
+
+    // Get colors for chart
+    const numColors = keys.length
+    const startColor = "lightblue"
+    const endColor = "blue"
+
+    const generateColors = (numColors) => {
+        const colorScale = interpolateRgb(startColor, endColor);
+        const colors = [];
+
+        for (let i = 0; i < numColors; i++) {
+            const t = i / (numColors - 1);
+            colors.push(colorScale(t));
+        }
+        return colors;
+    };
+
+    const colors = generateColors(Object.keys(data[0]).length - 1);
 
     const stackGenerator = stack().keys(keys)
     //  ensures consistent stack ordering
     //.order(stackOrderAscending)
     const layers = stackGenerator(data)
 
-    // maty n\eed to flip this if horizontel is working
     const extent = [max(layers, layer =>
         max(layer, sequence => sequence[1])), 0]
-
 
     // will be called initially and on every data change
     useEffect(() => {
@@ -53,9 +69,7 @@ function LastSession({data, keys, colors}) {
             .join('g')
             .join('g')
             .attr('class', 'layer')
-            .attr('fill', layer => {
-                return colors[layer.key]
-            })
+            .style('fill', (d, i) => colors[i])
             .selectAll('rect')
             .data(layer => layer)
             .join('rect')
@@ -67,8 +81,7 @@ function LastSession({data, keys, colors}) {
             .attr('width', sequence => xScale(sequence[1]) - xScale(sequence[0]))
 
 
-    }, [colors, data, dimensions, keys]);
-
+    }, [data, dimensions]);
 
     return (
         <React.Fragment>

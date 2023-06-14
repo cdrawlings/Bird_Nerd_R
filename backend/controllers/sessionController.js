@@ -81,20 +81,33 @@ const lastSeen = asyncHandler(async (req, res) => {
             },
         },
         {
+            $unwind: '$birds'
+
+        },
+        {
+            $unwind: '$session'
+
+        },
+        {
             $project: {
                 _id: 0, count: 1, birds: {comName: 1, created: 1}, session: {createdAt: 1}
             }
         },
+
     ]);
+
+    console.log('Last', sessionlast)
 
     let flat = sessionlast.map((x) =>
         ({
             count: x.count,
-            created: x.birds[0].created,
-            date: x.session[0].createdAt,
-            name: x.birds[0].comName,
+            created: x.birds.created,
+            date: x.session.createdAt,
+            name: x.birds.comName,
         })
     )
+
+    console.log(flat)
 
     // Filter flat for use with D3 stacked Bar
     let arr = flat;
@@ -184,34 +197,7 @@ const getSessions = asyncHandler(async (req, res) => {
 });
 
 /******* NOT USED ************/
-// Adds a spotted bird to the count db
-// Route    api/session/seen??
-// Page     add-bird
-const OLDpostSeen = asyncHandler(async (req, res) => {
-    // Get user using the id in the JWT
-    const user = await User.findById(req.user.id)
 
-    if (!user) {
-        res.status(401)
-        throw new Error('User not found.')
-    }
-
-    const session = await Session.findById(req.params.id)
-
-    if (!session) {
-        res.status(401)
-        throw new Error('Session not found.')
-    }
-
-    const create = await Count.create({
-        count: req.body.count,
-        birdid: req.body.birdid,
-        session: req.params._id,
-    });
-
-    res.status(200).json(seen)
-
-});
 
 /******* NOT USED ************/
 // update a session with bird info and count

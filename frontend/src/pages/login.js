@@ -30,7 +30,7 @@ function Login() {
 
         // Redirect when logged in
         if (isSuccess || user) {
-            navigate('/dashboard')
+            navigate('/load')
         }
 
         dispatch(reset())

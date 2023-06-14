@@ -7,7 +7,7 @@ const {protect} = require('../middleware/authMiddleware')
 
 router.get('/', protect, getBirds) // Session
 
-router.get('/get-last', protect, getLast) //Find Bird
+// router.get('/get-last', protect, getLast) //Find Bird
 
 // router.put('/time', protect, updateTime)
 
