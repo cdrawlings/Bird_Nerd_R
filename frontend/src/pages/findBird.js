@@ -158,11 +158,13 @@ function FindBird() {
         }))
     }
 
-
     const onSubmit = (e) => {
         e.preventDefault();
         dispatch(postSeen(modal))
-        navigate('/dashboard');
+
+        if (postSuccess) {
+            navigate('/load');
+        }
     }
 
 

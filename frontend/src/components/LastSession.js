@@ -14,7 +14,7 @@ function LastSession({data, keys}) {
     // Get colors for chart
     const numColors = keys.length
     const startColor = "lightblue"
-    const endColor = "blue"
+    const endColor = "#0a2e36"
 
     const generateColors = (numColors) => {
         const colorScale = interpolateRgb(startColor, endColor);
@@ -26,6 +26,7 @@ function LastSession({data, keys}) {
         }
         return colors;
     };
+
 
     const colors = generateColors(Object.keys(data[0]).length - 1);
 
@@ -46,7 +47,6 @@ function LastSession({data, keys}) {
         const yScale = scaleBand()
             .domain(data.map(d => d.date))
             .range([height, 0])
-            .padding(0.25)
 
         const xScale = scaleLinear()
             .domain(extent)
@@ -76,10 +76,9 @@ function LastSession({data, keys}) {
             .attr('y', sequence => {
                 return yScale(sequence.data.date)
             })
-            .attr('height', yScale.bandwidth())
+            .attr('height', yScale.bandwidth() * 2)
             .attr('x', sequence => xScale(sequence[0]))
             .attr('width', sequence => xScale(sequence[1]) - xScale(sequence[0]))
-
 
     }, [data, dimensions]);
 

@@ -55,12 +55,15 @@ const getSession = asyncHandler(async (req, res) => {
 });
 
 
-// get Last bird entered for user
+// get Last bird entered for user Cleaned up for use with D3
+// Get Last Session >> Make JSON one level >> strip and format for D3
 // Route    GET api/bird/last
 const lastSeen = asyncHandler(async (req, res) => {
     //Get user with ID  in JWT
     const lastSession = await Session.find({user: req.user.id}).sort({createdAt: -1}).limit(1)
     const last = lastSession[0]._id
+
+    console.log("Get Last Running")
 
     const sessionlast = await Count.aggregate([
         {$match: {session: last}},
@@ -96,8 +99,10 @@ const lastSeen = asyncHandler(async (req, res) => {
 
     ]);
 
-    console.log('Last', sessionlast)
 
+    console.log("Session:", sessionlast)
+
+    // Merge into one all into one Level
     let flat = sessionlast.map((x) =>
         ({
             count: x.count,
@@ -107,7 +112,7 @@ const lastSeen = asyncHandler(async (req, res) => {
         })
     )
 
-    console.log(flat)
+    console.log("Flat:", flat)
 
     // Filter flat for use with D3 stacked Bar
     let arr = flat;

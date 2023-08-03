@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Modal from 'react-modal';
 import {postSeen, reset} from "../features/toggle/toggleSlice";
 import {createBird, newBird} from "../features/bird/birdSlice"
+import {getLast} from "../features/last/lastSlice";
 
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -25,9 +26,10 @@ const customStyle = {
 Modal.setAppElement('#root')
 
 function Session() {
-    const {birds, isSuccess} = useSelector((state) => state.bird)
+    const {birds} = useSelector((state) => state.bird)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {session} = useSelector((state) => state.session)
+    const {last, gotLast} = useSelector((state) => state.last)
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     // const [newBirdModalOpen, setNewBirdModalOpen] = useState(false)
@@ -70,9 +72,9 @@ function Session() {
     }, [setWorkingBirds])
 
 
+
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
-
 
     // Add one to count
     const addOne = (index) => {
@@ -117,6 +119,7 @@ function Session() {
                 const toggle = {birdid, count, sessionid, speciesCode, comName}
 
                 dispatch(postSeen(toggle))
+
                 console.log("2", toggle)
                 return toggle
             } else {
@@ -314,6 +317,13 @@ function Session() {
     }
 
 
+    // updates the last state
+    const finish = (e) => {
+        e.preventDefault();
+        dispatch(getLast())
+        navigate('/load')
+    }
+
     return (
         <>
 
@@ -322,7 +332,7 @@ function Session() {
 
                 <section className="session-navbar">
                     <div className="session-nav">
-                        <Link to='/dashboard' className="finished">Finished</Link>
+                        <button onClick={finish} className="finished">Finished</button>
 
 
                         <div className="newbird" onClick={() => openNewBirdModal()}>

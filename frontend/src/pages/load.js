@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {geteBirds} from "../features/ebirds/ebirdsSlice";
 import {addLocation} from "../features/location/locationSlice";
 import {getAllBird} from "../features/bird/birdSlice";
+import {getLast} from "../features/last/lastSlice";
 
 
 function Load() {
@@ -11,11 +12,14 @@ function Load() {
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {birds} = useSelector((state) => state.bird)
+    const {last, gotLast} = useSelector((state) => state.last)
 
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    console.log("Last", last)
+    console.log("Birds", birds)
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
@@ -72,19 +76,17 @@ function Load() {
             }
 
             dispatch(addLocation(placeData))
-
             dispatch(getAllBird())
-
+            dispatch(getLast())
 
             // setLoading(false)
 
-            if (birds !== '') {
+
+            if (last !== '') {
                 navigate('/dashboard')
             }
-
-
         })
-    }, [dispatch, navigate, geteBirds, getAllBird,])
+    }, [dispatch, navigate, geteBirds, getAllBird])
 
     return (
         <>

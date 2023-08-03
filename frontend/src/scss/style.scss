@@ -363,7 +363,6 @@ nav {
 }
 
 .last-container {
-  background-color: #cccccc;
   height: 25vh;
   margin: 0 auto;
 }
@@ -1040,6 +1039,7 @@ nav {
 
 /************      D3        *************/
 svg {
-  height: 15vh;
+  height: 7vh;
+  width: 100%;
   overflow: visible;
 }

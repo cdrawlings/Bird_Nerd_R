@@ -15,6 +15,7 @@ export const getLast = createAsyncThunk('session/last', async (birdData, thunkAP
     try {
         const token = thunkAPI.getState().auth.user.token
         return await lastService.getLast(token)
+        console.log("beep")
     } catch (error) {
         const message =
             (error.response &&
@@ -50,6 +51,7 @@ export const lastSlice = createSlice({
             })
     }
 })
+
 
 export const {resetLast} = lastSlice.actions
 export default lastSlice.reducer

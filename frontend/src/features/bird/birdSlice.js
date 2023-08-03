@@ -92,7 +92,7 @@ export const birdSlice = createSlice({
     })
     .addCase(getAllBird.fulfilled, (state, action) => {
         state.isLoading = false
-        state.isSuccess = true
+        state.gotBirds = true
         state.birds = action.payload
     })
     .addCase(getAllBird.rejected, (state, action) => {
@@ -103,5 +103,5 @@ export const birdSlice = createSlice({
     }
 })
 
-export const {reset, newBird, updateBird} = birdSlice.actions
+export const {reset, newBird} = birdSlice.actions
 export default birdSlice.reducer
