@@ -5,6 +5,7 @@ import {geteBirds} from "../features/ebirds/ebirdsSlice";
 import {addLocation} from "../features/location/locationSlice";
 import {getAllBird} from "../features/bird/birdSlice";
 import {getLast} from "../features/last/lastSlice";
+import Spinner from "../components/spinner";
 
 
 function Load() {
@@ -20,6 +21,8 @@ function Load() {
 
     console.log("Last", last)
     console.log("Birds", birds)
+
+    console.log("Last length", last.length)
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
@@ -79,20 +82,28 @@ function Load() {
             dispatch(getAllBird())
             dispatch(getLast())
 
-            // setLoading(false)
 
 
-            if (last !== '') {
-                navigate('/dashboard')
-            }
+
         })
     }, [dispatch, navigate, geteBirds, getAllBird])
+
+    useEffect(() => {
+        if (last.length >= 1) {
+
+            console.log("Yeah!!!!!")
+            navigate('/dashboard')
+        }
+
+    }, [navigate, last]);
+
+
 
     return (
         <>
             <br/><br/><br/>
             <h1>Index 2</h1>
-            <h3>LOADING... </h3>
+            <h3><Spinner/></h3>
         </>
     )
 }

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import dayjs from 'dayjs';
+import Spinner from "../components/spinner";
 
 import {createSession} from '../features/session/sessionSlice'
 import LastSession from "../components/LastSession";
@@ -17,6 +18,8 @@ function Home() {
 
     const [keys, setKeys] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -24,16 +27,65 @@ function Home() {
 
     const position = [location.lat, location.lon]
 
+    console.log("Last!!", last)
+
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
 
 
     const goFind = (e) => {
         navigate('/find-bird')
+
     }
 
-    console.log("Home Last", last)
+    useEffect(() => {
+        console.log("Hello")
+        console.log("Effect", last)
 
+        const newdate = last[0]
+
+        console.log("New Date", newdate)
+
+        let keybird = Object.keys(newdate);
+
+        console.log("KB", keybird)
+
+        keybird.pop()
+        console.log("Keybird:", keybird)
+
+        setKeys(keybird)
+        setLoading(true)
+
+
+    }, [last])
+
+
+    const getKeys = () => {
+
+        console.log("Hello")
+        console.log("Effect", last)
+
+        const newdate = last[0]
+
+        console.log("New Date", newdate)
+
+        let keybird = Object.keys(newdate);
+
+        console.log("KB", keybird)
+
+        keybird.pop()
+        console.log("Keybird:", keybird)
+
+        setKeys(keybird)
+
+
+        console.log("Got key:", keys)
+
+
+    }
+
+
+    console.log("Keys ----- :", keys)
 
     // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {
@@ -77,22 +129,6 @@ function Home() {
     ]
 
 
-    useEffect(() => {
-
-        const newdate = last[0]
-
-
-        let keybird = Object.keys(newdate);
-
-        keybird.pop()
-
-        setKeys(keybird)
-
-
-        console.log("Got key:", keys)
-
-
-    }, [setKeys])
 
 
 
@@ -150,14 +186,25 @@ function Home() {
 
 
                 <section className='last-watch'>
-                    <div className="last-container">
+                    {loading ?
+
+                        <div className="last-container">
 
 
-                        <p className="card-title">Last bird watching session</p>
-                        <LastSession data={last} keys={keys}/>
+                            <p className="card-title">Last bird watching session</p>
+                            <LastSession data={last} keys={keys}/>
 
 
-                    </div>
+                        </div>
+
+
+                        :
+
+                        <Spinner/>
+
+
+                    }
+
                 </section>
 
 
@@ -179,5 +226,6 @@ function Home() {
         </>
     );
 }
+
 
 export default Home;
