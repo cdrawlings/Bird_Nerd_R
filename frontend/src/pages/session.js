@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import Modal from 'react-modal';
 import {postSeen, reset} from "../features/toggle/toggleSlice";
 import {createBird, newBird} from "../features/bird/birdSlice"
-import {getLast} from "../features/last/lastSlice";
+import {getLast, resetLast} from "../features/last/lastSlice";
 
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -30,12 +30,15 @@ function Session() {
     const {ebirds} = useSelector((state) => state.ebirds)
     const {session} = useSelector((state) => state.session)
     const {last, gotLast} = useSelector((state) => state.last)
+    const {postLoading} = useSelector((state) => state.toggle)
+
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     // const [newBirdModalOpen, setNewBirdModalOpen] = useState(false)
 
     const [openNewBirdCountModal, setOpenNewBirdCountModal] = useState(false)
-    const [filtered, setFiltered] = new useState(ebirds)
+    const [filtered, setFiltered] = useState(ebirds)
+    const [save, setSave] = useState(false)
 
     const [workingBirds, setWorkingBirds] = useState([])
 
@@ -79,9 +82,14 @@ function Session() {
     // Add one to count
     const addOne = (index) => {
         // Counter state is incremented
+
+
         const views = workingBirds;
         const viewed = views.map((bird, i) => {
             if (i === index) {
+
+                console.log(" loading status 1", postLoading)
+
                 // Increment the clicked counter
                 const comName = bird.comName
                 const count = bird.count + 1
@@ -91,7 +99,11 @@ function Session() {
 
                 const toggle = {birdid, count, sessionid, speciesCode, comName}
                 dispatch(postSeen(toggle))
+
+                console.log(" loading status 2", postLoading)
+
                 dispatch(reset())
+                dispatch(resetLast())
                 return toggle
 
             } else {
@@ -101,6 +113,7 @@ function Session() {
         });
         setWorkingBirds(viewed)
     }
+
 
     // Minus one to count
     const minusOne = (index) => {
@@ -119,8 +132,9 @@ function Session() {
                 const toggle = {birdid, count, sessionid, speciesCode, comName}
 
                 dispatch(postSeen(toggle))
+                dispatch(reset())
+                dispatch(resetLast())
 
-                console.log("2", toggle)
                 return toggle
             } else {
                 // The rest haven't changed
@@ -129,6 +143,7 @@ function Session() {
         });
         setWorkingBirds(viewed)
     }
+
 
     // Open the modal and get the data to include for the DB count for multiple birds
     const openModal = (index) => {
@@ -223,6 +238,8 @@ function Session() {
             if (birdid === bird.birdid) {
                 dispatch(postSeen(modalData))
                 dispatch(newBird(modalData))
+
+                dispatch(resetLast())
                 return modalData
             } else {
                 // The rest haven't changed
@@ -323,6 +340,7 @@ function Session() {
         dispatch(getLast())
         navigate('/load')
     }
+
 
     return (
         <>

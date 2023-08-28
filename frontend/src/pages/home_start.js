@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import dayjs from 'dayjs';
-import Spinner from "../components/spinner";
 
 import {createSession} from '../features/session/sessionSlice'
-import LastSession from "../components/LastSession";
 
 
 function Home() {
@@ -14,9 +12,7 @@ function Home() {
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {birds} = useSelector((state) => state.bird)
-    const {last, gotLast} = useSelector((state) => state.last)
 
-    const [keys, setKeys] = useState('');
 
     const [loading, setLoading] = useState(false);
 
@@ -27,9 +23,7 @@ function Home() {
 
     const position = [location.lat, location.lon]
 
-    console.log("Key!!", keys)
-    console.log("Last!!", last)
-
+    console.log("position", location.lat, location.lon)
 
     const ObjectId = (rnd = r16 => Math.floor(r16).toString(16)) =>
         rnd(Date.now() / 1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16));
@@ -39,19 +33,6 @@ function Home() {
         navigate('/find-bird')
 
     }
-
-    useEffect(() => {
-
-        const newdate = last[0]
-
-        let keybird = Object.keys(newdate);
-
-        keybird.pop()
-
-        setKeys(keybird)
-        setLoading(true)
-
-    }, [last])
 
 
     // When click saves the local data to a new session and updates the last session
@@ -96,7 +77,8 @@ function Home() {
     ]
 
 
-    console.log("Hone with last")
+    console.log("New start no Last")
+
 
     return (
         <>
@@ -152,33 +134,7 @@ function Home() {
 
 
                 <section className='last-watch'>
-                    {keys.length === 1 ?
-
-                        <div className="">
-
-                            <p>{keys}, </p>
-
-
-                        </div>
-
-                        : loading ?
-
-                        <div className="last-container">
-
-
-                            <p className="card-title">Last bird watching session</p>
-                            <LastSession data={last} keys={keys}/>
-
-
-                        </div>
-
-
-                        :
-
-                        <Spinner/>
-
-
-                    }
+                    <p> No birds spotted last login</p>
 
                 </section>
 

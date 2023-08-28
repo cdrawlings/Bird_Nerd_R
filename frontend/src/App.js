@@ -9,6 +9,8 @@ import Bird from './pages/bird'
 import Profile from "./pages/profile";
 import FindBird from "./pages/findBird"
 import Load from "./pages/load"
+import New from "./pages/new"
+import Start from "./pages/home_start"
 import Session from "./pages/session"
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/header';
@@ -41,6 +43,22 @@ function App() {
                             element={
                                 <PrivateRoute>
                                     <Home/>
+                                </PrivateRoute>
+                            }/>
+
+                        <Route
+                            path="/new"
+                            element={
+                                <PrivateRoute>
+                                    <New/>
+                                </PrivateRoute>
+                            }/>
+
+                        <Route
+                            path="/home_start"
+                            element={
+                                <PrivateRoute>
+                                    <Start/>
                                 </PrivateRoute>
                             }/>
 

@@ -30,7 +30,7 @@ function Registration() {
 
         // Redirect when logged in
         if(isSuccess || user) {
-            navigate('/')
+            navigate('/new')
         }
 
         dispatch(reset())

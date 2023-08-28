@@ -56,6 +56,7 @@ function Login() {
         return <Spinner/>
     }
 
+    console.log("Lohining in")
 
     return (
         <>

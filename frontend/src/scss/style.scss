@@ -483,6 +483,18 @@ nav {
   text-decoration: none;
 }
 
+.finished-loading {
+  margin-right: 0;
+  background-color: lighten($color-call, 50%);
+  border: 1px solid $color-primary;
+  border-radius: 5px;
+  color: $color-primary;
+  padding: .25rem .5rem;
+  font-family: $font-stack;
+  font-weight: 500;
+  text-decoration: none;
+}
+
 
 /***  ADD A BIRD  ***/
 #birdlist {

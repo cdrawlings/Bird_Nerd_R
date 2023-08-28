@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {geteBirds} from "../features/ebirds/ebirdsSlice";
@@ -9,20 +9,20 @@ import Spinner from "../components/spinner";
 
 
 function Load() {
+    const locApi = "AIzaSyAF2o2lBWk9H8JQhpwvI_U9e5rFZUikQY4";
+    const apiKey = 'c2badbed053fc07c15b017c4906fade6';
+
     const {user} = useSelector(state => state.auth)
     const {location} = useSelector((state) => state.location)
     const {ebirds} = useSelector((state) => state.ebirds)
     const {birds} = useSelector((state) => state.bird)
     const {last, gotLast} = useSelector((state) => state.last)
 
+    const [position, setPosition] = useState([])
+
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    console.log("Last", last)
-    console.log("Birds", birds)
-
-    console.log("Last length", last.length)
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async position => {
@@ -33,6 +33,8 @@ function Load() {
             // let weather = null
             let ebirds = null
             let city //, temp, condition, icon, visibility
+
+            console.log(lat)
 
             let myHeaders = new Headers();
             myHeaders.append("X-eBirdApiToken", "vsqqs32292mi");
@@ -52,6 +54,7 @@ function Load() {
                 city = data.results[0].address_components[3].long_name
             }
 
+
             // Get the recent birds seen?? in the area from ebird.org
             const birdsResponse = await fetch(`https://api.ebird.org/v2/data/obs/geo/recent?lat=${lat}&lng=${lon}`, requestOptions)
             ebirds = await birdsResponse.json()
@@ -59,40 +62,39 @@ function Load() {
             dispatch(geteBirds(ebirds))
 
             // Get weather from open weather org
-            /*
 
-                // Get weather information
-            const weatherResponse = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
-            )
-
-            weather = await weatherResponse.json()
-
-            temp = weather.main.temp
-            visibility = weather.visibility
-            condition = weather.weather[0].description
-            icon = weather.weather[0].icon
-            */
 
             const placeData = {
                 lat, lon, city, // temp, condition, icon,  visibility
             }
+
+            console.log(placeData)
+
 
             dispatch(addLocation(placeData))
             dispatch(getAllBird())
             dispatch(getLast())
 
 
-
-
         })
     }, [dispatch, navigate, geteBirds, getAllBird])
 
+
+    console.log("Location", location)
+    console.log("E-bird", ebirds)
+    console.log("Bird", birds)
+    console.log("Last", last)
+
+
+
+
     useEffect(() => {
         if (last.length >= 1) {
-
-            console.log("Yeah!!!!!")
+            console.log("LAST!!!!")
             navigate('/dashboard')
+        } else {
+            console.log("ERROR")
+            navigate('/home_start')
         }
 
     }, [navigate, last]);

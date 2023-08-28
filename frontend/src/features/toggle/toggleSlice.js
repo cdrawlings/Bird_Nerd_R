@@ -59,17 +59,18 @@ export const toggleSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(postSeen.pending, (state) => {
-                state.isLoading = true
+                state.postLoading = true
             })
             .addCase(postSeen.fulfilled, (state) => {
-                state.isLoading = false
+                state.postLoading = false
                 state.postSuccess = true
             })
             .addCase(postSeen.rejected, (state, action) => {
-                state.isLoading = true
+                state.postLoading = true
                 state.isError = true
                 state.message = action.payload
             })
+
             .addCase(getSeen.pending, (state) => {
                 state.isLoading = true
             })
