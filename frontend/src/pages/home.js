@@ -152,6 +152,7 @@ function Home() {
 
 
                 <section className='last-watch'>
+
                     {keys.length === 1 ?
 
                         <div className="">
@@ -161,7 +162,7 @@ function Home() {
 
                         </div>
 
-                        : loading ?
+                        : keys.length > 1 ?
 
                         <div className="last-container">
 
@@ -173,9 +174,7 @@ function Home() {
                         </div>
 
 
-                        :
-
-                        <Spinner/>
+                            : <Spinner/>
 
 
                     }

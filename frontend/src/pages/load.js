@@ -93,7 +93,7 @@ function Load() {
             console.log("LAST!!!!")
             navigate('/dashboard')
         } else {
-            console.log("ERROR")
+            console.log("NO")
             navigate('/home_start')
         }
 
