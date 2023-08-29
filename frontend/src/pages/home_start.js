@@ -34,6 +34,8 @@ function Home() {
 
     }
 
+    console.log(location)
+
 
     // When click saves the local data to a new session and updates the last session
     const sessionStart = (e) => {

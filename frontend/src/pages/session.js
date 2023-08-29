@@ -34,11 +34,13 @@ function Session() {
 
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [saved, setSaved] = useState(false)
+
+
     // const [newBirdModalOpen, setNewBirdModalOpen] = useState(false)
 
     const [openNewBirdCountModal, setOpenNewBirdCountModal] = useState(false)
     const [filtered, setFiltered] = useState(ebirds)
-    const [save, setSave] = useState(false)
 
     const [workingBirds, setWorkingBirds] = useState([])
 
@@ -55,6 +57,9 @@ function Session() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
+
+    console.log("save", saved)
+
 
     // Add a count element and set birds to sessionBirds
     useEffect(() => {
@@ -88,7 +93,6 @@ function Session() {
         const viewed = views.map((bird, i) => {
             if (i === index) {
 
-                console.log(" loading status 1", postLoading)
 
                 // Increment the clicked counter
                 const comName = bird.comName
@@ -100,19 +104,23 @@ function Session() {
                 const toggle = {birdid, count, sessionid, speciesCode, comName}
                 dispatch(postSeen(toggle))
 
-                console.log(" loading status 2", postLoading)
 
                 dispatch(reset())
                 dispatch(resetLast())
+
                 return toggle
 
             } else {
                 // The rest haven't changed
                 return bird
             }
+
         });
         setWorkingBirds(viewed)
+        setSaved(true)
     }
+
+    console.log("save", saved)
 
 
     // Minus one to count
@@ -246,6 +254,8 @@ function Session() {
                 return bird
             }
         });
+
+        setSaved(true)
     }
 
 
@@ -341,6 +351,12 @@ function Session() {
         navigate('/load')
     }
 
+    const back = (e) => {
+        e.preventDefault();
+
+        navigate('/home_start')
+    }
+
 
     return (
         <>
@@ -350,7 +366,18 @@ function Session() {
 
                 <section className="session-navbar">
                     <div className="session-nav">
+
+                        {saved ?
+
+
+
                         <button onClick={finish} className="finished">Finished</button>
+
+                            :
+
+                            <button onClick={back} className="finished">Finished</button>
+
+                        }
 
 
                         <div className="newbird" onClick={() => openNewBirdModal()}>

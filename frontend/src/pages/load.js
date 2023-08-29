@@ -54,7 +54,6 @@ function Load() {
                 city = data.results[0].address_components[3].long_name
             }
 
-
             // Get the recent birds seen?? in the area from ebird.org
             const birdsResponse = await fetch(`https://api.ebird.org/v2/data/obs/geo/recent?lat=${lat}&lng=${lon}`, requestOptions)
             ebirds = await birdsResponse.json()
@@ -63,18 +62,15 @@ function Load() {
 
             // Get weather from open weather org
 
-
             const placeData = {
                 lat, lon, city, // temp, condition, icon,  visibility
             }
 
             console.log(placeData)
 
-
             dispatch(addLocation(placeData))
             dispatch(getAllBird())
             dispatch(getLast())
-
 
         })
     }, [dispatch, navigate, geteBirds, getAllBird])
@@ -86,20 +82,18 @@ function Load() {
     console.log("Last", last)
 
 
-
-
     useEffect(() => {
-        if (last.length >= 1) {
-            console.log("LAST!!!!")
-            navigate('/dashboard')
-        } else {
-            console.log("NO")
-            navigate('/home_start')
+        if (gotLast) {
+            if (last.length >= 1) {
+                console.log("LAST!!!!")
+                navigate('/dashboard')
+            } else {
+                navigate('/home_start')
+            }
         }
-
     }, [navigate, last]);
 
-
+    console.log(":L", last)
 
     return (
         <>

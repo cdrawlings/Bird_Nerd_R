@@ -51,7 +51,7 @@ function Home() {
         setKeys(keybird)
         setLoading(true)
 
-    }, [last])
+    }, [])
 
 
     // When click saves the local data to a new session and updates the last session
@@ -174,7 +174,18 @@ function Home() {
                         </div>
 
 
-                            : <Spinner/>
+                            : keys.length == null ? <div className="last-container">
+
+
+                                    <p className="card-title">Mo birds</p>
+
+
+                                </div>
+
+
+                                :
+
+                                <Spinner/>
 
 
                     }
